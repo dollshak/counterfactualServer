@@ -1,7 +1,11 @@
+from server.businessLayer.algorithmsController import AlgorithmsController
+
 class AlgorithmService:
+    def __init__(self):
+        self.algorithms_controller = AlgorithmsController()
+
     def add_new_algorithm(self):
         return "hi"
-
 
     def run_algorithms(self):
         raise Exception("Not implemented.")

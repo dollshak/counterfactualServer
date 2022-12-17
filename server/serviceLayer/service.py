@@ -11,3 +11,24 @@ def index():
 @urls_blueprint.route('/try')
 def func():
     return "new duct"
+
+def add_new_algorithm():
+    return algorithm_service.add_new_algorithm()
+
+def run_algorithms():
+    return algorithm_service.run_algorithms()
+
+def remove_algorithm(name):
+    return algorithm_service.remove_algorithm(name)
+
+def get_algorithm_info(name):
+    return algorithm_service.get_algorithm_info((name))
+
+def get_algorithm_code(name):
+    return algorithm_service.get_algorithm_code(name)
+
+def get_all_algorithms():
+    return algorithm_service.get_all_algorithms()
+
+def edit_algorithm(algorithm):
+    return algorithm_service.edit_algorithm(algorithm)
