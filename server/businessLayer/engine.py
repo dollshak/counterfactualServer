@@ -1,6 +1,6 @@
 class Engine:
     def __init__(self):
-        raise Exception("Not implemented.")
+        temp = None
 
     def run_algorithm(self, algorithm):
         raise Exception("Not implemented.")

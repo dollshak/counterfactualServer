@@ -3,7 +3,6 @@ class AlgorithmsController:
     def __init__(self):
         self.algorithms_lst = list()
         self.engine = Engine()
-        raise Exception("Not implemented.")
 
     def get_algorithm(self, name):
         raise Exception("Not implemented.")
