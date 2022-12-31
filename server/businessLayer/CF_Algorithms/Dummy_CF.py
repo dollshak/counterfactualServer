@@ -1,8 +1,6 @@
 from server.businessLayer import MlModel
 from server.businessLayer.Algorithm import Algorithm
 from server.businessLayer.argumentDescription import argumentDescription
-import numpy as np
-from sklearn.linear_model import LinearRegression
 
 
 class Dummy_CF(Algorithm):
