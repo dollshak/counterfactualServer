@@ -3,7 +3,7 @@ from server.businessLayer.Logger import Logger
 from server.businessLayer.SystemConfig import SystemConfig
 
 
-class algorithmManager:
+class AlgorithmManager:
     def __init__(self, config: SystemConfig):
         self.logger = Logger(config)
 

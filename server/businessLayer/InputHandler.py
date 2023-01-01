@@ -1,4 +1,4 @@
-class inputHandler:
+class InputHandler:
     def prepare_input(self):
         pass
 

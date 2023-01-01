@@ -1,4 +1,4 @@
-from server.businessLayer.CF_Algorithms.Dummy_CF import Dummy_CF
+from server.businessLayer.Engine import Engine
 from server.businessLayer.MlModel import MlModel
 
 
@@ -19,12 +19,23 @@ def create_dummy_model():
 
 
 if __name__ == "__main__":
-    model = create_dummy_model()
-    cf = Dummy_CF("dummy", None, list(), model)
-    arg1 = [6000, 10000, 2000000]
-    print(model.predict(arg1))
-    explain = cf.explain(arg1)
-    print(explain)
-    print(model.predict(explain))
+    while True:
+
+        arg1 = [6000, 10000, 2000000]
+        engine: Engine = Engine()
+        model = create_dummy_model()
+        file_name = input('Enter Algorithm name:')
+        if file_name == 'q':
+            break
+        try:
+            results = engine.run_algorithm(model, file_name, 'dummy', "", arg1)
+            print(results)
+        except Exception as e:
+            print(e)
+    # cf = Dummy_CF("dummy", list(), model)
+    # print(model.predict(arg1))
+    # explain = cf.explain(arg1)
+    # print(explain)
+    # print(model.predict(explain))
     # arg2 = [6000, 10000, 20000]
     # print(model.predict(arg2))

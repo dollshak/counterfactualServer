@@ -1,4 +1,4 @@
-from server.businessLayer.algorithmsController import AlgorithmsController
+from server.businessLayer.AlgorithmsController import AlgorithmsController
 
 
 class AlgorithmService:

@@ -1,11 +1,11 @@
 from server.businessLayer import MlModel
 from server.businessLayer.Algorithm import Algorithm
-from server.businessLayer.argumentDescription import argumentDescription
+from server.businessLayer.ArgumentDescription import ArgumentDescription
 
 
 class Dummy_CF(Algorithm):
-    def __init__(self, name, file, args_desc: list[argumentDescription], model: MlModel):
-        super().__init__(name, file, args_desc, model)
+    def __init__(self, name, args_desc: list[ArgumentDescription], model: MlModel):
+        super().__init__(name, args_desc, model)
 
     def explain(self, model_input):
         # total

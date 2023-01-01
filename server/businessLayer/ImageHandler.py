@@ -1,7 +1,7 @@
-from server.businessLayer.inputHandler import inputHandler
+from server.businessLayer.InputHandler import InputHandler
 
 
-class featureListHandler(inputHandler):
+class imageHandler(InputHandler):
     def prepare_input(self):
         raise Exception("Not implemented")
 

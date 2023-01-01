@@ -1,8 +1,9 @@
 import datetime
 import logging
-import BussinessLayer.SystemConfig as SystemConfig
 import os
 from pathlib import Path
+
+from server.businessLayer.SystemConfig import SystemConfig
 
 
 class Logger:
@@ -13,14 +14,6 @@ class Logger:
         formatter = logging.Formatter(format)
 
         logging.basicConfig(filename=log_path, filemode='w', level=config.LOGGER_LEVEL, format=format)
-        #
-        # logging = logging.getLogger(__name__)
-        # logging.setLevel(config.LOGGER_LEVEL)
-        # handler = logging.FileHandler(log_path)
-        # handler.setLevel(config.LOGGER_LEVEL)
-        # handler.setFormatter(formatter)
-        #
-        # logging.addHandler(handler)
 
     def get_file_path(self):
         cwd = os.getcwd()
