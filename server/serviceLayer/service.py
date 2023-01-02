@@ -1,16 +1,19 @@
 from flask import Blueprint
 from server.serviceLayer.algorithmService import AlgorithmService
+import os
+from pymongo import MongoClient
 
 urls_blueprint = Blueprint('urls', __name__,)
 algorithm_service = AlgorithmService()
 
 @urls_blueprint.route('/')
 def index():
-    return algorithm_service.add_new_algorithm()
+    # return algorithm_service.add_new_algorithm()
+    return("in index")
 
 @urls_blueprint.route('/try')
 def func():
-    return "new duct"
+    return "try"
 
 @urls_blueprint.route('/algorithm', methods=['POST'])
 def add_new_algorithm():
