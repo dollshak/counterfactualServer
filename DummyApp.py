@@ -19,23 +19,28 @@ def create_dummy_model():
 
 
 if __name__ == "__main__":
-    while True:
+    l = 2.0
 
-        arg1 = [6000, 10000, 2000000]
-        engine: Engine = Engine()
-        model = create_dummy_model()
-        file_name = input('Enter Algorithm name:')
-        if file_name == 'q':
-            break
-        try:
-            results = engine.run_algorithm(model, file_name, 'dummy', "", arg1)
-            print(results)
-        except Exception as e:
-            print(e)
-    # cf = Dummy_CF("dummy", list(), model)
-    # print(model.predict(arg1))
-    # explain = cf.explain(arg1)
-    # print(explain)
-    # print(model.predict(explain))
-    # arg2 = [6000, 10000, 20000]
-    # print(model.predict(arg2))
+    t_l: type = type(l)
+    if t_l in [int, str]:
+        print('passed')
+    # while True:
+    #
+    #     arg1 = [6000, 10000, 2000000]
+    #     engine: Engine = Engine()
+    #     model = create_dummy_model()
+    #     file_name = input('Enter Algorithm name:')
+    #     if file_name == 'q':
+    #         break
+    #     try:
+    #         results = engine.run_algorithm(model, file_name, 'dummy', "", arg1)
+    #         print(results)
+    #     except Exception as e:
+    #         print(e)
+    # # cf = Dummy_CF("dummy", list(), model)
+    # # print(model.predict(arg1))
+    # # explain = cf.explain(arg1)
+    # # print(explain)
+    # # print(model.predict(explain))
+    # # arg2 = [6000, 10000, 20000]
+    # # print(model.predict(arg2))
