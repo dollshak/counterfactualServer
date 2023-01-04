@@ -1,10 +1,15 @@
-class Algorithm:
-    def __init__(self, name, description, code, parameters, article_link, additional_fields):
-        self.article_link = article_link
-        self.parameters = parameters
-        self.code = code
-        self.description = description
-        self.name = name
-        self.additional_fields = additional_fields
+from abc import abstractmethod
 
-        raise Exception("Not implemented")
+from server.businessLayer.MlModel import MlModel
+from server.businessLayer.ArgumentDescription import ArgumentDescription
+
+
+class Algorithm:
+    def __init__(self, name,  args_desc: list[ArgumentDescription], model: MlModel):
+        self.model = model
+        self.args_desc = args_desc
+        self.name = name
+
+    @abstractmethod
+    def explain(self, model_input):
+        pass

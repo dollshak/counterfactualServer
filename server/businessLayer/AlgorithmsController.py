@@ -1,8 +1,13 @@
-from server.businessLayer.engine import Engine
+from server.businessLayer.SystemConfig import SystemConfig
+from server.businessLayer.Engine import Engine
+from server.businessLayer.Logger import Logger
+
+
 class AlgorithmsController:
-    def __init__(self):
+    def __init__(self,config:SystemConfig):
         self.algorithms_lst = list()
         self.engine = Engine()
+        self.logger = Logger(config)
 
     def get_algorithm(self, name):
         raise Exception("Not implemented.")
@@ -16,7 +21,7 @@ class AlgorithmsController:
     def remove_algorithm(self, algorithm):
         raise Exception("Not implemented.")
 
-    def run_all_algorithms(self):
+    def run_selected_algorithms(self):
         raise Exception("Not implemented.")
 
     def load_algorithms(self):
@@ -24,3 +29,9 @@ class AlgorithmsController:
 
     def edit_algorithm(self, algorithm):
         raise Exception("Not implemented.")
+
+    def handle_output(self,outputs:list):
+        raise Exception("Not implemented")
+
+    def handle_input(self,inputs:list):
+        raise Exception("Not implemented")
