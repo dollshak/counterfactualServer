@@ -1,6 +1,6 @@
-from server.businessLayer.Algorithm import Algorithm
-from server.businessLayer.Logger import Logger
-from server.businessLayer.SystemConfig import SystemConfig
+from server.businessLayer.Algorithms.Algorithm import Algorithm
+from server.Tools.Logger import Logger
+from server.Tools.SystemConfig import SystemConfig
 
 
 class AlgorithmManager:

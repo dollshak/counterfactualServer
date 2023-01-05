@@ -1,12 +1,10 @@
-from server.businessLayer.Logger import Logger
-from server.businessLayer.MlModel import MlModel
-from server.businessLayer.ArgumentDescription import ArgumentDescription
+from server.businessLayer.ML_Models.MlModel import MlModel
+from server.businessLayer.Algorithms.ArgumentDescription import ArgumentDescription
 
 
 class CounterFactualAlgorithm:
-    def __init__(self, model: MlModel, name: str, argument_lst: list[ArgumentDescription], description: str,
+    def __init__(self,  name: str, argument_lst: list[ArgumentDescription], description: str,
                  additional_info: str, output_example: list[str]):
-        self.model = model
         self.name = name
         self.argument_lst = argument_lst
         self.description = description

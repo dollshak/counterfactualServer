@@ -1,6 +1,6 @@
-from server.businessLayer import MlModel
-from server.businessLayer.Algorithm import Algorithm
-from server.businessLayer.ArgumentDescription import ArgumentDescription
+from server.businessLayer.ML_Models import MlModel
+from server.businessLayer.Algorithms.Algorithm import Algorithm
+from server.businessLayer.Algorithms.ArgumentDescription import ArgumentDescription
 
 def initAlgo(arg_lst):
     return Dummy_CF(arg_lst)

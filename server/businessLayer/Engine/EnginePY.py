@@ -1,22 +1,21 @@
-import numbers
 import os
-import subprocess
 import importlib
 from types import ModuleType
 
-from server.businessLayer.CounterFactualAlgorithm import CounterFactualAlgorithm
-from server.businessLayer.Logger import Logger
-from server.businessLayer.MlModel import MlModel
+from server.businessLayer.Algorithms.CounterFactualAlgorithm import CounterFactualAlgorithm
+from server.businessLayer.Engine.EngineAPI import EngineAPI
+from server.businessLayer.ML_Models.MlModel import MlModel
 
 
-class Engine:
+class EnginePY(EngineAPI):
     def __init__(self):
+        super().__init__()
         self.selected_algo_lst = list()
         self.working_directory_path = os.getcwd()
         self.algos_path = 'server.businessLayer.CF_Algorithms.'
 
-    def run_algorithm(self, model: MlModel, file_name, cf_name, args_desc, model_input):
-        module_path = self.algos_path + file_name
+    def run_algorithm(self, model: MlModel, algo_name: str, model_input: list, cf_inputs: list):
+        module_path = self.algos_path + algo_name
         try:
             algo_module: ModuleType = importlib.import_module(module_path)
             cf_algo: CounterFactualAlgorithm = algo_module.init(cf_name, args_desc, model)
@@ -25,7 +24,6 @@ class Engine:
 
         results = cf_algo.explain(model_input)
         return results
-
 
     def run_algorithms(self, model, inputs: list):
         raise Exception("Not implemented.")

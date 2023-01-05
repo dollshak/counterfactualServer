@@ -1,7 +1,7 @@
 from flask import Blueprint
 from flask import request
 
-from server.businessLayer.Logger import Logger
+from server.Tools.Logger import Logger
 from server.serviceLayer.algorithmService import AlgorithmService
 import os
 from pymongo import MongoClient

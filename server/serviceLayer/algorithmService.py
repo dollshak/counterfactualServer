@@ -1,6 +1,6 @@
-from server.businessLayer.Algorithm import Algorithm
+from server.businessLayer.Algorithms.Algorithm import Algorithm
 from server.businessLayer.AlgorithmsController import AlgorithmsController
-from server.businessLayer.SystemConfig import SystemConfig
+from server.Tools.SystemConfig import SystemConfig
 
 
 class AlgorithmService:

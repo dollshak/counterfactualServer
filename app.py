@@ -1,15 +1,12 @@
-import os
 from flask import Flask
 from pymongo import MongoClient
 
-from server.businessLayer.LinearRegression import LinearRegression
+from server.Tools.SystemConfig import SystemConfig
 from server.serviceLayer import service
-import alibi
 
 #setup mongodb
 try:
-    # uri = os.environ.get('MONGO_URI')
-    uri = "mongodb+srv://Shaked:123@counterfactualdb.wejhesh.mongodb.net/?retryWrites=true&w=majority"
+    uri = SystemConfig().MONGO_URI
     cluster = MongoClient(uri)
     print("connected to mongo")
     # db = cluster["counterfactual"]

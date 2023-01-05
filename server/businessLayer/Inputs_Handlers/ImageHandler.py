@@ -1,4 +1,4 @@
-from server.businessLayer.InputHandler import InputHandler
+from server.businessLayer.Inputs_Handlers.InputHandler import InputHandler
 
 
 class imageHandler(InputHandler):

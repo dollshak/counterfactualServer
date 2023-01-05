@@ -1,15 +1,14 @@
-from server.DataLayer.AlgorithmDto import AlgorithmDto
 from server.DataLayer.AlgorithmLoader import AlgorithmLoader
-from server.businessLayer.Algorithm import Algorithm
-from server.businessLayer.SystemConfig import SystemConfig
-from server.businessLayer.Engine import Engine
-from server.businessLayer.Logger import Logger
+from server.businessLayer.Algorithms.Algorithm import Algorithm
+from server.Tools.SystemConfig import SystemConfig
+from server.businessLayer.Engine.EnginePY import EnginePY
+from server.Tools.Logger import Logger
 
 
 class AlgorithmsController:
     def __init__(self,config:SystemConfig):
         self.algorithms_lst = list()
-        self.engine = Engine()
+        self.engine = EnginePY()
         self.logger = Logger(config)
 
     def get_algorithm(self, name):
