@@ -2,6 +2,7 @@ from flask import Blueprint
 from flask import request
 
 from server.Tools.Logger import Logger
+from server.businessLayer.ML_Models.MlModel import MlModel
 from server.serviceLayer.algorithmService import AlgorithmService
 import os
 from pymongo import MongoClient
@@ -18,8 +19,12 @@ def index():
 def func():
     return "try"
 
+# file_content, name: str, argument_lst: list[dict], description: str,
+#                           additional_info: str,
+#                           output_example: list[str]
 @urls_blueprint.route('/algorithm', methods=['POST'])
 def add_new_algorithm():
+    req = request.json
     data = request.files["file"]
     file_contents = data.read()
     # return algorithm_service.add_new_algorithm()
@@ -47,3 +52,21 @@ def get_all_algorithms():
 @urls_blueprint.route('/algorithm', methods=['PUT'])
 def edit_algorithm(algorithm):
     return algorithm_service.edit_algorithm(algorithm)
+
+
+
+
+def dummy_predict(x):
+    income = x[0]
+    total = x[1]
+    loan = x[2]
+    ratio = (income * 6 + total) / loan
+    return min(ratio, 1)
+
+
+def create_dummy_model():
+    # dummy_loan_model = {'fit': lambda income, total, loan: loan < (income * 6 + total)}
+    dummy_loan_model = MlModel()
+    dummy_loan_model.predict = lambda x: dummy_predict(x)
+    return dummy_loan_model
+    # return lambda income, total, loan: loan < (income * 6 + total)
