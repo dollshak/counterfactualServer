@@ -2,7 +2,7 @@ import os
 import importlib
 from types import ModuleType
 
-from server.businessLayer.Algorithms.CounterFactualAlgorithm import CounterFactualAlgorithm
+from server.businessLayer.Algorithms.CounterFactualAlgorithmDescription import CounterFactualAlgorithmDescription
 from server.businessLayer.Engine.EngineAPI import EngineAPI
 from server.businessLayer.ML_Models.MlModel import MlModel
 
@@ -18,7 +18,7 @@ class EnginePY(EngineAPI):
         module_path = self.algos_path + algo_name
         try:
             algo_module: ModuleType = importlib.import_module(module_path)
-            cf_algo: CounterFactualAlgorithm = algo_module.init(cf_name, args_desc, model)
+            cf_algo: CounterFactualAlgorithmDescription = algo_module.initAlgo(cf_name, args_desc, model)
         except:
             raise Exception(f'failed to import module {file_name}')
 

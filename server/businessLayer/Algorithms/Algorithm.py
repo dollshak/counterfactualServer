@@ -4,10 +4,9 @@ from server.businessLayer.Algorithms.ArgumentDescription import ArgumentDescript
 
 
 class Algorithm:
-    def __init__(self,  cf_args:list, ):
-        self.args_desc = args_desc
-        self.name = name
-        self.filename = filename
+    def __init__(self, cf_args: list, model):
+        self.cf_args = cf_args
+        self.model = model
 
     @abstractmethod
     def explain(self, model_input):

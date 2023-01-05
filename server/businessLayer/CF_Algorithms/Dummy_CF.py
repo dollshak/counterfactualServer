@@ -2,12 +2,14 @@ from server.businessLayer.ML_Models import MlModel
 from server.businessLayer.Algorithms.Algorithm import Algorithm
 from server.businessLayer.Algorithms.ArgumentDescription import ArgumentDescription
 
-def initAlgo(arg_lst):
-    return Dummy_CF(arg_lst)
+
+def initAlgo(model, arg_lst):
+    return Dummy_CF(arg_lst, model=model)
+
 
 class Dummy_CF(Algorithm):
-    def __init__(self, name, args_desc: list[ArgumentDescription], model: MlModel):
-        super().__init__(name, args_desc, model)
+    def __init__(self, arg_lst: list, model: MlModel):
+        super().__init__(arg_lst, model)
 
     def explain(self, model_input):
         # total

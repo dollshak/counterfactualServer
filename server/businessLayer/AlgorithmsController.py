@@ -1,15 +1,18 @@
 from server.DataLayer.AlgorithmLoader import AlgorithmLoader
+from server.businessLayer.AlgorithmManager import AlgorithmManager
 from server.businessLayer.Algorithms.Algorithm import Algorithm
 from server.Tools.SystemConfig import SystemConfig
+from server.businessLayer.Algorithms.CounterFactualAlgorithmDescription import CounterFactualAlgorithmDescription
 from server.businessLayer.Engine.EnginePY import EnginePY
 from server.Tools.Logger import Logger
 
 
 class AlgorithmsController:
-    def __init__(self,config:SystemConfig):
+    def __init__(self, config: SystemConfig):
         self.algorithms_lst = list()
         self.engine = EnginePY()
         self.logger = Logger(config)
+        self.algo_manager = AlgorithmManager()
 
     def get_algorithm(self, name):
         raise Exception("Not implemented.")
@@ -17,18 +20,19 @@ class AlgorithmsController:
     def get_all_algorithms(self):
         raise Exception("Not implemented.")
 
-    def add_new_algorithm(self, file , algorithmDTO: Algorithm):
+    def add_new_algorithm(self, file, algorithmDTO: Algorithm):
+        self.algo_manager.create_algorithm(cf_algo: CounterFactualAlgorithmDescription, file_content )
         loader = AlgorithmLoader()
         loader.insert(algorithmDTO)
 
     def remove_algorithm(self, algorithm):
         raise Exception("Not implemented.")
 
-    def run_selected_algorithms(self, filename, model,cf_args,inputs):
+    def run_selected_algorithms(self, filename, model, cf_args, inputs):
         loader = AlgorithmLoader()
         algo = loader.find(filename)
         # TODO save in dir
-        self.engine.run_algorithm(model,filename,cf_args,inputs)
+        self.engine.run_algorithm(model, filename, cf_args, inputs)
 
     def load_algorithms(self):
         raise Exception("Not implemented.")
@@ -36,8 +40,8 @@ class AlgorithmsController:
     def edit_algorithm(self, algorithm):
         raise Exception("Not implemented.")
 
-    def handle_output(self,outputs:list):
+    def handle_output(self, outputs: list):
         raise Exception("Not implemented")
 
-    def handle_input(self,inputs:list):
+    def handle_input(self, inputs: list):
         raise Exception("Not implemented")

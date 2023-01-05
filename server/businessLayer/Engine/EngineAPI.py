@@ -3,7 +3,7 @@ import importlib
 from abc import abstractmethod
 from types import ModuleType
 
-from server.businessLayer.Algorithms.CounterFactualAlgorithm import CounterFactualAlgorithm
+from server.businessLayer.Algorithms.CounterFactualAlgorithmDescription import CounterFactualAlgorithmDescription
 from server.businessLayer.ML_Models.MlModel import MlModel
 
 
