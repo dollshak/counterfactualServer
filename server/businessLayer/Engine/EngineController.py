@@ -16,7 +16,9 @@ class EngineController:
         results = [[] for i in range(len(algo_names))]
         for idx, algo_name in enumerate(algo_names):
             suffix: str = self.get_type_by_name(algo_name)
-            engine: EngineAPI = self.cf_map[suffix](model, algo_name, cf_inputs[idx])
+            engine = EnginePY(model, algo_name, [cf_inputs[idx]])
+            # TODO implement here
+            # engine: EngineAPI = self.cf_map[suffix](model, algo_name, cf_inputs[idx])
             result = engine.run_algorithm(model_input)
             results[idx] = result
         return results

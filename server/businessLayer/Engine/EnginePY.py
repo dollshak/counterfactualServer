@@ -20,7 +20,8 @@ class EnginePY(EngineAPI):
     #     self.algos_path = 'server.businessLayer.CF_Algorithms.'
 
     def run_algorithm(self, model_input: list):
-        module_path = SystemConfig().ALGORITHMS_DIR_PATH_MODULES + self.file_name
+        name, suffix = os.path.splitext(self.file_name)
+        module_path = SystemConfig().ALGORITHMS_DIR_PATH_MODULES + name
         try:
             algo_module: ModuleType = importlib.import_module(module_path)
             cf_algo: CounterFactualAlgorithmDescription = algo_module.initAlgo(self.model, self.cf_params)

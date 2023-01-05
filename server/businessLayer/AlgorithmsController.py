@@ -36,7 +36,7 @@ class AlgorithmsController:
 
     def run_selected_algorithms(self, algo_names: list[str], algo_param_list: list[list], model: MlModel,
                                 model_input: list):
-        self.file_manager.load_algorithms(algo_names)
+        # self.file_manager.load_algorithms(algo_names)
         engine_controller = EngineController()
         return engine_controller.run_algorithms(algo_names, model, model_input, algo_param_list )
 

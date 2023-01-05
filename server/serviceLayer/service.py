@@ -35,14 +35,19 @@ def add_new_algorithm():
     data = request.files["file_content"]
     additional_info = req['additional_info']
     file_content = data.read()
-    return algorithm_service.add_new_algorithm(file_content, file_name, arguments_list,desc,additional_info,
+    return algorithm_service.add_new_algorithm(file_content, file_name, arguments_list, desc, additional_info,
                                                output_exmaples)
     return "ok"
 
 
 @urls_blueprint.route('/runAlgorithm', methods=['POST'])
 def run_algorithms():
-    return algorithm_service.run_algorithms()
+    model = create_dummy_model()
+    req = request.form
+    algo_names = json.loads(req['algo_names'])
+    arg_list = json.loads(req['arg_list'])
+    model_input = json.loads(req['model_input'])
+    return algorithm_service.run_algorithms(algo_names, model, arg_list, model_input)
 
 
 @urls_blueprint.route('/algorithm', methods=['DELETE'])
