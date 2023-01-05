@@ -19,7 +19,7 @@ class Engine:
         module_path = self.algos_path + file_name
         try:
             algo_module: ModuleType = importlib.import_module(module_path)
-            cf_algo: CounterFactualAlgorithm = algo_module.Dummy_CF(cf_name, args_desc, model)
+            cf_algo: CounterFactualAlgorithm = algo_module.init(cf_name, args_desc, model)
         except:
             raise Exception(f'failed to import module {file_name}')
 

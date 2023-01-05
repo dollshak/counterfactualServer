@@ -1,4 +1,7 @@
 from flask import Blueprint
+from flask import request
+
+from server.businessLayer.Logger import Logger
 from server.serviceLayer.algorithmService import AlgorithmService
 import os
 from pymongo import MongoClient
@@ -17,8 +20,10 @@ def func():
 
 @urls_blueprint.route('/algorithm', methods=['POST'])
 def add_new_algorithm():
-    return algorithm_service.add_new_algorithm()
-
+    data = request.files["file"]
+    file_contents = data.read()
+    # return algorithm_service.add_new_algorithm()
+    return "ok"
 @urls_blueprint.route('/runAlgorithm', methods=['POST'])
 def run_algorithms():
     return algorithm_service.run_algorithms()

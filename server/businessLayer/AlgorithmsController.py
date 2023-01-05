@@ -1,3 +1,6 @@
+from server.DataLayer.AlgorithmDto import AlgorithmDto
+from server.DataLayer.AlgorithmLoader import AlgorithmLoader
+from server.businessLayer.Algorithm import Algorithm
 from server.businessLayer.SystemConfig import SystemConfig
 from server.businessLayer.Engine import Engine
 from server.businessLayer.Logger import Logger
@@ -15,14 +18,18 @@ class AlgorithmsController:
     def get_all_algorithms(self):
         raise Exception("Not implemented.")
 
-    def add_new_algorithm(self):
-        raise Exception("Not implemented.")
+    def add_new_algorithm(self, file , algorithmDTO: Algorithm):
+        loader = AlgorithmLoader()
+        loader.insert(algorithmDTO)
 
     def remove_algorithm(self, algorithm):
         raise Exception("Not implemented.")
 
-    def run_selected_algorithms(self):
-        raise Exception("Not implemented.")
+    def run_selected_algorithms(self, filename, model,cf_args,inputs):
+        loader = AlgorithmLoader()
+        algo = loader.find(filename)
+        # TODO save in dir
+        self.engine.run_algorithm(model,filename,cf_args,inputs)
 
     def load_algorithms(self):
         raise Exception("Not implemented.")
