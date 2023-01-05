@@ -39,5 +39,5 @@ from server.Tools.SystemConfig import SystemConfig
 
 class Logger:
 
-    def __init__(self, config: SystemConfig):
+    def __init__(self):
         pass

@@ -11,9 +11,7 @@ class AlgorithmLoader(DataLoader):
 
     def insert(self, object_to_save: AlgorithmDto):
         # TODO validate does not exist in DB
-        file_content = open(object_to_save.file, "r").read()
-        document = {"filename": object_to_save.name, "file": file_content, "args_list": object_to_save.args_lst}
-        self.collection.insert_one(document)
+        self.collection.insert_one(object_to_save)
 
     def find(self, keys):
         result = self.collection.find_one({"file": keys})

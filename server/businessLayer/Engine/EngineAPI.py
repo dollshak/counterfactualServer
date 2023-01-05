@@ -8,36 +8,18 @@ from server.businessLayer.ML_Models.MlModel import MlModel
 
 
 class EngineAPI:
-    def __init__(self):
-        pass
+    def __init__(self, model, file_name, cf_params_list):
+        self.model = model
+        self.file_name = file_name
+        self.cf_params = cf_params_list
 
     @abstractmethod
-    def run_algorithm(self, model: MlModel, algo_name: str, model_input: list, cf_inputs: list):
-        raise Exception("Not implemented.")
-
-    @abstractmethod
-    def run_algorithms(self, model, inputs: list):
+    def run_algorithm(self, model_input: list):
         raise Exception("Not implemented.")
 
     @abstractmethod
     def import_(self):
         raise Exception("Not implemented.")
-
-
-    @abstractmethod
-    def create_exec(self, name):
-        raise Exception("Not implemented.")
-
-
-    @abstractmethod
-    def delete_exec(self, name):
-        raise Exception("Not implemented.")
-
-
-    @abstractmethod
-    def run_exec(self, name):
-        raise Exception("Not implemented.")
-
 
     @abstractmethod
     def run_model(self):
