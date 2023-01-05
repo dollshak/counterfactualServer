@@ -28,8 +28,8 @@ class FileManager:
 
        """
         if not self.is_algo_exist(cf_desc.name):
-            self.content_to_file(file_content, cf_desc.name)
-            self.save_in_db(file_content, cf_desc)
+            decoded = self.content_to_file(file_content, cf_desc.name)
+            self.save_in_db(decoded, cf_desc)
 
     def content_to_file(self, content, file_name):
         """
@@ -38,7 +38,9 @@ class FileManager:
         # TODO create generic implementation for various content types
         full_path = SystemConfig().ALGORITHMS_DIR_PATH + "/" + file_name + ".py"
         with open(full_path, 'w') as f:
-            f.write(content)
+            decoded = content.decode('utf-8')
+            f.write(decoded)
+        return decoded
 
     def save_in_db(self, file_content, cf_desc: CounterFactualAlgorithmDescription):
         loader = AlgorithmLoader()

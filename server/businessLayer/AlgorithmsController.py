@@ -11,9 +11,8 @@ from server.businessLayer.ML_Models.MlModel import MlModel
 
 
 class AlgorithmsController:
-    def __init__(self):
+    def __init__(self, ):
         self.algorithms_lst = list()
-        self.engine = EnginePY()
         self.logger = Logger()
         self.file_manager = FileManager()
 

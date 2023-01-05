@@ -5,16 +5,17 @@ from server.Tools.SystemConfig import SystemConfig
 
 class AlgorithmService:
     def __init__(self):
-        self.algorithms_controller = AlgorithmsController(SystemConfig())
+        self.algorithms_controller = AlgorithmsController()
 
-    def add_new_algorithm(self, filename, file, name, list=[]):
+    def add_new_algorithm(self, file_content, name: str, argument_lst: list[dict], description: str,
+                          additional_info: str,
+                          output_example: list[str]):
         try:
-            algorithm = Algorithm(name, list,filename)
-            self.algorithms_controller.add_new_algorithm(file,algorithm)
+            self.algorithms_controller.add_new_algorithm(file_content, name, argument_lst, description, additional_info,
+                                                         output_example)
             return "ok"
-        except :
+        except:
             return "exception"
-
 
     def run_algorithms(self, algorithm_name, model, arg_list, model_input):
         return self.algorithms_controller.run_selected_algorithms(algorithm_name, model, arg_list, model_input)

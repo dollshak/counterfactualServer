@@ -5,7 +5,7 @@ from server.businessLayer.Algorithms.ArgumentDescription import ArgumentDescript
 class CounterFactualAlgorithmDescription:
     def __init__(self,  name: str, argument_lst: list[ArgumentDescription], description: str,
                  additional_info: str, output_example: list[str]):
-        self.name = nameK
+        self.name = name
         self.argument_lst = argument_lst
         self.description = description
         self.additional_info = additional_info

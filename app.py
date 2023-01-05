@@ -6,10 +6,12 @@ from server.serviceLayer import service
 
 #setup mongodb
 try:
-    uri = SystemConfig().MONGO_URI
-    cluster = MongoClient(uri)
-    print("connected to mongo")
+    # uri = SystemConfig().MONGO_URI
+    # cluster = MongoClient(uri)
+    # SystemConfig().DB_CLUSTER = cluster
     # db = cluster["counterfactual"]
+    # SystemConfig().DB = db
+    print("connected to mongo")
 except:
     print("cannot connect to mongo")
 
