@@ -7,7 +7,6 @@ from server.businessLayer.Algorithms.CounterFactualAlgorithmDescription import C
 from server.businessLayer.Engine.EngineAPI import EngineAPI
 from server.businessLayer.ML_Models.MlModel import MlModel
 
-
 class EnginePY(EngineAPI):
 
     def __init__(self, model, file_name, cf_params_list):
@@ -30,21 +29,3 @@ class EnginePY(EngineAPI):
 
         results = cf_algo.explain(model_input)
         return results
-
-    def run_algorithms(self, model, inputs: list):
-        raise Exception("Not implemented.")
-
-    def import_(self):
-        raise Exception("Not implemented.")
-
-    def create_exec(self, name):
-        raise Exception("Not implemented.")
-
-    def delete_exec(self, name):
-        raise Exception("Not implemented.")
-
-    def run_exec(self, name):
-        raise Exception("Not implemented.")
-
-    def run_model(self):
-        raise Exception("Not implemented.")

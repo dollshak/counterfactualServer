@@ -17,7 +17,7 @@ class AlgorithmsController:
         self.file_manager = FileManager()
 
     def get_algorithm(self, name):
-        raise Exception("Not implemented.")
+        return self.file_manager.load_algorithm(name)
 
     def get_all_algorithms(self):
         raise Exception("Not implemented.")

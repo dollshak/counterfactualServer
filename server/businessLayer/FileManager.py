@@ -48,10 +48,15 @@ class FileManager:
                      cf_desc.argument_lst]
         algo_dto = AlgorithmDto(file_content, cf_desc.name, args_dtos, cf_desc.description, cf_desc.additional_info,
                                 cf_desc.output_example)
+
         loader.insert(algo_dto)
 
     def is_algo_exist(self, name: str):
         return name in os.listdir(SystemConfig().ALGORITHMS_DIR_PATH)
+
+    def load_algorithm(selfself, file_name):
+        result = AlgorithmLoader().find(file_name)
+        return result
 
     def load_algorithms(self, files_names: list[str]):
         """

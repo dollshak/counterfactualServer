@@ -6,8 +6,8 @@ from server.serviceLayer import service
 
 #setup mongodb
 try:
-    # uri = SystemConfig().MONGO_URI
-    # cluster = MongoClient(uri)
+    uri = "mongodb+srv://Shaked:123@counterfactualdb.wejhesh.mongodb.net/?retryWrites=true&w=majority"
+    cluster = MongoClient(uri)
     # SystemConfig().DB_CLUSTER = cluster
     # db = cluster["counterfactual"]
     # SystemConfig().DB = db
@@ -37,8 +37,8 @@ app.config["SECRET_KEY"] = "b294c388c2f58201ec96c43d60861de9ae357445"
 app.register_blueprint(service.urls_blueprint)
 
 if __name__ == "__main__":
-    # app.run(debug=True)
-    # app.run(host='127.0.0.1', port=4000, debug=True)
     app.run()
+    # app.run(host='127.0.0.1', port=4000, debug=True)
+    # app.run()
 
     # print("hi")

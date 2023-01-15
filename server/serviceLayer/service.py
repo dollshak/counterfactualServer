@@ -56,8 +56,9 @@ def remove_algorithm(name):
 
 
 @urls_blueprint.route('/algorithmInfo', methods=['GET'])
-def get_algorithm_info(name):
-    return algorithm_service.get_algorithm_info((name))
+def get_algorithm_info():
+    name = request.args.get('name')
+    return algorithm_service.get_algorithm_info(name)
 
 
 @urls_blueprint.route('/algorithmCode', methods=['GET'])
