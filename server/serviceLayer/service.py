@@ -42,13 +42,15 @@ def add_new_algorithm():
 
 @urls_blueprint.route('/runAlgorithm', methods=['POST'])
 def run_algorithms():
-    model = create_dummy_model()
-    req = request.form
-    algo_names = json.loads(req['algo_names'])
-    arg_list = json.loads(req['arg_list'])
-    model_input = json.loads(req['model_input'])
-    return algorithm_service.run_algorithms(algo_names, model, arg_list, model_input)
-
+    try:
+        model = create_dummy_model()
+        req = request.form
+        algo_names = json.loads(req['algo_names'])
+        arg_list = json.loads(req['arg_list'])
+        model_input = json.loads(req['model_input'])
+        return algorithm_service.run_algorithms(algo_names, model, arg_list, model_input)
+    except:
+        return "unknown model"
 
 @urls_blueprint.route('/algorithm', methods=['DELETE'])
 def remove_algorithm(name):
