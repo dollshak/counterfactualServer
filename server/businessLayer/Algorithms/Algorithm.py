@@ -1,5 +1,4 @@
 from abc import abstractmethod
-
 from server.businessLayer.Algorithms.ArgumentDescription import ArgumentDescription
 
 

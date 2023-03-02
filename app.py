@@ -1,8 +1,10 @@
 from flask import Flask
 from pymongo import MongoClient
+from flask_cors import CORS
 
 from server.Tools.SystemConfig import SystemConfig
 from server.serviceLayer import service
+
 
 #setup mongodb
 try:
@@ -17,6 +19,7 @@ except:
 
 #setup flask
 app = Flask(__name__)
+CORS(app)
 app.config["SECRET_KEY"] = "b294c388c2f58201ec96c43d60861de9ae357445"
 
 # @app.route("/users")

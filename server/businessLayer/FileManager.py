@@ -54,7 +54,7 @@ class FileManager:
     def is_algo_exist(self, name: str):
         return name in os.listdir(SystemConfig().ALGORITHMS_DIR_PATH)
 
-    def load_algorithm(selfself, file_name):
+    def load_algorithm(self, file_name):
         result = AlgorithmLoader().find(file_name)
         return result
 
@@ -73,3 +73,4 @@ class FileManager:
                 CounterFactualAlgorithmDescription(obj.name, args_list, obj.description, obj.additional_info,
                                                    obj.output_example))
         return cf_descs
+

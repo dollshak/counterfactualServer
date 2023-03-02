@@ -21,6 +21,38 @@ def index():
 def func():
     return "try"
 
+@urls_blueprint.route('/algos')
+def algos():
+    algorithmsList = [
+        {
+            "_id": "1",
+            "name": "Dummy_CF",
+            "file_content": "from server.businessLayer...",
+            "description": "dummy",
+            "argument_lst": [
+                {"param_name": "x", "description": "param desc", "accepted_types": "int"},
+                {
+                    "param_name": "y",
+                    "description": "param desc",
+                    "accepted_types": "string",
+                },
+            ],
+            "additional_info": "some info",
+            "output_example": ["6000 -> 1200", "4 -> 40"],
+        },
+        {
+            "_id": "2",
+            "name": "shaked",
+            "file_content": "from server.businessLayer...",
+            "description": "albidesc",
+            "argument_lst": [
+                {"param_name": "x", "description": "param desc", "accepted_types": "int"},
+            ],
+            "additional_info": "some info",
+            "output_example": ["6000 -> 1200", "4 -> 40"],
+        }]
+    return algorithmsList
+
 
 # file_content, name: str, argument_lst: list[dict], description: str,
 #                           additional_info: str,

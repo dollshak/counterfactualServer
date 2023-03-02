@@ -17,7 +17,6 @@ class AlgorithmLoader(DataLoader):
 
     def find(self, algo_name):
         result = self.collection.find_one({"name": algo_name})
-        print ('file_content')
         return result['file_content']
 
     def remove(self, keys):

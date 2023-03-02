@@ -30,7 +30,7 @@ class AlgorithmService:
         raise Exception("Not implemented.")
 
     def get_all_algorithms(self):
-        raise Exception("Not implemented.")
+        return self.algorithms_controller.get_all_algorithms()
 
     def edit_algorithm(self, algorithm):
         raise Exception("Not implemented.")
