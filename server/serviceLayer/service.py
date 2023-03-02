@@ -21,6 +21,13 @@ def index():
 def func():
     return "try"
 
+@urls_blueprint.route('/file', methods=['POST'])
+def files():
+    file = request.files['modelFile']
+    data = file.read()
+    print(data)
+    return "succ"
+
 @urls_blueprint.route('/algos')
 def algos():
     algorithmsList = [
