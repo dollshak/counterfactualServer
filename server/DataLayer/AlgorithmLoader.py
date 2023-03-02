@@ -1,6 +1,5 @@
 from server.DataLayer.AlgorithmDto import AlgorithmDto
 from server.DataLayer.DataLoader import DataLoader
-import json
 
 
 class AlgorithmLoader(DataLoader):
@@ -12,7 +11,14 @@ class AlgorithmLoader(DataLoader):
 
     def insert(self, object_to_save: AlgorithmDto):
         # TODO validate does not exist in DB
-        obj_json = json.dumps(object_to_save, default=lambda x: x.__dict__)
+        obj_json = {
+            "name": object_to_save.name,
+            "file_content": object_to_save.file_content,
+            "description": object_to_save.description,
+            "argument_lst": [],
+            "additional_info": object_to_save.additional_info,
+            "output_example": object_to_save.output_example
+        }
         self.collection.insert_one(obj_json)
 
     def find(self, algo_name):
