@@ -4,7 +4,7 @@ from pymongo import MongoClient
 import tensorflow as tf
 from server.Tools.SystemConfig import SystemConfig
 from server.serviceLayer import service
-from server.businessLayer.CF_Algorithms.Alibi import initAlgo
+from server.businessLayer.CF_Algorithms.alibi import initAlgo
 from sklearn.linear_model import LogisticRegression
 from keras.layers import Conv2D, Dense, Dropout, Flatten, MaxPooling2D, Input
 from keras.models import Model, load_model
@@ -16,7 +16,7 @@ try:
     # SystemConfig().DB_CLUSTER = cluster
     # db = cluster["counterfactual"]
     # SystemConfig().DB = db
-    tf.compat.v1.disable_eager_execution()
+    # tf.compat.v1.disable_eager_execution()
     print("connected to mongo")
     # d = {
     #     'shape': (1,) + (60000, 28, 28, 1)[1:],
