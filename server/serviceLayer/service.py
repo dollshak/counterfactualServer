@@ -67,13 +67,17 @@ def algos():
 @urls_blueprint.route('/algorithm', methods=['POST'])
 def add_new_algorithm():
     req = request.form
+    print(req)
     file_name = req['name']
     arguments_list = json.loads(req['argument_lst'])
+    print(arguments_list)
     desc = req['description']
     output_exmaples = json.loads(req['output_example'])
+    print(output_exmaples)
     data = request.files["file_content"]
     additional_info = req['additional_info']
     file_content = data.read()
+    print(file_content)
     return algorithm_service.add_new_algorithm(file_content, file_name, arguments_list, desc, additional_info,
                                                output_exmaples)
     return "ok"
@@ -83,10 +87,16 @@ def add_new_algorithm():
 def run_algorithms():
     try:
         model = create_dummy_model()
-        req = request.form
-        algo_names = json.loads(req['algo_names'])
-        arg_list = json.loads(req['arg_list'])
-        model_input = json.loads(req['model_input'])
+        # if from postman use the following lines
+        # req = request.form
+        # algo_names = json.loads(req['algo_names'])
+        # arg_list = json.loads(req['arg_list'])
+        # model_input = json.loads(req['model_input'])
+
+        #if from client
+        algo_names = request.json['algo_names']
+        arg_list = request.json['arg_list']
+        model_input = request.json['model_input']
         return algorithm_service.run_algorithms(algo_names, model, arg_list, model_input)
     except:
         return "unknown model"
