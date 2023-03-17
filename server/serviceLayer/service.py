@@ -67,36 +67,43 @@ def algos():
 @urls_blueprint.route('/algorithm', methods=['POST'])
 def add_new_algorithm():
     req = request.form
-    print(req)
     file_name = req['name']
-    arguments_list = json.loads(req['argument_lst'])
-    print(arguments_list)
+    arguments_list = req.get('argument_lst')
+    arguments_list = json.loads(arguments_list)
     desc = req['description']
     output_exmaples = json.loads(req['output_example'])
-    print(output_exmaples)
     data = request.files["file_content"]
     additional_info = req['additional_info']
     file_content = data.read()
-    print(file_content)
     return algorithm_service.add_new_algorithm(file_content, file_name, arguments_list, desc, additional_info,
                                                output_exmaples)
-    return "ok"
 
 
 @urls_blueprint.route('/runAlgorithm', methods=['POST'])
 def run_algorithms():
     try:
         model = create_dummy_model()
-        # if from postman use the following lines
-        # req = request.form
-        # algo_names = json.loads(req['algo_names'])
-        # arg_list = json.loads(req['arg_list'])
-        # model_input = json.loads(req['model_input'])
+        req = request.form
 
-        #if from client
-        algo_names = request.json['algo_names']
-        arg_list = request.json['arg_list']
-        model_input = request.json['model_input']
+        algo_names = req.get('algo_names')
+        if algo_names:
+            algo_names = algo_names.split(',')
+
+        arg_list = req.get('arg_list')
+        if arg_list:
+            arg_list = arg_list.split(',')
+            arg_list = [int(arg) for arg in arg_list]  # TODO support all types
+
+        modelFile = request.files['model_file']
+
+        model_input = request.files['model_input']
+
+        # model_input = request.form.get('model_input')
+        # if model_input:
+        #     model_input = model_input.split(',')
+        #     model_input = [float(input) for input in model_input]
+        #     print(model_input)  # Output: [6000.0, 10000.0, 200000.0]
+
         return algorithm_service.run_algorithms(algo_names, model, arg_list, model_input)
     except:
         return "unknown model"
