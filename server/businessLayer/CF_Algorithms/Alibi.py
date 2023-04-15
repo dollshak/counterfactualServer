@@ -1,17 +1,1 @@
-import tensorflow
-from alibi.explainers import Counterfactual
-
-def initAlgo(model, arg_lst):
-    shape = arg_lst['shape']
-    target_proba = arg_lst['target_proba']
-    tol = arg_lst['tol']  # want counterfactuals with p(class)>0.99
-    target_class = arg_lst['target_class']  # any class other than 7 will do
-    max_iter = arg_lst['max_iter']
-    lam_init = arg_lst['lam_init']
-    max_lam_steps = arg_lst['max_lam_steps']
-    learning_rate_init = arg_lst['learning_rate_init']
-    feature_range = arg_lst['feature_range']
-    return Counterfactual(model, shape=shape, target_proba=target_proba, tol=tol,
-                          target_class=target_class, max_iter=max_iter, lam_init=lam_init,
-                          max_lam_steps=max_lam_steps, learning_rate_init=learning_rate_init,
-                          feature_range=feature_range)
+from Alibi.explainers import Counterfactualfrom server.businessLayer.Algorithms.Algorithm import Algorithmdef initAlgo(model, arg_lst, data=None):    return Alibi_dup(arg_lst, model)class Alibi_dup:    def __init__(self, cf_args: list, model, data=None):        shape = cf_args['shape']        target_proba = cf_args['target_proba']        tol = cf_args['tol']  # want counterfactuals with p(class)>0.99        target_class = cf_args['target_class']  # any class other than 7 will do        max_iter = cf_args['max_iter']        lam_init = cf_args['lam_init']        max_lam_steps = cf_args['max_lam_steps']        learning_rate_init = cf_args['learning_rate_init']        feature_range = cf_args['feature_range']        self.cf = Counterfactual(model, shape=shape, target_proba=target_proba, tol=tol,                                 target_class=target_class, max_iter=max_iter, lam_init=lam_init,                                 max_lam_steps=max_lam_steps, learning_rate_init=learning_rate_init,                                 feature_range=feature_range)    def explain(self, model_input):        return self.cf.explain(model_input)

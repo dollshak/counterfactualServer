@@ -3,7 +3,7 @@ from server.businessLayer.Algorithms.ArgumentDescription import ArgumentDescript
 
 
 class Algorithm:
-    def __init__(self, cf_args: list, model):
+    def __init__(self, cf_args: list, model, data = None):
         self.cf_args = cf_args
         self.model = model
 
