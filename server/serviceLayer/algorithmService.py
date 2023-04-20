@@ -20,16 +20,15 @@ class AlgorithmService:
 
     def run_algorithms(self, algorithms_names, model, arg_list, model_input):
         feature_names, feature_values = InputOutputController().handle_input(model_input)
-        # TODO implement here handle output
         ress = self.algorithms_controller.run_selected_algorithms(algorithms_names, arg_list, model, feature_values, feature_names)
-        output ={}
-        for algo_name ,res in algorithms_names,ress:
-            output[algo_name] = ress[res]
+        output = {}
+        for algo_name, res in zip(algorithms_names, ress):
+            output[algo_name] = res
         input = {}
-        for name,val in zip(feature_names, feature_values):
+        for name, val in zip(feature_names, feature_values):
             input[name] = val
-        dict = {'input': input,'output':output}
-        return ress
+        dict = {'input': input, 'output': output}
+        return dict
 
     def remove_algorithm(self, name):
         raise Exception("Not implemented.")
