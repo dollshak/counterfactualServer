@@ -19,7 +19,7 @@ class AlgorithmService:
             return "exception"
 
     def run_algorithms(self, algorithms_names, model, arg_list, model_input):
-        feature_names, feature_values = InputOutputController().handleInput(model_input)
+        feature_names, feature_values = InputOutputController().handle_input(model_input)
         # TODO implement here handle output
         return self.algorithms_controller.run_selected_algorithms(algorithms_names, arg_list, model, feature_values, feature_names)
 
