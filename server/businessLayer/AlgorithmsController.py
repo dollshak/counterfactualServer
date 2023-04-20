@@ -20,7 +20,7 @@ class AlgorithmsController:
         return self.file_manager.load_algorithm(name)
 
     def get_all_algorithms(self):
-        raise Exception("Not implemented")
+        return self.file_manager.get_all_algorithms()
 
     def add_new_algorithm(self, file_content, name: str, argument_lst: list[dict], description: str,
                           additional_info: str,

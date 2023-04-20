@@ -33,7 +33,7 @@ class FileManager:
 
     def content_to_file(self, content, file_name):
         """
-        recives file string and convert it to a file
+        receives a file string and convert it to a file
         """
         # TODO create generic implementation for various content types
         full_path = SystemConfig().ALGORITHMS_DIR_PATH + "/" + file_name + ".py"
@@ -74,3 +74,11 @@ class FileManager:
                                                    obj.output_example))
         return cf_descs
 
+    def get_all_algorithms(self):
+        algos = AlgorithmLoader().get_all_algorithms()
+        result = []
+        for algo in algos:
+            result.append(
+                {"name": algo['name'], "description": algo['description'], "argument_lst": algo['argument_lst'],
+                 "additional_info": algo['additional_info'], "output_example": algo['output_example']})
+        return result

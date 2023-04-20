@@ -27,3 +27,7 @@ class AlgorithmLoader(DataLoader):
 
     def remove(self, keys):
         super().remove(keys)
+
+    def get_all_algorithms(self):
+        result = self.collection.find({"name": {"$ne": None}})
+        return result
