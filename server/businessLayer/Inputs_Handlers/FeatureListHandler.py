@@ -12,6 +12,6 @@ class FeatureListHandler(InputHandlerAbstract):
         for name, value in model_input.items():
             feature_names.append(name)
             feature_values.append(value)
-
+        return feature_names, feature_values
     def prepare_output(self):
         raise Exception("Not implemented")
