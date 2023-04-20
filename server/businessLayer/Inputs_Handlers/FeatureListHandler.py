@@ -13,5 +13,13 @@ class FeatureListHandler(InputHandlerAbstract):
             feature_names.append(name)
             feature_values.append(value)
         return feature_names, feature_values
-    def prepare_output(self):
-        raise Exception("Not implemented")
+
+    def prepare_output(self,feature_names,feature_values,ress,algorithms_names):
+        output = {}
+        for algo_name, res in zip(algorithms_names, ress):
+            output[algo_name] = res
+        input = {}
+        for name, val in zip(feature_names, feature_values):
+            input[name] = val
+        dict = {'input': input, 'output': output}
+        return dict

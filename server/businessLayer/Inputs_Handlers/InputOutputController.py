@@ -14,3 +14,6 @@ class InputOutputController:
         if handler is None:
             raise Exception('invalid input_type')
         return handler.prepare_input(model_input)
+
+    def handle_output(self,feature_names,feature_values,ress,algorithms_names):
+        pass
