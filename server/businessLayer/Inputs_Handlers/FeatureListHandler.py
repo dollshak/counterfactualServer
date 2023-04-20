@@ -1,8 +1,12 @@
-from server.businessLayer.Inputs_Handlers.InputHandler import InputHandler
+from server.businessLayer.Inputs_Handlers.InputHandlerAbstract import InputHandlerAbstract
 
 
-class FeatureListHandler(InputHandler):
-    def prepare_input(self):
+class FeatureListHandler(InputHandlerAbstract):
+
+    def __init__(self):
+        super().__init__("FeatureList")
+
+    def prepare_input(self, model_input):
         raise Exception("Not implemented")
 
     def prepare_output(self):

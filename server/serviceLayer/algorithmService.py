@@ -1,6 +1,7 @@
 from server.businessLayer.Algorithms.Algorithm import Algorithm
 from server.businessLayer.AlgorithmsController import AlgorithmsController
 from server.Tools.SystemConfig import SystemConfig
+from server.businessLayer.Inputs_Handlers.InputOutputController import InputOutputController
 
 
 class AlgorithmService:
@@ -18,7 +19,9 @@ class AlgorithmService:
             return "exception"
 
     def run_algorithms(self, algorithms_names, model, arg_list, model_input):
-        return self.algorithms_controller.run_selected_algorithms(algorithms_names, arg_list, model, model_input)
+        feature_names, feature_values = InputOutputController().handleInput(model_input)
+        # TODO implement here handle output
+        return self.algorithms_controller.run_selected_algorithms(algorithms_names, arg_list, model, feature_values, feature_names)
 
     def remove_algorithm(self, name):
         raise Exception("Not implemented.")
