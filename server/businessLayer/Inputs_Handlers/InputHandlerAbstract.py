@@ -10,7 +10,7 @@ class InputHandlerAbstract:
         """
         pass
 
-    def prepare_output(self,feature_names,feature_values,ress,algorithms_names):
+    def prepare_output(self, feature_names, feature_values, cfs_results, algorithms_names):
         pass
 
     def canHandle(self, input_type):
