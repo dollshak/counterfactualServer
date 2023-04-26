@@ -131,7 +131,17 @@ def get_all_algorithms():
 
 @urls_blueprint.route('/algorithm', methods=['PUT'])
 def edit_algorithm(algorithm):
-    return algorithm_service.edit_algorithm(algorithm)
+    req = request.form
+    file_name = req['name']
+    arguments_list = req.get('argument_lst')
+    arguments_list = json.loads(arguments_list)
+    desc = req['description']
+    output_exmaples = json.loads(req['output_example'])
+    data = request.files["file_content"]
+    additional_info = req['additional_info']
+    file_content = data.read()
+    return algorithm_service.edit_algorithm(file_content, file_name, arguments_list, desc, additional_info,desc,
+                                               output_exmaples)
 
 
 def dummy_predict(x):

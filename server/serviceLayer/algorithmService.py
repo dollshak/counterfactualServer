@@ -26,7 +26,7 @@ class AlgorithmService:
         return dict
 
     def remove_algorithm(self, name):
-        raise Exception("Not implemented.")
+        self.algorithms_controller.remove_algorithm(name)
 
     def get_algorithm_info(self, name):
         return self.algorithms_controller.get_algorithm(name)
@@ -37,5 +37,13 @@ class AlgorithmService:
     def get_all_algorithms(self):
         return self.algorithms_controller.get_all_algorithms()
 
-    def edit_algorithm(self, algorithm):
-        raise Exception("Not implemented.")
+    def edit_algorithm(self, file_content, file_name: str, arguments_list: list[dict], description: str,
+                       additional_info: str,
+                       output_example: list[str]):
+        try:
+            self.algorithms_controller.edit_algorithm(file_content, file_name, arguments_list, description,
+                                                      additional_info,
+                                                      output_example)
+            return "ok"
+        except:
+            return "exception"

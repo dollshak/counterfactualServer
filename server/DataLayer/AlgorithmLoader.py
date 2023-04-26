@@ -26,8 +26,23 @@ class AlgorithmLoader(DataLoader):
         return result['file_content']
 
     def remove(self, keys):
-        super().remove(keys)
+        query = {"name": keys}
+        result = self.collection.delete_one(query)
+        return result
 
     def get_all_algorithms(self):
         result = self.collection.find({"name": {"$ne": None}})
         return result
+
+    def update(self, algo_dto):
+
+        obj_json = {
+            "name": algo_dto.name,
+            "file_content": algo_dto.file_content,
+            "description": algo_dto.description,
+            "argument_lst": [],
+            "additional_info": algo_dto.additional_info,
+            "output_example": algo_dto.output_example
+        }
+        query = {"name":algo_dto.name}
+        self.collection.update_one(query,{"$set": obj_json})

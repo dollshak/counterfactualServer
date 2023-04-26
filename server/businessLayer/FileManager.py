@@ -82,3 +82,23 @@ class FileManager:
                 {"name": algo['name'], "description": algo['description'], "argument_lst": algo['argument_lst'],
                  "additional_info": algo['additional_info'], "output_example": algo['output_example']})
         return result
+
+    def edit_algorithm(self, file_content, cf_desc):
+        if self.is_algo_exist(cf_desc.name):
+            decoded = self.content_to_file(file_content, cf_desc.name)
+            self.updated_in_db(decoded, cf_desc)
+
+    def updated_in_db(self, file_content, cf_desc):
+        loader = AlgorithmLoader()
+        args_dtos = [ArgumentDescriptionDto(arg.param_name, arg.description, arg.accepted_types) for arg in
+                     cf_desc.argument_lst]
+        algo_dto = AlgorithmDto(file_content, cf_desc.name, args_dtos, cf_desc.description, cf_desc.additional_info,
+                                cf_desc.output_example)
+
+        loader.update(algo_dto)
+
+    def remove_algorithm(self,algortihm_name):
+        loader = AlgorithmLoader()
+        if self.is_algo_exist(algortihm_name):
+            return loader.remove(algortihm_name)
+

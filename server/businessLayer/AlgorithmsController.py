@@ -31,8 +31,12 @@ class AlgorithmsController:
         self.file_manager.add_algorithm(file_content, cf_desc)
         self.algorithms_lst.append(cf_desc)
 
-    def remove_algorithm(self, algorithm):
-        raise Exception("Not implemented.")
+    def remove_algorithm(self, algorithm_name):
+        for i in range(len(self.algorithms_lst)):
+            if self.algorithms_lst[i].name == algorithm_name:
+                del self.algorithms_lst[i]
+        self.file_manager.remove_algorithm(algorithm_name)
+
 
     def run_selected_algorithms(self, algo_names: list[str], algo_param_list: list[list], model: MlModel,
                                 model_input: list, feature_names):
@@ -40,8 +44,17 @@ class AlgorithmsController:
         engine_controller = EngineController()
         return engine_controller.run_algorithms(algo_names, model, model_input, algo_param_list )
 
-    def edit_algorithm(self, algorithm):
-        raise Exception("Not implemented.")
+    def edit_algorithm(self, file_content, name: str, argument_lst: list[dict], description: str,
+                          additional_info: str,
+                          output_example: list[str]):
+        # TODO check this method until algorithmLoader
+        args_lst = [ArgumentDescription(param_name=arg['param_name'], description=arg['description'],
+                                        accepted_types=arg['accepted_types']) for arg in argument_lst]
+        cf_desc = CounterFactualAlgorithmDescription(name, args_lst, description, additional_info, output_example)
+        self.file_manager.edit_algorithm(file_content, cf_desc)
+        for alg in self.algorithms_lst:
+            if alg.name == name:
+                alg = cf_desc
 
     def handle_output(self, outputs: list):
         raise Exception("Not implemented")
