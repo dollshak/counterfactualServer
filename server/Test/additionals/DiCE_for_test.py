@@ -25,7 +25,7 @@ class DiCE_for_test:
 
     """
 
-    def __init__(self, cf_args: list, model, data=None):
+    def __init__(self, cf_args, model, data=None):
         # extract arguments
         features = cf_args['features']
         outcome_name = cf_args['outcome_name']
@@ -46,7 +46,7 @@ class DiCE_for_test:
         for index, feature_name in enumerate(self.feature_names):
             data[feature_name] = [model_input[index]]
         df = pd.DataFrame(data=data)
-        if self.model_type is "classifier":
+        if self.model_type == "classifier":
             dice_exp = self.exp.generate_counterfactuals(df, self.total_CFs, self.desired_class)
         else:
             dice_exp = self.exp.generate_counterfactuals(df, self.total_CFs, desired_range=self.desired_range)

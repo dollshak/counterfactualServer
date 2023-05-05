@@ -83,7 +83,6 @@ def add_new_algorithm():
 
 @urls_blueprint.route('/runAlgorithm', methods=['POST'])
 def run_algorithms():
-    # TODO need to remove dummy usage
     try:
         req = request.form
         algo_names = req.get('algo_names')
