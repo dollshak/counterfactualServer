@@ -44,6 +44,14 @@ class TestFileManager(unittest.TestCase):
             self.file_manager.remove_algo(second_algo_name)
             assert True
 
+    def test_unhandled_file_type(self):
+        # TODO implement here and in code
+        assert False
+
+    def test_add_invalid_cf(self):
+        # TODO implement here and in code
+        assert False
+
     def setUp(self) -> None:
         file_name = 'DiCE_for_test'
         self.file_name = file_name

@@ -16,6 +16,10 @@ class TestInputOutputController(unittest.TestCase):
         output = io_controller.handle_output(feature_names, values ,self.cf_results, self.algo_names, 'FeatureList')
         self.assertEqual(output, self.expected_output)
 
+    def test_invalid_data(self):
+        # TODO implement here and in code
+        assert False
+
     def setUp(self) -> None:
         self.input = {
             'name': 'ido',
