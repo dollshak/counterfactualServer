@@ -82,9 +82,7 @@ def add_new_algorithm():
 @urls_blueprint.route('/runAlgorithm', methods=['POST'])
 def run_algorithms():
     try:
-        model = create_dummy_model()
         req = request.form
-
         algo_names = req.get('algo_names')
         if algo_names:
             algo_names = algo_names.split(',')
@@ -104,7 +102,7 @@ def run_algorithms():
         #     model_input = [float(input) for input in model_input]
         #     print(model_input)  # Output: [6000.0, 10000.0, 200000.0]
 
-        return algorithm_service.run_algorithms(algo_names, model, arg_list, model_input)
+        return algorithm_service.run_algorithms(algo_names, modelFile, arg_list, model_input)
     except:
         return "unknown model"
 
