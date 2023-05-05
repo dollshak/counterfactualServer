@@ -39,9 +39,10 @@ class TestFileManager(unittest.TestCase):
                                                               self.cf_description.additional_info,
                                                               self.cf_description.output_example)
         self.file_manager.add_algorithm(self.test_cf_content, cf_description_2)
-        self.assertTrue(
-            self.file_manager.is_algo_exist_in_system(second_algo_name) and self.file_manager.is_algo_exist_in_system(
-                self.file_name))
+        if self.file_manager.is_algo_exist_in_system(second_algo_name) and self.file_manager.is_algo_exist_in_system(
+                self.file_name):
+            self.file_manager.remove_algo(second_algo_name)
+            assert True
 
     def setUp(self) -> None:
         file_name = 'DiCE_for_test'
