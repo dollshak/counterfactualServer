@@ -30,6 +30,8 @@ def files():
 
 @urls_blueprint.route('/algos')
 def algos():
+    # TODO need to implement
+    # need to return values from DB
     algorithmsList = [
         {
             "_id": "1",
@@ -81,6 +83,7 @@ def add_new_algorithm():
 
 @urls_blueprint.route('/runAlgorithm', methods=['POST'])
 def run_algorithms():
+    # TODO need to remove dummy usage
     try:
         model = create_dummy_model()
         req = request.form

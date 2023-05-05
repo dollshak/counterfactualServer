@@ -11,10 +11,10 @@ from server.businessLayer.ML_Models.MlModel import MlModel
 
 
 class AlgorithmsController:
-    def __init__(self, ):
-        self.algorithms_lst = list()
-        self.logger = Logger()
-        self.file_manager = FileManager()
+    def __init__(self, config=SystemConfig()):
+        self.config = config
+        # self.logger = Logger()
+        self.file_manager = FileManager(config)
 
     def get_algorithm(self, name):
         return self.file_manager.load_algorithm(name)
@@ -38,13 +38,8 @@ class AlgorithmsController:
                                 model_input: list, feature_names):
         # self.file_manager.load_algorithms(algo_names)
         engine_controller = EngineController()
-        return engine_controller.run_algorithms(algo_names, model, model_input, algo_param_list )
+        return engine_controller.run_algorithms(algo_names, model, model_input, algo_param_list)
 
     def edit_algorithm(self, algorithm):
+        # TODO implement here
         raise Exception("Not implemented.")
-
-    def handle_output(self, outputs: list):
-        raise Exception("Not implemented")
-
-    def handle_input(self, inputs: list):
-        raise Exception("Not implemented")

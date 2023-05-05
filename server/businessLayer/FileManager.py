@@ -4,16 +4,15 @@ from server.DataLayer.AlgorithmDto import AlgorithmDto
 from server.DataLayer.AlgorithmLoader import AlgorithmLoader
 from server.DataLayer.ArgumentDescriptionDto import ArgumentDescriptionDto
 from server.businessLayer.Algorithms.Algorithm import Algorithm
-from server.Tools.Logger import Logger
+# from server.Tools.Logger import Logger
 from server.Tools.SystemConfig import SystemConfig
 from server.businessLayer.Algorithms.ArgumentDescription import ArgumentDescription
 from server.businessLayer.Algorithms.CounterFactualAlgorithmDescription import CounterFactualAlgorithmDescription
 
 
 class FileManager:
-    def __init__(self):
-        self.config = SystemConfig()
-        self.logger = Logger()
+    def __init__(self, config=SystemConfig()):
+        self.config = config
 
     def add_algorithm(self, file_content, cf_desc: CounterFactualAlgorithmDescription):
         """
@@ -27,20 +26,22 @@ class FileManager:
                 The CF
 
        """
-        if not self.is_algo_exist(cf_desc.name):
+        if not self.is_algo_exist_in_system(cf_desc.name):
             decoded = self.content_to_file(file_content, cf_desc.name)
             self.save_in_db(decoded, cf_desc)
+        else:
+            raise FileExistsError()
 
     def content_to_file(self, content, file_name):
         """
         receives a file string and convert it to a file
         """
         # TODO create generic implementation for various content types
-        full_path = SystemConfig().ALGORITHMS_DIR_PATH + "/" + file_name + ".py"
+        full_path = self.config.ALGORITHMS_DIR_PATH + "/" + file_name + ".py"
         with open(full_path, 'w') as f:
-            decoded = content.decode('utf-8')
-            f.write(decoded)
-        return decoded
+            # content = content.decode('utf-8')
+            f.write(content)
+        return content
 
     def save_in_db(self, file_content, cf_desc: CounterFactualAlgorithmDescription):
         loader = AlgorithmLoader()
@@ -51,8 +52,40 @@ class FileManager:
 
         loader.insert(algo_dto)
 
-    def is_algo_exist(self, name: str):
-        return name in os.listdir(SystemConfig().ALGORITHMS_DIR_PATH)
+    def remove_algo(self, algo_name):
+        if self.is_algo_exist_in_db(algo_name):
+            self.remove_from_db(algo_name)
+        #     TODO use logger
+        if (self.is_algo_exist_in_system(algo_name)):
+            self.remove_algo_system(algo_name)
+        #     TODO use logger here
+        if self.is_algo_exist_in_db(algo_name):
+            return False
+            #     TODO use logger here
+        if self.is_algo_exist_in_system(algo_name):
+            return False
+            #     TODO use logger here
+        return True
+
+    def remove_algo_system(self, algo_name):
+        full_path = self.config.ALGORITHMS_DIR_PATH + "/" + algo_name + ".py"
+        os.remove(full_path)
+
+    def remove_from_db(self, algo_name: str):
+        loader = AlgorithmLoader()
+        loader.remove(algo_name)
+
+    def is_algo_exist_in_system(self, name: str):
+        """
+        :param name: file name without the file type (such as '.py'
+        :return: true if the file is in the algo directory
+        """
+        return name + '.py' in os.listdir(self.config.ALGORITHMS_DIR_PATH)
+
+    def is_algo_exist_in_db(self, name: str):
+        loader = AlgorithmLoader()
+        result = loader.find(name)
+        return result is not None and len(result) > 0
 
     def load_algorithm(self, file_name):
         result = AlgorithmLoader().find(file_name)

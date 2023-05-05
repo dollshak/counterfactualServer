@@ -11,7 +11,7 @@ class PickleModel:
         return model
 
     @staticmethod
-    def to_pickle(model, name="model_packed"):
-        filename = name + ".pkl"
+    def to_pickle(model, name="model_packed", directory='server/businessLayer/ML_Models'):
+        filename = f'{directory}/{name}.pkl'
         with open(filename, 'wb') as file:
             pickle.dump(model, file)

@@ -17,10 +17,3 @@ class EngineAPI:
     def run_algorithm(self, model_input: list):
         raise Exception("Not implemented.")
 
-    @abstractmethod
-    def import_(self):
-        raise Exception("Not implemented.")
-
-    @abstractmethod
-    def run_model(self):
-        raise Exception("Not implemented.")
