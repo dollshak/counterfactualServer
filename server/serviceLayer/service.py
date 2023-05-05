@@ -85,9 +85,7 @@ def add_new_algorithm():
 def run_algorithms():
     # TODO need to remove dummy usage
     try:
-        model = create_dummy_model()
         req = request.form
-
         algo_names = req.get('algo_names')
         if algo_names:
             algo_names = algo_names.split(',')
@@ -107,7 +105,7 @@ def run_algorithms():
         #     model_input = [float(input) for input in model_input]
         #     print(model_input)  # Output: [6000.0, 10000.0, 200000.0]
 
-        return algorithm_service.run_algorithms(algo_names, model, arg_list, model_input)
+        return algorithm_service.run_algorithms(algo_names, modelFile, arg_list, model_input)
     except:
         return "unknown model"
 
@@ -134,7 +132,17 @@ def get_all_algorithms():
 
 @urls_blueprint.route('/algorithm', methods=['PUT'])
 def edit_algorithm(algorithm):
-    return algorithm_service.edit_algorithm(algorithm)
+    req = request.form
+    file_name = req['name']
+    arguments_list = req.get('argument_lst')
+    arguments_list = json.loads(arguments_list)
+    desc = req['description']
+    output_exmaples = json.loads(req['output_example'])
+    data = request.files["file_content"]
+    additional_info = req['additional_info']
+    file_content = data.read()
+    return algorithm_service.edit_algorithm(file_content, file_name, arguments_list, desc, additional_info,desc,
+                                               output_exmaples)
 
 
 def dummy_predict(x):

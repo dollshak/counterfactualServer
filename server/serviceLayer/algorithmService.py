@@ -18,15 +18,16 @@ class AlgorithmService:
         except:
             return "exception"
 
-    def run_algorithms(self, algorithms_names, model, arg_list, model_input):
+    def run_algorithms(self, algorithms_names, modelFile, arg_list, model_input):
         feature_names, feature_values = InputOutputController().handle_input(model_input)
-        ress = self.algorithms_controller.run_selected_algorithms(algorithms_names, arg_list, model, feature_values,
+        # TODO modelFile -> model (with Pickle)
+        ress = self.algorithms_controller.run_selected_algorithms(algorithms_names, arg_list, modelFile, feature_values,
                                                                   feature_names)
         dict = InputOutputController.handle_output(feature_names, feature_values, ress, algorithms_names)
         return dict
 
     def remove_algorithm(self, name):
-        raise Exception("Not implemented.")
+        self.algorithms_controller.remove_algorithm(name)
 
     def get_algorithm_info(self, name):
         return self.algorithms_controller.get_algorithm(name)
@@ -37,5 +38,13 @@ class AlgorithmService:
     def get_all_algorithms(self):
         return self.algorithms_controller.get_all_algorithms()
 
-    def edit_algorithm(self, algorithm):
-        raise Exception("Not implemented.")
+    def edit_algorithm(self, file_content, file_name: str, arguments_list: list[dict], description: str,
+                       additional_info: str,
+                       output_example: list[str]):
+        try:
+            self.algorithms_controller.edit_algorithm(file_content, file_name, arguments_list, description,
+                                                      additional_info,
+                                                      output_example)
+            return "ok"
+        except:
+            return "exception"
