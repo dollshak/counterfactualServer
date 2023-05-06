@@ -6,7 +6,6 @@ from server.businessLayer.Algorithms.Algorithm import Algorithm
 from server.Tools.SystemConfig import SystemConfig
 from server.businessLayer.Algorithms.CounterFactualAlgorithmDescription import CounterFactualAlgorithmDescription
 from server.businessLayer.Engine.EnginePY import EnginePY
-from server.Tools.Logger import Logger
 from server.businessLayer.ML_Models.MlModel import MlModel
 
 
