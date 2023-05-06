@@ -21,6 +21,7 @@ def index():
 def func():
     return "try"
 
+
 @urls_blueprint.route('/file', methods=['POST'])
 def files():
     file = request.files['modelFile']
@@ -28,8 +29,11 @@ def files():
     print(data)
     return "succ"
 
+
 @urls_blueprint.route('/algos')
 def algos():
+    # TODO need to implement
+    # need to return values from DB
     algorithmsList = [
         {
             "_id": "1",
@@ -74,17 +78,17 @@ def add_new_algorithm():
     output_exmaples = json.loads(req['output_example'])
     data = request.files["file_content"]
     additional_info = req['additional_info']
+    algo_type = req.get('type')
+    algo_type = json.loads(algo_type)
     file_content = data.read()
     return algorithm_service.add_new_algorithm(file_content, file_name, arguments_list, desc, additional_info,
-                                               output_exmaples)
+                                               output_exmaples, algo_type)
 
 
 @urls_blueprint.route('/runAlgorithm', methods=['POST'])
 def run_algorithms():
     try:
-        model = create_dummy_model()
         req = request.form
-
         algo_names = req.get('algo_names')
         if algo_names:
             algo_names = algo_names.split(',')
@@ -104,9 +108,10 @@ def run_algorithms():
         #     model_input = [float(input) for input in model_input]
         #     print(model_input)  # Output: [6000.0, 10000.0, 200000.0]
 
-        return algorithm_service.run_algorithms(algo_names, model, arg_list, model_input)
+        return algorithm_service.run_algorithms(algo_names, modelFile, arg_list, model_input)
     except:
         return "unknown model"
+
 
 @urls_blueprint.route('/algorithm', methods=['DELETE'])
 def remove_algorithm(name):
@@ -131,7 +136,19 @@ def get_all_algorithms():
 
 @urls_blueprint.route('/algorithm', methods=['PUT'])
 def edit_algorithm(algorithm):
-    return algorithm_service.edit_algorithm(algorithm)
+    req = request.form
+    file_name = req['name']
+    arguments_list = req.get('argument_lst')
+    arguments_list = json.loads(arguments_list)
+    desc = req['description']
+    output_exmaples = json.loads(req['output_example'])
+    data = request.files["file_content"]
+    additional_info = req['additional_info']
+    file_content = data.read()
+    algo_type = req.get('type')
+    algo_type = json.loads(algo_type)
+    return algorithm_service.edit_algorithm(file_content, file_name, arguments_list, desc, additional_info, desc,
+                                            output_exmaples, algo_type)
 
 
 def dummy_predict(x):
@@ -141,10 +158,3 @@ def dummy_predict(x):
     ratio = (income * 6 + total) / loan
     return min(ratio, 1)
 
-
-def create_dummy_model():
-    # dummy_loan_model = {'fit': lambda income, total, loan: loan < (income * 6 + total)}
-    dummy_loan_model = MlModel()
-    dummy_loan_model.predict = lambda x: dummy_predict(x)
-    return dummy_loan_model
-    # return lambda income, total, loan: loan < (income * 6 + total)

@@ -3,7 +3,7 @@ scikit-learn~=1.2.0
 torch
 torchvision
 alibi~=0.8.0
-
+pandas==2.0.0
 pip~=22.3.1
 attrs~=22.2.0
 wheel~=0.36.2
@@ -18,3 +18,5 @@ pymongo~=4.3.3
 tensorflow~=2.11.0
 matplotlib~=3.6.2
 keras~=2.11.0
+dice_ml
+scipy

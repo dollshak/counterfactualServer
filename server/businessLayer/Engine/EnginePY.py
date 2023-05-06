@@ -21,11 +21,14 @@ class EnginePY(EngineAPI):
     def run_algorithm(self, model_input: list):
         name, suffix = os.path.splitext(self.file_name)
         module_path = SystemConfig().ALGORITHMS_DIR_PATH_MODULES + name
-        try:
-            algo_module: ModuleType = importlib.import_module(module_path)
-            cf_algo: CounterFactualAlgorithmDescription = algo_module.initAlgo(self.model, self.cf_params)
-        except:
-            raise Exception(f'failed to import module {self.file_name}')
-
+        cf_algo = self.import_cf_algo(module_path)
         results = cf_algo.explain(model_input)
         return results
+
+    def import_cf_algo(self, module_path):
+        try:
+            algo_module = importlib.import_module(module_path)
+            cf_algo = algo_module.initAlgo(self.model, self.cf_params)
+        except:
+            raise Exception(f'failed to import module {self.file_name}')
+        return cf_algo

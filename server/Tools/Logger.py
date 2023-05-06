@@ -3,17 +3,16 @@
 # import os
 # from pathlib import Path
 #
-from server.Tools.SystemConfig import SystemConfig
+# from server.Tools.SystemConfig import SystemConfig
 #
 #
 # class Logger:
 #
-#     def __init__(self, config: SystemConfig):
+#     def __init__(self, config: SystemConfig = SystemConfig()):
 #         log_path = self.get_file_path()
-#         format = '%(asctime)s -  %(name)s - %(levelname)s - %(message)s'
-#         formatter = logging.Formatter(format)
-#
-#         logging.basicConfig(filename=log_path, filemode='w', level=config.LOGGER_LEVEL, format=format)
+#         self.format = '%(asctime)s -  %(name)s - %(levelname)s - %(message)s'
+#         formatter = logging.Formatter(self.format)
+#         logging.basicConfig(filename=log_path, filemode='w', level=config.LOGGER_LEVEL, format=self.format)
 #
 #     def get_file_path(self):
 #         cwd = os.getcwd()
@@ -35,9 +34,3 @@ from server.Tools.SystemConfig import SystemConfig
 #
 #     def critical(self, message):
 #         logging.critical(message)
-#
-
-class Logger:
-
-    def __init__(self):
-        pass
