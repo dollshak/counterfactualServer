@@ -30,41 +30,6 @@ def files():
     return "succ"
 
 
-@urls_blueprint.route('/algos')
-def algos():
-    # TODO need to implement
-    # need to return values from DB
-    algorithmsList = [
-        {
-            "_id": "1",
-            "name": "Dummy_CF",
-            "file_content": "from server.businessLayer...",
-            "description": "dummy",
-            "argument_lst": [
-                {"param_name": "x", "description": "param desc", "accepted_types": "int"},
-                {
-                    "param_name": "y",
-                    "description": "param desc",
-                    "accepted_types": "string",
-                },
-            ],
-            "additional_info": "some info",
-            "output_example": ["6000 -> 1200", "4 -> 40"],
-        },
-        {
-            "_id": "2",
-            "name": "shaked",
-            "file_content": "from server.businessLayer...",
-            "description": "albidesc",
-            "argument_lst": [
-                {"param_name": "x", "description": "param desc", "accepted_types": "int"},
-            ],
-            "additional_info": "some info",
-            "output_example": ["6000 -> 1200", "4 -> 40"],
-        }]
-    return algorithmsList
-
-
 # file_content, name: str, argument_lst: list[dict], description: str,
 #                           additional_info: str,
 #                           output_example: list[str]
@@ -89,18 +54,14 @@ def add_new_algorithm():
 def run_algorithms():
     try:
         req = request.form
-        algo_names = req.get('algo_names')
-        if algo_names:
-            algo_names = algo_names.split(',')
+        algo_names = json.loads(req.get('algo_names'))
 
         arg_list = req.get('arg_list')
-        if arg_list:
-            arg_list = arg_list.split(',')
-            arg_list = [int(arg) for arg in arg_list]  # TODO support all types
+        arg_list = json.loads(arg_list)
 
         modelFile = request.files['model_file']
 
-        model_input = request.files['model_input']
+        model_input = json.loads(req.get('model_input'))
 
         # model_input = request.form.get('model_input')
         # if model_input:
@@ -110,6 +71,7 @@ def run_algorithms():
 
         return algorithm_service.run_algorithms(algo_names, modelFile, arg_list, model_input)
     except:
+        # TODO exception should be informative
         return "unknown model"
 
 

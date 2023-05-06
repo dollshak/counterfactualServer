@@ -40,7 +40,8 @@ class FileManager:
         # TODO create generic implementation for various content types
         full_path = self.config.ALGORITHMS_DIR_PATH + "/" + file_name + ".py"
         with open(full_path, 'w') as f:
-            content = content.decode('utf-8')
+            if not isinstance(content, str):
+                content = content.decode('utf-8')
             f.write(content)
         return content
 
@@ -49,7 +50,7 @@ class FileManager:
         args_dtos = [ArgumentDescriptionDto(arg.param_name, arg.description, arg.accepted_types) for arg in
                      cf_desc.argument_lst]
         algo_dto = AlgorithmDto(file_content, cf_desc.name, args_dtos, cf_desc.description, cf_desc.additional_info,
-                                cf_desc.output_example)
+                                cf_desc.output_example, cf_desc.algo_type)
 
         loader.insert(algo_dto)
         print("after insert to db")
@@ -70,6 +71,7 @@ class FileManager:
         return True
 
     def remove_algo_system(self, algo_name):
+        # TODO need to change hard coded .py
         full_path = self.config.ALGORITHMS_DIR_PATH + "/" + algo_name + ".py"
         os.remove(full_path)
 
@@ -82,6 +84,7 @@ class FileManager:
         :param name: file name without the file type (such as '.py'
         :return: true if the file is in the algo directory
         """
+        # TODO need to change hard coded .py
         return name + '.py' in os.listdir(self.config.ALGORITHMS_DIR_PATH)
 
     def is_algo_exist_in_db(self, name: str):
@@ -93,21 +96,24 @@ class FileManager:
         result = AlgorithmLoader().find(file_name)
         return result
 
-    def load_algorithms(self, files_names: list[str]):
+    def load_algorithms(self, algorithms_names: list[str]):
         """
         loads algorithms from DB if needed (not in folder)
-        :param files_names:
+        :param algorithms_names:
         :return:
         """
-        objects_from_db: list[AlgorithmDto] = [AlgorithmLoader().find([name]) for name in files_names]
+        # TODO need to validate that deserialization here works well
+        dto_algos = AlgorithmLoader().find_many(algorithms_names)
+        if dto_algos is None:
+            pass
         cf_descs = []
-        for obj in objects_from_db:
+        for obj in dto_algos:
             self.content_to_file(obj.file_content, obj.name)
-            args_list = [ArgumentDescription(arg.name, arg.description, arg.accepted_types) for arg
+            args_list = [ArgumentDescription(arg.param_name, arg.description, arg.accepted_types) for arg
                          in obj.argument_lst]
             cf_descs.append(
                 CounterFactualAlgorithmDescription(obj.name, args_list, obj.description, obj.additional_info,
-                                                   obj.output_example))
+                                                   obj.output_example,obj.algo_type))
         return cf_descs
 
     def get_all_algorithms(self):
@@ -137,3 +143,20 @@ class FileManager:
         loader = AlgorithmLoader()
         if self.is_algo_exist(algortihm_name):
             return loader.remove(algortihm_name)
+
+    def get_files_names_and_import_from_db(self, algo_names):
+        self.import_missing_algorithms(algo_names)
+        # TODO need to remove hard coded .py
+        return [name + '.py' for name in algo_names]
+
+    def import_missing_algorithms(self, algo_names):
+        missing_algos = []
+        for name in algo_names:
+            # TODO need to change from hard coded .py
+            file_name = name
+            if not self.is_algo_exist_in_system(file_name):
+                missing_algos.append(name)
+        if len(missing_algos) > 0:
+            # TODO add logger -> importing ...
+            self.load_algorithms(missing_algos)
+#         TODO create logger all algorithms imported

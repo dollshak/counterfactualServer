@@ -12,7 +12,7 @@ class CounterFactualAlgorithmDescription:
         self.additional_info = additional_info
         self.output_example = output_example
         # type should be a list contains: "classification" or "regression" or both
-        self.type = algo_type
+        self.algo_type = algo_type
 
     def explain(self, model_input) -> list:
         raise Exception(f'counterfactual algorithm {self.name} does not override explain method')
