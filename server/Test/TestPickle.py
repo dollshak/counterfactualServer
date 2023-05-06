@@ -13,7 +13,7 @@ class TestPickle(unittest.TestCase):
         directory = os.getcwd()
         filename = 'testToPickle'
         self.remove_file_if_exist(directory, filename)
-        PickleModel.to_pickle(self.model, "%s" % filename, directory=directory)
+        PickleModel.to_pickle_file(self.model, "%s" % filename, directory=directory)
         files = os.listdir(directory)
         self.assertIn(('%s.pkl' % filename), files)
         self.remove_file_if_exist(directory, filename)
@@ -22,9 +22,9 @@ class TestPickle(unittest.TestCase):
         directory = os.getcwd()
         filename = 'testToPickle'
         self.remove_file_if_exist(directory, filename)
-        PickleModel.to_pickle(self.model, "%s" % filename, directory=directory)
+        PickleModel.to_pickle_file(self.model, "%s" % filename, directory=directory)
         path = f'{directory}/{filename}.pkl'
-        from_pickle_model = PickleModel.from_pickle(path)
+        from_pickle_model = PickleModel.from_pickle_file(path)
         self.assertEqual(from_pickle_model.score(self.x_text, self.y_test), self.model.score(self.x_text, self.y_test))
         self.remove_file_if_exist(directory, filename)
 

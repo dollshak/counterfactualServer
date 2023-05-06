@@ -2,6 +2,7 @@ from server.businessLayer.Algorithms.Algorithm import Algorithm
 from server.businessLayer.AlgorithmsController import AlgorithmsController
 from server.Tools.SystemConfig import SystemConfig
 from server.businessLayer.Inputs_Handlers.InputOutputController import InputOutputController
+from server.businessLayer.Inputs_Handlers.PickleModel import PickleModel
 
 
 class AlgorithmService:
@@ -18,12 +19,13 @@ class AlgorithmService:
         except:
             return "exception"
 
-    def run_algorithms(self, algorithms_names, modelFile, arg_list, model_input):
+    def run_algorithms(self, algorithms_names, model_content, arg_list, model_input):
         feature_names, feature_values = InputOutputController().handle_input(model_input)
-        # TODO modelFile -> model (with Pickle)
-        ress = self.algorithms_controller.run_selected_algorithms(algorithms_names, arg_list, modelFile, feature_values,
+        PickleModel.from_pickle_content(model_content)
+        ress = self.algorithms_controller.run_selected_algorithms(algorithms_names, arg_list, model_content,
+                                                                  feature_values,
                                                                   feature_names)
-        dict = InputOutputController.handle_output(feature_names, feature_values, ress, algorithms_names)
+        dict = InputOutputController().handle_output(feature_names, feature_values, ress, algorithms_names)
         return dict
 
     def remove_algorithm(self, name):

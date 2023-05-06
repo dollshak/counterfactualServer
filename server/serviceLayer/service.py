@@ -158,10 +158,3 @@ def dummy_predict(x):
     ratio = (income * 6 + total) / loan
     return min(ratio, 1)
 
-
-def create_dummy_model():
-    # dummy_loan_model = {'fit': lambda income, total, loan: loan < (income * 6 + total)}
-    dummy_loan_model = MlModel()
-    dummy_loan_model.predict = lambda x: dummy_predict(x)
-    return dummy_loan_model
-    # return lambda income, total, loan: loan < (income * 6 + total)
