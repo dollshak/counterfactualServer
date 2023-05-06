@@ -10,9 +10,7 @@ class TestEnginePY(unittest.TestCase):
         reg_model = self.model_class.get_regression_model()
         engine = EnginePY(reg_model, "DiCE.py", self.cf_args)
         res = engine.run_algorithm(self.x_test)
-        print(res)
-        # TODO need to implement here
-        assert False
+        self.assertTrue(len(res) > 0 and len(res[0]) > 0)
 
     def test_invalid_model(self):
         # TODO need to implement here
@@ -38,8 +36,12 @@ class TestEnginePY(unittest.TestCase):
         self.cf_args = {"features": {}}
         self.x_test = self.model_class.x_val_clf[0]
 
-        for idx, feature in enumerate(self.model_class.get_feature_names()):
-            self.cf_args['features'][feature] = self.x_test[idx]
+        self.cf_args['features'] = {
+            'income': [2500, 40000],
+            'outcome': [2500, 20000],
+            'total': [10000, 200000],
+            'loan': [25000, 1000000]
+        }
         self.cf_args['outcome_name'] = 'label'
         self.cf_args['total_CFs'] = 4
         self.cf_args['desired_class'] = 2
