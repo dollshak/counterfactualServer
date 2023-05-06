@@ -60,8 +60,8 @@ def run_algorithms():
         arg_list = json.loads(arg_list)
 
         modelFile = request.files['model_file']
-
-        model_input = json.loads(req.get('model_input'))
+        model_input = json.load(request.files['model_input'])
+        # model_input = json.loads(req.get('model_input'))
 
         # model_input = request.form.get('model_input')
         # if model_input:
