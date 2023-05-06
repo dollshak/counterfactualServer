@@ -1,7 +1,7 @@
 from flask import Blueprint
 from flask import request
 import json
-from server.Tools.Logger import Logger
+
 from server.businessLayer.ML_Models.MlModel import MlModel
 from server.serviceLayer.algorithmService import AlgorithmService
 import os
@@ -129,7 +129,7 @@ def get_algorithm_code(name):
     return algorithm_service.get_algorithm_code(name)
 
 
-@urls_blueprint.route('/algorithm', methods=['GET'])
+@urls_blueprint.route('/getAllAlgorithms', methods=['GET'])
 def get_all_algorithms():
     return algorithm_service.get_all_algorithms()
 

@@ -1,9 +1,13 @@
+import json
+
 from server.DataLayer.AlgorithmDto import AlgorithmDto
 import pymongo
 from pymongo import MongoClient
 
 # from server.Tools.Logger import Logger
 from server.Tools.SystemConfig import SystemConfig
+from server.DataLayer.ArgumentDescriptionDto import ArgumentDescriptionDto
+
 
 
 class AlgorithmLoader:
@@ -17,11 +21,12 @@ class AlgorithmLoader:
 
     def insert(self, object_to_save: AlgorithmDto):
         # TODO validate does not exist in DB
+        serializedArgumentList = [arg.serialize() for arg in object_to_save.argument_lst]
         obj_json = {
             "name": object_to_save.name,
             "file_content": object_to_save.file_content,
             "description": object_to_save.description,
-            "argument_lst": [],
+            "argument_lst": json.dumps(serializedArgumentList),
             "additional_info": object_to_save.additional_info,
             "output_example": object_to_save.output_example
         }

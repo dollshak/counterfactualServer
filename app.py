@@ -7,7 +7,7 @@ from server.serviceLayer import service
 from sklearn.linear_model import LogisticRegression
 from keras.layers import Conv2D, Dense, Dropout, Flatten, MaxPooling2D, Input
 from keras.models import Model, load_model
-# from flask_cors import CORS
+from flask_cors import CORS
 
 # setup mongodb
 try:
@@ -58,7 +58,7 @@ except Exception as e:
 
 # setup flask
 app = Flask(__name__)
-# CORS(app)
+CORS(app)
 app.config["SECRET_KEY"] = "b294c388c2f58201ec96c43d60861de9ae357445"
 
 # @app.route("/users")

@@ -8,7 +8,7 @@ from server.businessLayer.Engine.EnginePY import EnginePY
 class TestEnginePY(unittest.TestCase):
     def test_valid_inputs(self):
         reg_model = self.model_class.get_regression_model()
-        engine = EnginePY(reg_model, "DiCE.py", self.cf_args)
+        engine = EnginePY(reg_model, "DiCE_for_test.py", self.cf_args)
         res = engine.run_algorithm(self.x_test)
         self.assertTrue(len(res) > 0 and len(res[0]) > 0)
 

@@ -26,15 +26,11 @@ class AlgorithmsController:
                           output_example: list[str],
                           type: list[str]):
         args_lst = [ArgumentDescription(param_name=arg['param_name'], description=arg['description'],
-                                        accepted_types=arg['accepted_types'], default_value=arg['default_value'] ) for arg in argument_lst]
+                                        accepted_types=arg['accepted_types'] ) for arg in argument_lst]
         cf_desc = CounterFactualAlgorithmDescription(name, args_lst, description, additional_info, output_example, type)
         self.file_manager.add_algorithm(file_content, cf_desc)
-        self.algorithms_lst.append(cf_desc)
 
     def remove_algorithm(self, algorithm_name):
-        for i in range(len(self.algorithms_lst)):
-            if self.algorithms_lst[i].name == algorithm_name:
-                del self.algorithms_lst[i]
         self.file_manager.remove_algorithm(algorithm_name)
 
     def run_selected_algorithms(self, algo_names: list[str], algo_param_list: list[list], model: MlModel,
@@ -49,10 +45,7 @@ class AlgorithmsController:
                        algo_type):
         # TODO check this method until algorithmLoader
         args_lst = [ArgumentDescription(param_name=arg['param_name'], description=arg['description'],
-                                        accepted_types=arg['accepted_types'], default_value = arg['default_value']) for arg in argument_lst]
+                                        accepted_types=arg['accepted_types']) for arg in argument_lst]
         cf_desc = CounterFactualAlgorithmDescription(name, args_lst, description, additional_info, output_example,
                                                      algo_type)
         self.file_manager.edit_algorithm(file_content, cf_desc)
-        for alg in self.algorithms_lst:
-            if alg.name == name:
-                alg = cf_desc
