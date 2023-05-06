@@ -101,7 +101,8 @@ class FileManager:
         cf_descs = []
         for obj in objects_from_db:
             self.content_to_file(obj.file_content, obj.name)
-            args_list = [ArgumentDescription(arg.name, arg.description, arg.accepted_types) for arg in obj.argument_lst]
+            args_list = [ArgumentDescription(arg.name, arg.description, arg.accepted_types, arg.default_value) for arg
+                         in obj.argument_lst]
             cf_descs.append(
                 CounterFactualAlgorithmDescription(obj.name, args_list, obj.description, obj.additional_info,
                                                    obj.output_example))
@@ -130,8 +131,7 @@ class FileManager:
 
         loader.update(algo_dto)
 
-    def remove_algorithm(self,algortihm_name):
+    def remove_algorithm(self, algortihm_name):
         loader = AlgorithmLoader()
         if self.is_algo_exist(algortihm_name):
             return loader.remove(algortihm_name)
-

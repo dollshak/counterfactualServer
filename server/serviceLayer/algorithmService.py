@@ -10,10 +10,10 @@ class AlgorithmService:
 
     def add_new_algorithm(self, file_content, name: str, argument_lst: list[dict], description: str,
                           additional_info: str,
-                          output_example: list[str]):
+                          output_example: list[str], algo_type: list[str]):
         try:
             self.algorithms_controller.add_new_algorithm(file_content, name, argument_lst, description, additional_info,
-                                                         output_example)
+                                                         output_example, algo_type)
             return "ok"
         except:
             return "exception"
@@ -40,11 +40,13 @@ class AlgorithmService:
 
     def edit_algorithm(self, file_content, file_name: str, arguments_list: list[dict], description: str,
                        additional_info: str,
-                       output_example: list[str]):
+                       output_example: list[str],
+                       algo_type):
         try:
             self.algorithms_controller.edit_algorithm(file_content, file_name, arguments_list, description,
                                                       additional_info,
-                                                      output_example)
+                                                      output_example,
+                                                      algo_type)
             return "ok"
         except:
             return "exception"

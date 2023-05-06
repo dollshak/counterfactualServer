@@ -23,10 +23,11 @@ class AlgorithmsController:
 
     def add_new_algorithm(self, file_content, name: str, argument_lst: list[dict], description: str,
                           additional_info: str,
-                          output_example: list[str]):
+                          output_example: list[str],
+                          type: list[str]):
         args_lst = [ArgumentDescription(param_name=arg['param_name'], description=arg['description'],
-                                        accepted_types=arg['accepted_types']) for arg in argument_lst]
-        cf_desc = CounterFactualAlgorithmDescription(name, args_lst, description, additional_info, output_example)
+                                        accepted_types=arg['accepted_types'], default_value=arg['default_value'] ) for arg in argument_lst]
+        cf_desc = CounterFactualAlgorithmDescription(name, args_lst, description, additional_info, output_example, type)
         self.file_manager.add_algorithm(file_content, cf_desc)
         self.algorithms_lst.append(cf_desc)
 
@@ -36,7 +37,6 @@ class AlgorithmsController:
                 del self.algorithms_lst[i]
         self.file_manager.remove_algorithm(algorithm_name)
 
-
     def run_selected_algorithms(self, algo_names: list[str], algo_param_list: list[list], model: MlModel,
                                 model_input: list, feature_names):
         # self.file_manager.load_algorithms(algo_names)
@@ -44,12 +44,14 @@ class AlgorithmsController:
         return engine_controller.run_algorithms(algo_names, model, model_input, algo_param_list)
 
     def edit_algorithm(self, file_content, name: str, argument_lst: list[dict], description: str,
-                          additional_info: str,
-                          output_example: list[str]):
+                       additional_info: str,
+                       output_example: list[str],
+                       algo_type):
         # TODO check this method until algorithmLoader
         args_lst = [ArgumentDescription(param_name=arg['param_name'], description=arg['description'],
-                                        accepted_types=arg['accepted_types']) for arg in argument_lst]
-        cf_desc = CounterFactualAlgorithmDescription(name, args_lst, description, additional_info, output_example)
+                                        accepted_types=arg['accepted_types'], default_value = arg['default_value']) for arg in argument_lst]
+        cf_desc = CounterFactualAlgorithmDescription(name, args_lst, description, additional_info, output_example,
+                                                     algo_type)
         self.file_manager.edit_algorithm(file_content, cf_desc)
         for alg in self.algorithms_lst:
             if alg.name == name:

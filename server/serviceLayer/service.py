@@ -21,12 +21,14 @@ def index():
 def func():
     return "try"
 
+
 @urls_blueprint.route('/file', methods=['POST'])
 def files():
     file = request.files['modelFile']
     data = file.read()
     print(data)
     return "succ"
+
 
 @urls_blueprint.route('/algos')
 def algos():
@@ -76,9 +78,11 @@ def add_new_algorithm():
     output_exmaples = json.loads(req['output_example'])
     data = request.files["file_content"]
     additional_info = req['additional_info']
+    algo_type = req.get('type')
+    algo_type = json.loads(algo_type)
     file_content = data.read()
     return algorithm_service.add_new_algorithm(file_content, file_name, arguments_list, desc, additional_info,
-                                               output_exmaples)
+                                               output_exmaples, algo_type)
 
 
 @urls_blueprint.route('/runAlgorithm', methods=['POST'])
@@ -107,6 +111,7 @@ def run_algorithms():
         return algorithm_service.run_algorithms(algo_names, modelFile, arg_list, model_input)
     except:
         return "unknown model"
+
 
 @urls_blueprint.route('/algorithm', methods=['DELETE'])
 def remove_algorithm(name):
@@ -140,8 +145,10 @@ def edit_algorithm(algorithm):
     data = request.files["file_content"]
     additional_info = req['additional_info']
     file_content = data.read()
-    return algorithm_service.edit_algorithm(file_content, file_name, arguments_list, desc, additional_info,desc,
-                                               output_exmaples)
+    algo_type = req.get('type')
+    algo_type = json.loads(algo_type)
+    return algorithm_service.edit_algorithm(file_content, file_name, arguments_list, desc, additional_info, desc,
+                                            output_exmaples, algo_type)
 
 
 def dummy_predict(x):
