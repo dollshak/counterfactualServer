@@ -108,12 +108,12 @@ class FileManager:
             pass
         cf_descs = []
         for obj in dto_algos:
-            self.content_to_file(obj.file_content, obj.name)
+            self.content_to_file(obj.file_content, obj.param_name)
             args_list = [ArgumentDescription(arg.param_name, arg.description, arg.accepted_types) for arg
                          in obj.argument_lst]
             cf_descs.append(
-                CounterFactualAlgorithmDescription(obj.name, args_list, obj.description, obj.additional_info,
-                                                   obj.output_example,obj.algo_type))
+                CounterFactualAlgorithmDescription(obj.param_name, args_list, obj.description, obj.additional_info,
+                                                   obj.output_example, obj.algo_type))
         return cf_descs
 
     def get_all_algorithms(self):
@@ -126,16 +126,16 @@ class FileManager:
         return result
 
     def edit_algorithm(self, file_content, cf_desc):
-        if self.is_algo_exist(cf_desc.name):
-            decoded = self.content_to_file(file_content, cf_desc.name)
+        if self.is_algo_exist(cf_desc.param_name):
+            decoded = self.content_to_file(file_content, cf_desc.param_name)
             self.updated_in_db(decoded, cf_desc)
 
     def updated_in_db(self, file_content, cf_desc):
         loader = AlgorithmLoader()
         args_dtos = [ArgumentDescriptionDto(arg.param_name, arg.description, arg.accepted_types) for arg in
                      cf_desc.argument_lst]
-        algo_dto = AlgorithmDto(file_content, cf_desc.name, args_dtos, cf_desc.description, cf_desc.additional_info,
-                                cf_desc.output_example)
+        algo_dto = AlgorithmDto(file_content, cf_desc.param_name, args_dtos, cf_desc.description, cf_desc.additional_info,
+                                cf_desc.output_example,cf_desc.param_name)
 
         loader.update(algo_dto)
 

@@ -22,7 +22,7 @@ class AlgorithmLoader:
         # TODO validate does not exist in DB
         serializedArgumentList = [arg.serialize() for arg in object_to_save.argument_lst]
         obj_json = {
-            "name": object_to_save.name,
+            "param_name": object_to_save.param_name,
             "file_content": object_to_save.file_content,
             "description": object_to_save.description,
             "argument_lst": json.dumps(serializedArgumentList),
@@ -71,12 +71,12 @@ class AlgorithmLoader:
     def update(self, algo_dto):
 
         obj_json = {
-            "name": algo_dto.name,
+            "param_name": algo_dto.param_name,
             "file_content": algo_dto.file_content,
             "description": algo_dto.description,
             "argument_lst": [],
             "additional_info": algo_dto.additional_info,
             "output_example": algo_dto.output_example
         }
-        query = {"name": algo_dto.name}
+        query = {"name": algo_dto.param_name}
         self.collection.update_one(query, {"$set": obj_json})

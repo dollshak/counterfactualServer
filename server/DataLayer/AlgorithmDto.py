@@ -1,10 +1,10 @@
 from server.DataLayer.ArgumentDescriptionDto import ArgumentDescriptionDto
 
 class AlgorithmDto:
-    def __init__(self, file_content,  name: str, argument_lst: list[ArgumentDescriptionDto], description: str,
+    def __init__(self, file_content, param_name: str, argument_lst: list[ArgumentDescriptionDto], description: str,
                  additional_info: str, output_example: list[str], algo_type):
         self.file_content = file_content
-        self.name = name
+        self.param_name = param_name
         self.argument_lst = argument_lst
         self.description = description
         self.additional_info = additional_info
