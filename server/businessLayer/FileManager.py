@@ -11,8 +11,9 @@ from server.businessLayer.Algorithms.CounterFactualAlgorithmDescription import C
 
 logger = Logger()
 
+
 class FileManager:
-    def __init__(self, config=SystemConfig()):
+    def __init__(self, config):
         self.config = config
 
     def add_algorithm(self, file_content, cf_desc: CounterFactualAlgorithmDescription):
@@ -27,13 +28,16 @@ class FileManager:
                 The CF
 
        """
-        if not self.is_algo_exist_in_db(cf_desc.name):
-            decoded = self.content_to_file(file_content, cf_desc.name)
+        algo_name = cf_desc.name
+        if not self.is_algo_exist_in_db(algo_name):
+            if self.is_algo_exist_in_system(algo_name):
+                self.remove_algo_system(algo_name)
+            decoded = self.content_to_file(file_content, algo_name)
             print("before save in db")
             self.save_in_db(decoded, cf_desc)
-            logger.debug(f'Added a new CF algorithm named:{cf_desc.name}.')
+            logger.debug(f'Added a new CF algorithm named:{algo_name}.')
         else:
-            logger.error(f'Tried to add an algorithm named {cf_desc.name} but name is taken.')
+            logger.error(f'Tried to add an algorithm named {algo_name} but name is taken.')
             raise FileExistsError()
 
     def content_to_file(self, content, file_name):
@@ -43,7 +47,8 @@ class FileManager:
         # TODO create generic implementation for various content types
         full_path = self.config.ALGORITHMS_DIR_PATH + "/" + file_name + ".py"
         with open(full_path, 'w') as f:
-            content = content.decode('utf-8')
+            if not isinstance(content, str):
+                content = content.decode('utf-8')
             f.write(content)
         return content
 
@@ -123,8 +128,13 @@ class FileManager:
         algos = AlgorithmLoader().get_all_algorithms()
         result = []
         for algo in algos:
+            if self.is_algo_exist_in_system(algo['name']):
+                algo_name = algo['name']
+                Logger().debug(f'{algo_name} imported from db to system')
+                self.content_to_file(algo['file_content'], algo['name'])
             result.append(
-                {"_id": str(algo['_id']), "name": algo['name'], "description": algo['description'], "argument_lst": json.loads(algo['argument_lst']),
+                {"_id": str(algo['_id']), "name": algo['name'], "description": algo['description'],
+                 "argument_lst": json.loads(algo['argument_lst']),
                  "additional_info": algo['additional_info'], "output_example": algo['output_example']})
         logger.debug(f'Fetched all algorithms from the DB for the users.')
         return result

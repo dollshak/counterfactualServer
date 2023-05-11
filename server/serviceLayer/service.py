@@ -2,13 +2,14 @@ from flask import Blueprint
 from flask import request
 import json
 
+from server.Tools.SystemConfig import SystemConfig
 from server.businessLayer.ML_Models.MlModel import MlModel
 from server.serviceLayer.algorithmService import AlgorithmService
 import os
 from pymongo import MongoClient
 
 urls_blueprint = Blueprint('urls', __name__, )
-algorithm_service = AlgorithmService()
+algorithm_service = AlgorithmService(SystemConfig())
 
 
 @urls_blueprint.route('/')

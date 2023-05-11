@@ -9,8 +9,9 @@ logger = Logger()
 
 
 class AlgorithmService:
-    def __init__(self):
-        self.algorithms_controller = AlgorithmsController()
+    def __init__(self, config):
+        self.config = config
+        self.algorithms_controller = AlgorithmsController(self.config)
 
     def add_new_algorithm(self, file_content, name: str, argument_lst: list[dict], description: str,
                           additional_info: str,

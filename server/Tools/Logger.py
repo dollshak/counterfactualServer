@@ -20,7 +20,8 @@ class Logger:
 
     def get_file_path(self):
         parent_path = self.config.LOGGER_PATH
-        log_path = os.path.join(parent_path, str(datetime.date.today()) + '.log')
+        # log_path = os.path.join(parent_path, str(datetime.date.today()) + '.log')
+        log_path = os.path.join(os.getcwd(), str(datetime.date.today()) + '.log')
         # print(log_path)
         return log_path
 

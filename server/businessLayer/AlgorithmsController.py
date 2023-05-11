@@ -13,7 +13,7 @@ logger = Logger()
 
 
 class AlgorithmsController:
-    def __init__(self, config=SystemConfig()):
+    def __init__(self, config):
         self.config = config
         # self.logger = Logger()
         self.file_manager = FileManager(config)
