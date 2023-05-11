@@ -4,7 +4,7 @@ import os
 from pathlib import Path
 
 from server.Tools.SystemConfig import SystemConfig
-
+import sys
 
 class Logger:
 
@@ -12,8 +12,11 @@ class Logger:
         self.config = config
         log_path = self.get_file_path()
         self.format = '%(asctime)s -  %(name)s - %(levelname)s - %(message)s'
+
         formatter = logging.Formatter(self.format)
-        logging.basicConfig(filename=log_path, filemode='w', level=config.LOGGER_LEVEL, format=self.format)
+
+        logging.basicConfig( level=config.LOGGER_LEVEL, format=self.format,
+                            handlers=[logging.StreamHandler(stream=sys.stdout), logging.FileHandler(log_path, mode='w')])
 
     def get_file_path(self):
         parent_path = self.config.LOGGER_PATH

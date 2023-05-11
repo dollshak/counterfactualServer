@@ -52,6 +52,33 @@ def add_new_algorithm():
 
 @urls_blueprint.route('/runAlgorithm', methods=['POST'])
 def run_algorithms():
+    """
+    request should be as following ::
+        {
+            "algo_names":   ["algo_1","algo_2"],\n
+            "arg_list": {
+                            "algo_1":{
+                                        "param1": value,\n
+                                        "param2":value2
+                            },
+                            "algo_2":{
+                                        "param1_algo2" : 1,\n
+                                        "param2_algo2" : 1
+                            }
+            },\n
+            "model_file": <model_code_file>,\n
+            "model_input" : <json file> as following :{
+                                                            "income" : 9562,\n
+                                                            "outcome": 5060,\n
+                                                            "total":  81991,\n
+                                                            "loan":  374286
+            }
+
+
+        }
+
+    :return:
+    """
     try:
         req = request.form
         algo_names = json.loads(req.get('algo_names'))
@@ -60,14 +87,6 @@ def run_algorithms():
 
         modelFile = request.files['model_file']
         model_input = json.load(request.files['model_input'])
-        # model_input = json.loads(req.get('model_input'))
-
-        # model_input = request.form.get('model_input')
-        # if model_input:
-        #     model_input = model_input.split(',')
-        #     model_input = [float(input) for input in model_input]
-        #     print(model_input)  # Output: [6000.0, 10000.0, 200000.0]
-
         return algorithm_service.run_algorithms(algo_names, modelFile, arg_list, model_input)
     except:
         # TODO exception should be informative

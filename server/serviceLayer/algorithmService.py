@@ -29,6 +29,7 @@ class AlgorithmService:
         ress = self.algorithms_controller.run_selected_algorithms(algorithms_names, arg_list, model,
                                                                   feature_values,
                                                                   feature_names)
+        logger.debug("handling outputs")
         dict = InputOutputController().handle_output(feature_names, feature_values, ress, algorithms_names)
         return dict
 

@@ -41,6 +41,7 @@ class AlgorithmsController:
                                 model_input: list, feature_names):
         # self.file_manager.load_algorithms(algo_names)
         engine_controller = EngineController()
+        Logger().debug("importing file names from db")
         algo_names = self.file_manager.get_files_names_and_import_from_db(algo_names)
         return engine_controller.run_algorithms(algo_names, model, model_input, algo_param_list)
 

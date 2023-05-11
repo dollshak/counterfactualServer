@@ -17,8 +17,9 @@ class EngineController:
         # init result array for each cf
         results = [[] for i in range(len(algo_names))]
         # for each cf
-        logger.debug(f'Starting to run algorithms.')
+        logger.debug(f'Starting run algorithms.')
         for idx, algo_name in enumerate(algo_names):
+            logger.debug(f'running {algo_name}')
             name, suffix = os.path.splitext(algo_name)
             inputs = cf_inputs[name]
             result = self.get_cf_results(algo_name, inputs, model, model_input)
