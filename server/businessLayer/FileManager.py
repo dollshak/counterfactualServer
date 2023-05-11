@@ -128,7 +128,7 @@ class FileManager:
         algos = AlgorithmLoader().get_all_algorithms()
         result = []
         for algo in algos:
-            if self.is_algo_exist_in_system(algo['name']):
+            if not self.is_algo_exist_in_system(algo['name']):
                 algo_name = algo['name']
                 Logger().debug(f'{algo_name} imported from db to system')
                 self.content_to_file(algo['file_content'], algo['name'])
