@@ -15,7 +15,8 @@ class EngineController:
         results = [[] for i in range(len(algo_names))]
         # for each cf
         for idx, algo_name in enumerate(algo_names):
-            inputs = cf_inputs[idx]
+            name, suffix = os.path.splitext(algo_name)
+            inputs = cf_inputs[name]
             result = self.get_cf_results(algo_name, inputs, model, model_input)
             results[idx] = result
         return results

@@ -55,7 +55,6 @@ def run_algorithms():
     try:
         req = request.form
         algo_names = json.loads(req.get('algo_names'))
-
         arg_list = req.get('arg_list')
         arg_list = json.loads(arg_list)
 
