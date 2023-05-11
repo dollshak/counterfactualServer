@@ -2,6 +2,9 @@ import os.path
 
 from server.businessLayer.Engine.EnginePY import EnginePY
 from server.businessLayer.ML_Models.MlModel import MlModel
+from server.Tools.Logger import Logger
+
+logger = Logger()
 
 
 class EngineController:
@@ -14,11 +17,13 @@ class EngineController:
         # init result array for each cf
         results = [[] for i in range(len(algo_names))]
         # for each cf
+        logger.debug(f'Starting to run algorithms.')
         for idx, algo_name in enumerate(algo_names):
             name, suffix = os.path.splitext(algo_name)
             inputs = cf_inputs[name]
             result = self.get_cf_results(algo_name, inputs, model, model_input)
             results[idx] = result
+        logger.debug(f'Finished to run algorithms.')
         return results
 
     def get_cf_results(self, algo_name, cf_inputs, model, model_input):
@@ -26,6 +31,7 @@ class EngineController:
         # TODO implement here -> bring engine by suffix instead of hard coded enginePY -> should create a function
         engine = EnginePY(model, algo_name, cf_inputs)
         result = engine.run_algorithm(model_input)
+        logger.debug(f'Algorithm {algo_name} ran successfully.')
         return result
 
     def get_type_by_name(self, algo_name) -> str:

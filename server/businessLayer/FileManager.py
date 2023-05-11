@@ -4,11 +4,12 @@ from server.DataLayer.AlgorithmDto import AlgorithmDto
 from server.DataLayer.AlgorithmLoader import AlgorithmLoader
 from server.DataLayer.ArgumentDescriptionDto import ArgumentDescriptionDto
 from server.businessLayer.Algorithms.Algorithm import Algorithm
-# from server.Tools.Logger import Logger
+from server.Tools.Logger import Logger
 from server.Tools.SystemConfig import SystemConfig
 from server.businessLayer.Algorithms.ArgumentDescription import ArgumentDescription
 from server.businessLayer.Algorithms.CounterFactualAlgorithmDescription import CounterFactualAlgorithmDescription
 
+logger = Logger()
 
 class FileManager:
     def __init__(self, config=SystemConfig()):
@@ -30,7 +31,9 @@ class FileManager:
             decoded = self.content_to_file(file_content, cf_desc.name)
             print("before save in db")
             self.save_in_db(decoded, cf_desc)
+            logger.debug(f'Added a new CF algorithm named:{cf_desc.name}.')
         else:
+            logger.error(f'Tried to add an algorithm named {cf_desc.name} but name is taken.')
             raise FileExistsError()
 
     def content_to_file(self, content, file_name):
@@ -40,8 +43,7 @@ class FileManager:
         # TODO create generic implementation for various content types
         full_path = self.config.ALGORITHMS_DIR_PATH + "/" + file_name + ".py"
         with open(full_path, 'w') as f:
-            if not isinstance(content, str):
-                content = content.decode('utf-8')
+            content = content.decode('utf-8')
             f.write(content)
         return content
 
@@ -58,16 +60,16 @@ class FileManager:
     def remove_algo(self, algo_name):
         if self.is_algo_exist_in_db(algo_name):
             self.remove_from_db(algo_name)
-        #     TODO use logger
-        if (self.is_algo_exist_in_system(algo_name)):
-            self.remove_algo_system(algo_name)
-        #     TODO use logger here
-        if self.is_algo_exist_in_db(algo_name):
-            return False
-            #     TODO use logger here
+            logger.debug(f'The algorithm {algo_name} has been removed from the DB')
         if self.is_algo_exist_in_system(algo_name):
+            self.remove_algo_system(algo_name)
+            logger.debug(f'The algorithm {algo_name} has been removed from the system')
+        if self.is_algo_exist_in_db(algo_name):
+            logger.error(f'Tried to remove the algorithm:{algo_name} but it is still in the DB')
             return False
-            #     TODO use logger here
+        if self.is_algo_exist_in_system(algo_name):
+            logger.error(f'Tried to remove the algorithm:{algo_name} but it is still in the system')
+            return False
         return True
 
     def remove_algo_system(self, algo_name):
@@ -114,6 +116,7 @@ class FileManager:
             cf_descs.append(
                 CounterFactualAlgorithmDescription(obj.name, args_list, obj.description, obj.additional_info,
                                                    obj.output_example, obj.algo_type))
+        logger.debug(f'Loaded the {obj.name} algorithm from the DB.')
         return cf_descs
 
     def get_all_algorithms(self):
@@ -123,16 +126,18 @@ class FileManager:
             result.append(
                 {"_id": str(algo['_id']), "name": algo['name'], "description": algo['description'], "argument_lst": json.loads(algo['argument_lst']),
                  "additional_info": algo['additional_info'], "output_example": algo['output_example']})
+        logger.debug(f'Fetched all algorithms from the DB for the users.')
         return result
 
     def edit_algorithm(self, file_content, cf_desc):
-        if self.is_algo_exist(cf_desc.name):
+        if self.is_algo_exist_in_db(cf_desc.name):
             decoded = self.content_to_file(file_content, cf_desc.name)
             self.updated_in_db(decoded, cf_desc)
+            logger.debug(f'Algorithm {cf_desc.name} has been edited successfully in the DB')
 
     def updated_in_db(self, file_content, cf_desc):
         loader = AlgorithmLoader()
-        args_dtos = [ArgumentDescriptionDto(arg.name, arg.description, arg.accepted_types) for arg in
+        args_dtos = [ArgumentDescriptionDto(arg.param_name, arg.description, arg.accepted_types) for arg in
                      cf_desc.argument_lst]
         algo_dto = AlgorithmDto(file_content, cf_desc.name, args_dtos, cf_desc.description, cf_desc.additional_info,
                                 cf_desc.output_example, cf_desc.name)
@@ -141,7 +146,7 @@ class FileManager:
 
     def remove_algorithm(self, algortihm_name):
         loader = AlgorithmLoader()
-        if self.is_algo_exist(algortihm_name):
+        if self.is_algo_exist_in_db(algortihm_name):
             return loader.remove(algortihm_name)
 
     def get_files_names_and_import_from_db(self, algo_names):

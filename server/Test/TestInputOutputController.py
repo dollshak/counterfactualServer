@@ -5,6 +5,7 @@ from server.businessLayer.Inputs_Handlers.InputOutputController import InputOutp
 
 class TestInputOutputController(unittest.TestCase):
     def test_handle_input_feature_list(self):
+        # TODO to fix -> inputs from client changed
         io_controller = InputOutputController()
         feature_names, values = io_controller.handle_input(self.input)
         self.assertEqual(feature_names, ['name', 'age', 'height', 'living area'])
@@ -16,8 +17,13 @@ class TestInputOutputController(unittest.TestCase):
         output = io_controller.handle_output(feature_names, values ,self.cf_results, self.algo_names, 'FeatureList')
         self.assertEqual(output, self.expected_output)
 
-    def test_invalid_data(self):
+    def test_invalid_data_shape(self):
         # TODO implement here and in code
+        assert False
+
+    def test_no_output(self):
+        # TODO implement here and in code
+        # return same output but with empty result list
         assert False
 
     def setUp(self) -> None:

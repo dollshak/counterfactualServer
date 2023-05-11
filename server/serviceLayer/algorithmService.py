@@ -3,6 +3,9 @@ from server.businessLayer.AlgorithmsController import AlgorithmsController
 from server.Tools.SystemConfig import SystemConfig
 from server.businessLayer.Inputs_Handlers.InputOutputController import InputOutputController
 from server.businessLayer.Inputs_Handlers.PickleModel import PickleModel
+from server.Tools.Logger import Logger
+
+logger = Logger()
 
 
 class AlgorithmService:
@@ -17,6 +20,7 @@ class AlgorithmService:
                                                          output_example, algo_type)
             return "ok"
         except:
+            logger.error(f'Adding a new algorithm has failed.')  # TODO fix the except and add the message to the log
             return "exception"
 
     def run_algorithms(self, algorithms_names, model_content, arg_list, model_input):
@@ -51,4 +55,5 @@ class AlgorithmService:
                                                       algo_type)
             return "ok"
         except:
+            logger.error(f'Editing an algorithm has failed.')  # TODO fix the except and add the message to the log
             return "exception"

@@ -13,23 +13,32 @@ class TestEnginePY(unittest.TestCase):
         self.assertTrue(len(res) > 0 and len(res[0]) > 0)
 
     def test_invalid_model(self):
-        # TODO need to implement here
+        # TODO -> create a not runnig model -> validate we check it before we run algorithms,
+        # validate proper message to user
         assert False
 
     def test_unexisting_cf(self):
-        # TODO need to implement here
+        # TODO try to run a model with a model name that does not exist
         assert False
 
     def test_invalid_cf_inputs(self):
-        # TODO need to implement here
+        # TODO create invalid inputs for one of the cf algorithms, validate proper message + empty result for the cf.
         assert False
 
     def test_invalid_model_inputs(self):
-        # TODO need to implement here
+        # TODO maybe should be multiple test
+        # create model with certain inputs
+        # change bad inputs:
+        # inputs name changed
+        # one of the inputs are missing
+        # too many feature inputs (even if all required inputs exist)
+
         assert False
 
     def test_incompatible_model_to_cf(self):
-        # TODO need to implement here
+        # TODO create a regression model ( as we already made)
+        # try to run it with incompatible model (like alibi)
+        # validate proper message returned
         assert False
 
     def setUp(self) -> None:

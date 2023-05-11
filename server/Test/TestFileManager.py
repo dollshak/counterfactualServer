@@ -28,6 +28,9 @@ class TestFileManager(unittest.TestCase):
             assert False
 
     def test_get_all_algorithms(self):
+        #         TODO need to fix here -> input changed
+
+
         # create random inorder to promise does not find the previous file
         randText = str(random.randint(1, 10000))
         second_algo_name = self.file_name + randText
@@ -46,11 +49,36 @@ class TestFileManager(unittest.TestCase):
             assert True
 
     def test_unhandled_file_type(self):
-        # TODO implement here and in code
+        # TODO implement here and in code -> receive file with unknown type as counter factual (validate informative message too)
         assert False
 
-    def test_add_invalid_cf(self):
-        # TODO implement here and in code
+    def test_add_invalid_cf_arguments(self):
+        # TODO test if the arguments is invalid -> by that i mean for example:
+        #  has no name
+        # 2 same names
+        # no example gained
+
+        assert False
+
+    def test_is_algo_exist(self):
+        #     TODO split this text to 3 different tests sa following
+        #      TODO tests:
+        #       if file exist in db return true
+        #       if file only in db -> create file in system too
+        #       if file only in system -> remove it. and return file does not exist
+        #
+        assert False
+
+    def test_edit_algorith(self):
+        # TODO need to split to many tests:
+        # 1. change name
+        # 2. change content
+        # 3. arg_lst
+        # 4. description
+        # 5. additional info
+        # 6. output example
+        # 7. output type
+        # in all of the above, check changed in db
         assert False
 
     def setUp(self) -> None:

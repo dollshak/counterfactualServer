@@ -7,6 +7,9 @@ from server.Tools.SystemConfig import SystemConfig
 from server.businessLayer.Algorithms.CounterFactualAlgorithmDescription import CounterFactualAlgorithmDescription
 from server.businessLayer.Engine.EnginePY import EnginePY
 from server.businessLayer.ML_Models.MlModel import MlModel
+from server.Tools.Logger import Logger
+
+logger = Logger()
 
 
 class AlgorithmsController:
@@ -32,6 +35,7 @@ class AlgorithmsController:
 
     def remove_algorithm(self, algorithm_name):
         self.file_manager.remove_algorithm(algorithm_name)
+        logger.debug(f'The algorithm {algorithm_name} has been removed.')
 
     def run_selected_algorithms(self, algo_names: list[str], algo_param_list: list[list], model: MlModel,
                                 model_input: list, feature_names):
