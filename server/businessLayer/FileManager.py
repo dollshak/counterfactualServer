@@ -101,7 +101,10 @@ class FileManager:
 
     def load_algorithm(self, file_name):
         result = AlgorithmLoader().find(file_name)
-        return result
+        return result['file_content']
+
+    def get_algorithm(self, algo_name):
+        return AlgorithmLoader().find(algo_name)
 
     def load_algorithms(self, algorithms_names: list[str]):
         """

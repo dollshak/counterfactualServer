@@ -85,7 +85,7 @@ class TestEngineController(unittest.TestCase):
                                                               "regressor")
         self.cf_description = cf_description
         self.cf_description_2 = cf_description_2
-        self.controller = EngineController()
+        self.controller = EngineController(TestConfig())
 
     def tearDown(self) -> None:
         self.file_manager.remove_algorithm(self.algo_name)

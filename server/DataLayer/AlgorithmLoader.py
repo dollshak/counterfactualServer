@@ -57,7 +57,7 @@ class AlgorithmLoader:
         result = self.collection.find_one({"name": algo_name})
         if result is None:
             return result
-        return result['file_content']
+        return result
 
     def remove(self, algo_name):
         query = {'name': algo_name}

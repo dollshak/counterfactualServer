@@ -8,10 +8,11 @@ from server.businessLayer.ML_Models.MlModel import MlModel
 
 
 class EngineAPI:
-    def __init__(self, model, file_name, cf_params_list):
+    def __init__(self, model, file_name, cf_params_list, config):
         self.model = model
         self.file_name = file_name
         self.cf_params = cf_params_list
+        self.config = config
 
     @abstractmethod
     def run_algorithm(self, model_input: list):

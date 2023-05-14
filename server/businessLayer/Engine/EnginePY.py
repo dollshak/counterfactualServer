@@ -2,15 +2,19 @@ import os
 import importlib
 from types import ModuleType
 
+from server.Tools.FailedCFException import FailedCFException
 from server.Tools.SystemConfig import SystemConfig
 from server.businessLayer.Algorithms.CounterFactualAlgorithmDescription import CounterFactualAlgorithmDescription
 from server.businessLayer.Engine.EngineAPI import EngineAPI
+from server.businessLayer.FileManager import FileManager
 from server.businessLayer.ML_Models.MlModel import MlModel
+import json
 
 class EnginePY(EngineAPI):
 
-    def __init__(self, model, file_name, cf_params_list):
-        super().__init__(model, file_name, cf_params_list)
+    def __init__(self, model, file_name, cf_params_list, config):
+        super().__init__(model, file_name, cf_params_list, config)
+        self.validate_arguments()
 
     # def __init__(self):
     #     super().__init__()
@@ -32,3 +36,20 @@ class EnginePY(EngineAPI):
         except:
             raise Exception(f'failed to import module {self.file_name}')
         return cf_algo
+
+    def validate_arguments(self):
+        file_manager = FileManager(self.config)
+        name, suffix = os.path.splitext(self.file_name)
+
+        algo_val = file_manager.get_algorithm(name)
+        arg_list = algo_val['argument_lst']
+        arg_list = json.loads(arg_list)
+        names = [arg['param_name'] for arg in arg_list]
+        params = list(self.cf_params.keys())
+        if len(names) < len(params):
+            raise FailedCFException(f'too many arguments given for {name}')
+        if len(names) > len(params):
+            raise FailedCFException(f'not enough arguments given for {name}')
+        for name in names:
+            if name not in params:
+                raise FailedCFException(f'{name} is missing for {name}')
