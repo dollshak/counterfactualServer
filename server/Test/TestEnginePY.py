@@ -26,7 +26,6 @@ class TestEnginePY(unittest.TestCase):
         assert False
 
     def test_invalid_model_inputs(self):
-        # TODO maybe should be multiple test
         # create model with certain inputs
         # change bad inputs:
         # inputs name changed

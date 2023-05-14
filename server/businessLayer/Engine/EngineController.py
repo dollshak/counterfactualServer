@@ -12,18 +12,22 @@ class EngineController:
         self.cf_map: dict = {}
         self.init_cf_map()
 
-    def run_algorithms(self, algo_names: list[str], model: MlModel, model_input: list, cf_inputs: list[list]) -> list[
+    def run_algorithms(self, algo_names: list[str], model: MlModel, model_input: dict, cf_inputs: dict) -> list[
         list]:
         # init result array for each cf
         results = [[] for i in range(len(algo_names))]
         # for each cf
         logger.debug(f'Starting run algorithms.')
         for idx, algo_name in enumerate(algo_names):
-            logger.debug(f'running {algo_name}')
-            name, suffix = os.path.splitext(algo_name)
-            inputs = cf_inputs[name]
-            result = self.get_cf_results(algo_name, inputs, model, model_input)
-            results[idx] = result
+            try:
+                logger.debug(f'running {algo_name}')
+                name, suffix = os.path.splitext(algo_name)
+                inputs = cf_inputs[name]
+                result = self.get_cf_results(algo_name, inputs, model, model_input)
+                results[idx] = result
+            except:
+                logger.error(f'{algo_name} failed to run, returned empty results')
+                results[idx] = []
         logger.debug(f'Finished to run algorithms.')
         return results
 
