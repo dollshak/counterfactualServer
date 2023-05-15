@@ -142,25 +142,27 @@ class FileManager:
         logger.debug(f'Fetched all algorithms from the DB for the users.')
         return result
 
-    def edit_algorithm(self, file_content, cf_desc):
-        if self.is_algo_exist_in_db(cf_desc.name):
+    def edit_algorithm(self, file_content, cf_desc, origin_algo_name):
+        if self.is_algo_exist_in_db(origin_algo_name):
             decoded = self.content_to_file(file_content, cf_desc.name)
-            self.updated_in_db(decoded, cf_desc)
+            self.updated_in_db(decoded, cf_desc, origin_algo_name)
             logger.debug(f'Algorithm {cf_desc.name} has been edited successfully in the DB')
 
-    def updated_in_db(self, file_content, cf_desc):
+    def updated_in_db(self, file_content, cf_desc, origin_algo_name):
         loader = AlgorithmLoader()
         args_dtos = [ArgumentDescriptionDto(arg.param_name, arg.description, arg.accepted_types) for arg in
                      cf_desc.argument_lst]
         algo_dto = AlgorithmDto(file_content, cf_desc.name, args_dtos, cf_desc.description, cf_desc.additional_info,
-                                cf_desc.output_example, cf_desc.name)
+                                cf_desc.output_example, cf_desc.algo_type)
 
-        loader.update(algo_dto)
+        loader.update(algo_dto, origin_algo_name)
 
-    def remove_algorithm(self, algortihm_name):
+    def remove_algorithm(self, algorithm_name):
         loader = AlgorithmLoader()
-        if self.is_algo_exist_in_db(algortihm_name):
-            return loader.remove(algortihm_name)
+        if self.is_algo_exist_in_db(algorithm_name):
+            loader.remove(algorithm_name)
+        if self.is_algo_exist_in_system(algorithm_name):
+            self.remove_algo_system(algorithm_name)
 
     def get_files_names_and_import_from_db(self, algo_names):
         self.import_missing_algorithms(algo_names)

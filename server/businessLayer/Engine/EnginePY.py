@@ -42,6 +42,8 @@ class EnginePY(EngineAPI):
         name, suffix = os.path.splitext(self.file_name)
 
         algo_val = file_manager.get_algorithm(name)
+        if algo_val is None or len(algo_val) == 0:
+            raise FailedCFException(f'There is no CF algorithm named:{name}.py')
         arg_list = algo_val['argument_lst']
         arg_list = json.loads(arg_list)
         names = [arg['param_name'] for arg in arg_list]
@@ -50,6 +52,6 @@ class EnginePY(EngineAPI):
             raise FailedCFException(f'too many arguments given for {name}')
         if len(names) > len(params):
             raise FailedCFException(f'not enough arguments given for {name}')
-        for name in names:
-            if name not in params:
-                raise FailedCFException(f'{name} is missing for {name}')
+        for param_name in names:
+            if param_name not in params:
+                raise FailedCFException(f'{param_name} is missing for {name}')

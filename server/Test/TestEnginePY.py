@@ -1,6 +1,7 @@
 import unittest
 from server.Test.additionals.Model_For_test import ModelForTest
 from server.Test.additionals.TestConfig import TestConfig
+from server.Test.additionals.TestUtils import TestUtils
 from server.Tools.FailedCFException import FailedCFException
 from server.Tools.ModelException import ModelException
 from server.businessLayer.Algorithms.ArgumentDescription import ArgumentDescription
@@ -33,14 +34,12 @@ class TestEnginePY(unittest.TestCase):
         reg_model = self.model_class.get_regression_model()
         invalid_args = self.cf_args.copy()
         del invalid_args['features']
-        engine = EnginePY(reg_model, "DiCE_for_test_invalid.py", invalid_args, TestConfig())
+        invalid_CF_name = "DiCE_for_test_invalid.py"
         try:
-            res = engine.run_algorithm(self.x_test)
+            engine = EnginePY(reg_model, invalid_CF_name, invalid_args, TestConfig())
             assert False
         except FailedCFException as e:
-            # TODO instead of assert true, assert equals e (exception message) with
-            #  the relevant message (need to write it)
-            #  error should be raised from EnginePy on validate
+            self.assertEqual(f'There is no CF algorithm named:{invalid_CF_name}', e.message)
             assert True
         except:
             assert False
@@ -49,12 +48,12 @@ class TestEnginePY(unittest.TestCase):
         reg_model = self.model_class.get_regression_model()
         invalid_args = self.cf_args.copy()
         del invalid_args['features']
-        engine = EnginePY(reg_model, "DiCE_for_test.py", invalid_args, TestConfig())
         try:
+            engine = EnginePY(reg_model, "DiCE_for_test.py", invalid_args, TestConfig())
             res = engine.run_algorithm(self.x_test)
             assert False
         except FailedCFException as e:
-            self.assertEqual(e, f'not enough arguments given for DiCE_for_test')
+            self.assertEqual( f'not enough arguments given for {self.algo_name}', e.message)
         except:
             assert False
 
@@ -63,13 +62,12 @@ class TestEnginePY(unittest.TestCase):
         invalid_args = self.cf_args.copy()
         invalid_args['features_2'] = invalid_args['features']
         del invalid_args['features']
-        engine = EnginePY(reg_model, "DiCE_for_test.py", invalid_args, TestConfig())
         try:
+            engine = EnginePY(reg_model, "DiCE_for_test.py", invalid_args, TestConfig())
             res = engine.run_algorithm(self.x_test)
             assert False
         except FailedCFException as e:
-            # TODO instead of assert true, assert equals e (exception message) with
-            #  the relevant message (need to write it) - this one should be like missing argument
+            self.assertEqual(f'features is missing for {self.algo_name}', e.message)
             assert True
         except:
             assert False
@@ -78,14 +76,11 @@ class TestEnginePY(unittest.TestCase):
         reg_model = self.model_class.get_regression_model()
         invalid_args = self.cf_args.copy()
         invalid_args['f'] = 3
-        engine = EnginePY(reg_model, "DiCE_for_test.py", invalid_args, TestConfig())
         try:
-            res = engine.run_algorithm(self.x_test)
+            engine = EnginePY(reg_model, "DiCE_for_test.py", invalid_args, TestConfig())
             assert False
         except FailedCFException as e:
-            # TODO instead of assert true, assert equals e (exception message) with
-            #  the relevant message (need to write it)
-            assert True
+            self.assertEqual(f'too many arguments given for {self.algo_name}', e.message)
         except:
             assert False
 
@@ -110,22 +105,15 @@ class TestEnginePY(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
-        cls.model_class = ModelForTest()
-        cls.algo_name = "DiCE_for_test"
-        file_manager = FileManager(TestConfig())
 
-        with open('additionals/' + cls.algo_name + '.py', 'r') as file:
-            test_cf_content = file.read()
-        # TODO need to fix arguments here to be like in setup
-        agd = [ArgumentDescription("age", "years old", ["str"])]
-        desc = "tell you what your age is"
-        addI = "additional"
-        res_example = ["25"]
+        cls.model_class = ModelForTest()
+        cls.algo_name = TestUtils.get_dice_algo_name()
+
         file_manager = FileManager(TestConfig())
-        cf_description = CounterFactualAlgorithmDescription(cls.algo_name, agd, desc, addI, res_example,
-                                                            "regressor")
+        cf_description = TestUtils.get_dice_cf_description()
+        file_manager.remove_algorithm(cls.algo_name)
         if not file_manager.is_algo_exist_in_db(cls.algo_name):
-            file_manager.add_algorithm(test_cf_content, cf_description)
+            file_manager.add_algorithm(TestUtils.get_dice_content(), cf_description)
 
     @classmethod
     def tearDownClass(cls) -> None:

@@ -68,8 +68,7 @@ class AlgorithmLoader:
         result = self.collection.find({"name": {"$ne": None}})
         return result
 
-    def update(self, algo_dto):
-
+    def update(self, algo_dto,origin_algo_name):
         obj_json = {
             "name": algo_dto.name,
             "file_content": algo_dto.file_content,
@@ -78,5 +77,5 @@ class AlgorithmLoader:
             "additional_info": algo_dto.additional_info,
             "output_example": algo_dto.output_example
         }
-        query = {"name": algo_dto.name}
+        query = {"name": origin_algo_name}
         self.collection.update_one(query, {"$set": obj_json})

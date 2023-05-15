@@ -4,6 +4,7 @@ import os
 
 from server.Test.additionals.Model_For_test import ModelForTest
 from server.Test.additionals.TestConfig import TestConfig
+from server.Test.additionals.TestUtils import TestUtils
 from server.businessLayer.Algorithms.ArgumentDescription import ArgumentDescription
 from server.businessLayer.Algorithms.CounterFactualAlgorithmDescription import CounterFactualAlgorithmDescription
 from server.businessLayer.Engine.EngineController import EngineController
@@ -16,6 +17,7 @@ class TestEngineController(unittest.TestCase):
         assert False
 
     def test_run_one_cf(self):
+
         if not self.file_manager.is_algo_exist_in_db(self.algo_name):
             self.file_manager.add_algorithm(self.test_cf_content, self.cf_description)
 
@@ -54,7 +56,7 @@ class TestEngineController(unittest.TestCase):
         invalid_cf_inputs = self.cf_input.copy()
         del invalid_cf_inputs['features']
         inputs = {self.algo_name: invalid_cf_inputs,
-                          self.algo_name_2: self.cf_input}
+                  self.algo_name_2: self.cf_input}
         result = self.controller.run_algorithms([self.algo_name, self.algo_name_2], self.model, self.x_test, inputs)
         self.assertTrue(isinstance(result, list))
         self.assertTrue(isinstance(result[0], list))
@@ -68,21 +70,12 @@ class TestEngineController(unittest.TestCase):
 
         rand_num = random.randint(1, 10000)
         self.algo_name_2 = file_name + '_' + str(rand_num)
-        with open('additionals/' + file_name + '.py', 'r') as file:
-            self.test_cf_content = file.read()
-        agd = [ArgumentDescription("age", "years old", ["str"])]
-        desc = "tell you what your age is"
-        self.desc = desc
-        addI = "additional"
-        self.addI = addI
-        res_example = ["25"]
-        self.res_example = res_example
-        self.agd = agd
+        self.test_cf_content = TestUtils.get_dice_content()
         self.file_manager = FileManager(TestConfig())
-        cf_description = CounterFactualAlgorithmDescription(self.algo_name, agd, desc, addI, res_example,
-                                                            "regressor")
-        cf_description_2 = CounterFactualAlgorithmDescription(self.algo_name_2, agd, desc, addI, res_example,
-                                                              "regressor")
+        cf_description = TestUtils.get_dice_cf_description()
+        cf_description.name = self.algo_name
+        cf_description_2 = TestUtils.get_dice_cf_description()
+        cf_description_2.name = self.algo_name_2
         self.cf_description = cf_description
         self.cf_description_2 = cf_description_2
         self.controller = EngineController(TestConfig())

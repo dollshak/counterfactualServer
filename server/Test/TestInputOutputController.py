@@ -5,26 +5,27 @@ from server.businessLayer.Inputs_Handlers.InputOutputController import InputOutp
 
 class TestInputOutputController(unittest.TestCase):
     def test_handle_input_feature_list(self):
-        # TODO to fix -> inputs from client changed
-        io_controller = InputOutputController()
-        feature_names, values = io_controller.handle_input(self.input)
+        feature_names, values = self.IOController.handle_input(self.input)
         self.assertEqual(feature_names, ['name', 'age', 'height', 'living area'])
         self.assertEqual(values, ['ido', 25, 183, 'rural'])
 
     def test_handle_output_feature_list(self):
-        io_controller = InputOutputController()
-        feature_names, values = io_controller.handle_input(self.input)
-        output = io_controller.handle_output(feature_names, values ,self.cf_results, self.algo_names, 'FeatureList')
+        feature_names, values = self.IOController.handle_input(self.input)
+        output = self.IOController.handle_output(feature_names, values, self.cf_results, self.algo_names, 'FeatureList')
         self.assertEqual(output, self.expected_output)
 
-    def test_invalid_data_shape(self):
-        # TODO implement here and in code
-        assert False
+    def test_handle_input_invalid_shape(self):
+        wrong_input = [('name', 'ido'), ('age', 25), ('height', 183), ('living area', 'rural')]
+        with self.assertRaises(TypeError):
+            self.IOController.handle_input(wrong_input)
 
-    def test_no_output(self):
-        # TODO implement here and in code
-        # return same output but with empty result list
-        assert False
+    def test_handle_output_no_output(self):
+        cf_results = [[['ido', 27, 183, 'rural'], ['ido', 25, 189, 'rural']], []]
+        feature_names , values = self.IOController.handle_input(self.input)
+        output = self.IOController.handle_output(feature_names,values,cf_results,self.algo_names,'FeatureList')
+        self.assertEqual(['ido', 27, 183, 'rural'],output['output']['test1'][0])
+        self.assertEqual(['ido', 25, 189, 'rural'], output['output']['test1'][1])
+        self.assertEqual([], output['output']['test2'])
 
     def setUp(self) -> None:
         self.input = {
@@ -48,3 +49,4 @@ class TestInputOutputController(unittest.TestCase):
                 'test2': [['ido', 30, 182, 'rural'], ['ido', 20, 199, 'rural']]
             }
         }
+        self.IOController = InputOutputController()

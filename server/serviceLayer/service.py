@@ -128,7 +128,8 @@ def edit_algorithm(algorithm):
     file_content = data.read()
     algo_type = req.get('type')
     algo_type = json.loads(algo_type)
-    return algorithm_service.edit_algorithm(file_content, file_name, arguments_list, desc, additional_info, desc,
+    # TODO add param of original_algo_name
+    return algorithm_service.edit_algorithm(file_content, file_name, arguments_list, desc, additional_info,
                                             output_exmaples, algo_type)
 
 

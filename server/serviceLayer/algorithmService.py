@@ -49,12 +49,12 @@ class AlgorithmService:
     def edit_algorithm(self, file_content, file_name: str, arguments_list: list[dict], description: str,
                        additional_info: str,
                        output_example: list[str],
-                       algo_type):
+                       algo_type,  origin_algo_name):
         try:
             self.algorithms_controller.edit_algorithm(file_content, file_name, arguments_list, description,
                                                       additional_info,
                                                       output_example,
-                                                      algo_type)
+                                                      algo_type,origin_algo_name)
             return "ok"
         except:
             logger.error(f'Editing an algorithm has failed.')  # TODO fix the except and add the message to the log
