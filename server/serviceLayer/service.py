@@ -31,11 +31,19 @@ def files():
     return "succ"
 
 
-# file_content, name: str, argument_lst: list[dict], description: str,
-#                           additional_info: str,
-#                           output_example: list[str]
 @urls_blueprint.route('/algorithm', methods=['POST'])
 def add_new_algorithm():
+    """
+    argument_lst : [
+                {"param_name": "features", "description": "", "accepted_types": ["list"], default_value},
+                {"param_name": "outcome_name", "description": "", "accepted_types": ["string"], default_value},
+                {"param_name": "total_CFs", "description": "", "accepted_types": ["float"], default_value},
+                {"param_name": "desired_class", "description": "", "accepted_types": ["float"], default_value},
+                {"param_name": "desired_range", "description": "", "accepted_types": ["list"], default_value},
+                {"param_name": "is_classifier", "description": "", "accepted_types": ["boolean"], default_value},
+            ]
+    :return:
+    """
     req = request.form
     file_name = req['name']
     arguments_list = req.get('argument_lst')
@@ -139,4 +147,3 @@ def dummy_predict(x):
     loan = x[2]
     ratio = (income * 6 + total) / loan
     return min(ratio, 1)
-

@@ -11,7 +11,7 @@ class InputOutputController:
 
     def handle_input(self, model_input, input_type="FeatureList"):
         handler = self._get_handler(input_type)
-        if not isinstance(model_input,dict):
+        if not isinstance(model_input, dict):
             raise TypeError("Input for the model has to be in the shape of a dictionary")
         logger.debug("Starting to handle input before running algorithms.")
         return handler.prepare_input(model_input)
