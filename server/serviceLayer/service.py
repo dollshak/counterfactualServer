@@ -69,10 +69,13 @@ def run_algorithms():
                             "algo_1":{
                                         "param1": value,\n
                                         "param2":value2
+                                        "time_limit" : -1
+
                             },
                             "algo_2":{
                                         "param1_algo2" : 1,\n
                                         "param2_algo2" : 1
+                                        "time_limit" : 1
                             }
             },\n
             "model_file": <model_code_file>,\n
@@ -82,6 +85,7 @@ def run_algorithms():
                                                             "total":  81991,\n
                                                             "loan":  374286
             }
+
 
 
         }
