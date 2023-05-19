@@ -11,7 +11,8 @@ class TestInputOutputController(unittest.TestCase):
 
     def test_handle_output_feature_list(self):
         feature_names, values = self.IOController.handle_input(self.input)
-        output = self.IOController.handle_output(feature_names, values, self.cf_results, self.algo_names, 'FeatureList')
+        output = self.IOController.handle_output(feature_names, values, self.cf_results, self.algo_names,
+                                                 self.model_result,self.algo_runtimes, 'FeatureList')
         self.assertEqual(output, self.expected_output)
 
     def test_handle_input_invalid_shape(self):
@@ -21,11 +22,11 @@ class TestInputOutputController(unittest.TestCase):
 
     def test_handle_output_no_output(self):
         cf_results = [[['ido', 27, 183, 'rural'], ['ido', 25, 189, 'rural']], []]
-        feature_names , values = self.IOController.handle_input(self.input)
-        output = self.IOController.handle_output(feature_names,values,cf_results,self.algo_names,'FeatureList')
-        self.assertEqual(['ido', 27, 183, 'rural'],output['output']['test1'][0])
-        self.assertEqual(['ido', 25, 189, 'rural'], output['output']['test1'][1])
-        self.assertEqual([], output['output']['test2'])
+        feature_names, values = self.IOController.handle_input(self.input)
+        output = self.IOController.handle_output(feature_names, values, cf_results, self.algo_names,self.model_result,self.algo_runtimes, 'FeatureList')
+        self.assertEqual(['ido', 27, 183, 'rural'], output['output']['algo1']['results'][0])
+        self.assertEqual(['ido', 25, 189, 'rural'], output['output']['algo1']['results'][1])
+        self.assertEqual([], output['output']['algo2']['results'])
 
     def setUp(self) -> None:
         self.input = {
@@ -34,19 +35,28 @@ class TestInputOutputController(unittest.TestCase):
             'height': 183,
             'living area': 'rural'
         }
+        self.model_result = 0.3
+        self.algo_runtimes = {'algo1': 3.2, 'algo2': 0.7}
         self.cf_results = [[['ido', 27, 183, 'rural'], ['ido', 25, 189, 'rural']],
                            [['ido', 30, 182, 'rural'], ['ido', 20, 199, 'rural']]]
-        self.algo_names = ['test1', 'test2']
+        self.algo_names = ['algo1', 'algo2']
         self.expected_output = {
             'input': {
                 'name': 'ido',
                 'age': 25,
                 'height': 183,
-                'living area': 'rural'
+                'living area': 'rural',
+                'model_result': 0.3
             },
             'output': {
-                'test1': [['ido', 27, 183, 'rural'], ['ido', 25, 189, 'rural']],
-                'test2': [['ido', 30, 182, 'rural'], ['ido', 20, 199, 'rural']]
+                'algo1': {
+                    'time': 3.2,
+                    'results': [['ido', 27, 183, 'rural'], ['ido', 25, 189, 'rural']],
+                    'errorMessage': ""},
+                'algo2': {
+                    'time': 0.7,
+                    'results': [['ido', 30, 182, 'rural'], ['ido', 20, 199, 'rural']],
+                    'errorMessage': ""}
             }
         }
         self.IOController = InputOutputController()

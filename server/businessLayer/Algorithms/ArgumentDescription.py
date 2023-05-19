@@ -4,3 +4,4 @@ class ArgumentDescription:
         self.param_name = param_name
         self.description = description
         self.accepted_types = accepted_types
+        self.default_value = default_value

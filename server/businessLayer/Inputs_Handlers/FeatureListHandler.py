@@ -17,7 +17,8 @@ class FeatureListHandler(InputHandlerAbstract):
         return feature_names, feature_values
 
     # TODO remove algo_times default
-    def prepare_output(self, feature_names, feature_values, cfs_results, algorithms_names, algo_times={}, error_messages = {}):
+    def prepare_output(self, feature_names, feature_values, cfs_results, algorithms_names, model_result, algo_times:dict,
+                       error_messages={}):
         """
         example output
         {
@@ -47,6 +48,7 @@ class FeatureListHandler(InputHandlerAbstract):
                     },
             }
         }
+        :param model_result:
         :param feature_names:
         :param feature_values:
         :param cfs_results:
@@ -55,24 +57,24 @@ class FeatureListHandler(InputHandlerAbstract):
         """
         output = {}
         for algo_name, res in zip(algorithms_names, cfs_results):
+            output[algo_name] = {}
             output[algo_name]['results'] = res
             # TODO if condition
             if algo_name in algo_times.keys():
                 output[algo_name]['time'] = algo_times[algo_name]
             else:
-                output[algo_name]['time'] = random.randint(1, 10) / 10
+                output[algo_name]['time'] = -1
             # TODO if condition
             if algo_name in error_messages.keys():
                 output[algo_name]['errorMessage'] = error_messages[algo_name]
             else:
-                output[algo_name]['errorMessage'] = random.randint(1, 10) / 10
-        input = {}
+                output[algo_name]['errorMessage'] = ""
+        input = {'model_result':model_result}
         for name, val in zip(feature_names, feature_values):
             input[name] = val
         # TODO change hard coded here
         ################################################################################
-        input['modelResult'] = random.randint(1, 10) / 10
-        input['modelResult'] = random.randint(1, 10) / 10
+        input['model_result'] = model_result
         ################################################################################
         ################################################################################
         dict = {'input': input, 'output': output}

@@ -16,10 +16,11 @@ class InputOutputController:
         logger.debug("Starting to handle input before running algorithms.")
         return handler.prepare_input(model_input)
 
-    def handle_output(self, feature_names, feature_values, cfs_results, algorithms_names, input_type="FeatureList"):
+    def handle_output(self, feature_names, feature_values, cfs_results, algorithms_names,model_result,algo_runtimes,input_type="FeatureList"):
         handler = self._get_handler(input_type)
         logger.debug("Starting to handle output before displaying results to the user.")
-        return handler.prepare_output(feature_names, feature_values, cfs_results, algorithms_names)
+        return handler.prepare_output(feature_names, feature_values, cfs_results, algorithms_names,model_result=model_result,
+                                      algo_times=algo_runtimes)
 
     def _get_handler(self, input_type):
         handler = None

@@ -94,7 +94,7 @@ class TestFileManager(unittest.TestCase):
                                                                 self.res_example, "regression")
         self.file_manager.edit_algorithm(self.test_cf_content, new_cf_description, self.file_name)
         alg: CounterFactualAlgorithmDescription = self.file_manager.get_algorithm(
-            self.file_name)  # TODO check if type is correct
+            self.file_name)
         self.assertEqual(alg['description'], "the goal is to tell you what your age is")
 
     def test_edit_algorithm_change_additional_info(self):

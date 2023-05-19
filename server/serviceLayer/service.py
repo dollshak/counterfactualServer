@@ -93,10 +93,11 @@ def run_algorithms():
         algo_names = json.loads(req.get('algo_names'))
         arg_list = req.get('arg_list')
         arg_list = json.loads(arg_list)
-
+        # TODO change hard coded here
+        algo_time_limit = req.get('algo_time_limit') if 'algo_time_limit' in req.keys() else None
         modelFile = request.files['model_file']
         model_input = json.load(request.files['model_input'])
-        return algorithm_service.run_algorithms(algo_names, modelFile, arg_list, model_input)
+        return algorithm_service.run_algorithms(algo_names, modelFile, arg_list, model_input,algo_time_limit)
     except:
         # TODO exception should be informative
         return "unknown model"

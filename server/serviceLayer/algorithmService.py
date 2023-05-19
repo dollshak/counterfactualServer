@@ -24,15 +24,20 @@ class AlgorithmService:
             logger.error(f'Adding a new algorithm has failed.')  # TODO fix the except and add the message to the log
             return "exception"
 
-    def run_algorithms(self, algorithms_names, model_content, arg_list, model_input):
+    def run_algorithms(self, algorithms_names, model_content, arg_list, model_input,algos_time_limit):
         feature_names, feature_values = InputOutputController().handle_input(model_input)
         model = PickleModel.from_pickle_content(model_content)
-        # TODO add model on input + implement test
-        ress = self.algorithms_controller.run_selected_algorithms(algorithms_names, arg_list, model,
+        model_result = model(model_input)
+        # TODO change here after changed in service
+        if algos_time_limit is None:
+            algos_time_limit = {}
+            for algo in algorithms_names:
+                algos_time_limit[algo] = 5 # Default runtime for algorithm
+        ress , algo_runtimes = self.algorithms_controller.run_selected_algorithms(algorithms_names, arg_list, model,
                                                                   feature_values,
-                                                                  feature_names)
+                                                                  feature_names,algos_time_limit)
         logger.debug("handling outputs")
-        dict = InputOutputController().handle_output(feature_names, feature_values, ress, algorithms_names)
+        dict = InputOutputController().handle_output(feature_names, feature_values, ress, algorithms_names,model_result,algo_runtimes=algo_runtimes)
         return dict
 
     def remove_algorithm(self, name):
