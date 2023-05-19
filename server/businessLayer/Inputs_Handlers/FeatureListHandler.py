@@ -55,6 +55,7 @@ class FeatureListHandler(InputHandlerAbstract):
         """
         output = {}
         for algo_name, res in zip(algorithms_names, cfs_results):
+            output[algo_name] = {}
             output[algo_name]['results'] = res
             # TODO if condition
             if algo_name in algo_times.keys():

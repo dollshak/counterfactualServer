@@ -54,7 +54,7 @@ class FileManager:
 
     def save_in_db(self, file_content, cf_desc: CounterFactualAlgorithmDescription):
         loader = AlgorithmLoader()
-        args_dtos = [ArgumentDescriptionDto(arg.param_name, arg.description, arg.accepted_types) for arg in
+        args_dtos = [ArgumentDescriptionDto(arg.param_name, arg.description, arg.accepted_types,arg.default_value) for arg in
                      cf_desc.argument_lst]
         algo_dto = AlgorithmDto(file_content, cf_desc.name, args_dtos, cf_desc.description, cf_desc.additional_info,
                                 cf_desc.output_example, cf_desc.algo_type)
@@ -119,12 +119,12 @@ class FileManager:
         cf_descs = []
         for obj in dto_algos:
             self.content_to_file(obj.file_content, obj.name)
-            args_list = [ArgumentDescription(arg.name, arg.description, arg.accepted_types) for arg
+            args_list = [ArgumentDescription(arg.name, arg.description, arg.accepted_types,arg.default_value) for arg
                          in obj.argument_lst]
             cf_descs.append(
                 CounterFactualAlgorithmDescription(obj.name, args_list, obj.description, obj.additional_info,
                                                    obj.output_example, obj.algo_type))
-        logger.debug(f'Loaded the {obj.name} algorithm from the DB.')
+            logger.debug(f'Loaded the {obj.name} algorithm from the DB.')
         return cf_descs
 
     def get_all_algorithms(self):
@@ -150,7 +150,7 @@ class FileManager:
 
     def updated_in_db(self, file_content, cf_desc, origin_algo_name):
         loader = AlgorithmLoader()
-        args_dtos = [ArgumentDescriptionDto(arg.param_name, arg.description, arg.accepted_types) for arg in
+        args_dtos = [ArgumentDescriptionDto(arg.param_name, arg.description, arg.accepted_types,arg.default_value) for arg in
                      cf_desc.argument_lst]
         algo_dto = AlgorithmDto(file_content, cf_desc.name, args_dtos, cf_desc.description, cf_desc.additional_info,
                                 cf_desc.output_example, cf_desc.algo_type)

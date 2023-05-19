@@ -9,13 +9,13 @@ from server.businessLayer.Engine.EnginePY import EnginePY
 from server.businessLayer.ML_Models.MlModel import MlModel
 from server.Tools.Logger import Logger
 import collections
+
 logger = Logger()
 
 
 class AlgorithmsController:
     def __init__(self, config):
         self.config = config
-        # self.logger = Logger()
         self.file_manager = FileManager(config)
 
     def get_algorithm(self, name):
@@ -28,7 +28,7 @@ class AlgorithmsController:
                           additional_info: str,
                           output_example: list[str],
                           type: list[str]):
-        if not isinstance(type,list):
+        if not isinstance(type, list):
             logger.error(f'Trying to add algorithm: {name} - the algo type field got a non list value')
             raise TypeError("Algo type needs to be in the shape of list")
         type = [x.lower() for x in type]
@@ -36,7 +36,8 @@ class AlgorithmsController:
             logger.error(f'Trying to add algorithm: {name} - the algo type field is not classifier or regressor')
             raise ValueError("Algo type needs to be regressor or classifier")
         args_lst = [ArgumentDescription(param_name=arg['param_name'], description=arg['description'],
-                                        accepted_types=arg['accepted_types'] ) for arg in argument_lst]
+                                        accepted_types=arg['accepted_types'], default_value=arg['default_value']
+                                        if 'default_value' in arg.keys() else None) for arg in argument_lst]
         params = []
         for arg in args_lst:
             p_name = arg.param_name
@@ -67,18 +68,20 @@ class AlgorithmsController:
     def edit_algorithm(self, file_content, name: str, argument_lst: list[dict], description: str,
                        additional_info: str,
                        output_example: list[str],
-                       algo_type,origin_algo_name):
-        if not isinstance(algo_type,list):
+                       algo_type, origin_algo_name):
+        if not isinstance(algo_type, list):
             logger.error(f'In edit algorithm for {origin_algo_name} - the algo type field got a non list value')
             raise TypeError("Algo type needs to be in the shape of list")
         if 'regressor' not in algo_type and 'classifier' not in algo_type:
-            logger.error(f'In edit algorithm for {origin_algo_name} - the algo type field is not classifier or regressor')
+            logger.error(
+                f'In edit algorithm for {origin_algo_name} - the algo type field is not classifier or regressor')
             raise ValueError("Algo type needs to be regressor or classifier")
         args_lst = [ArgumentDescription(param_name=arg['param_name'], description=arg['description'],
-                                        accepted_types=arg['accepted_types']) for arg in argument_lst]
+                                        accepted_types=arg['accepted_types'], default_value=arg['default_value']) for
+                    arg in argument_lst]
         cf_desc = CounterFactualAlgorithmDescription(name, args_lst, description, additional_info, output_example,
                                                      algo_type)
-        self.file_manager.edit_algorithm(file_content, cf_desc,origin_algo_name)
+        self.file_manager.edit_algorithm(file_content, cf_desc, origin_algo_name)
 
 
 
