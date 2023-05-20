@@ -58,12 +58,12 @@ class AlgorithmsController:
         logger.debug(f'The algorithm {algorithm_name} has been removed.')
 
     def run_selected_algorithms(self, algo_names: list[str], algo_param_list: list[list], model: MlModel,
-                                model_input: list,feature_names,algos_time_limit):
+                                model_input: list,feature_names):
         # self.file_manager.load_algorithms(algo_names)
         engine_controller = EngineController(self.config)
         Logger().debug("importing file names from db")
         algo_names = self.file_manager.get_files_names_and_import_from_db(algo_names)
-        return engine_controller.run_algorithms(algo_names, model, model_input, algo_param_list,algos_time_limit)
+        return engine_controller.run_algorithms(algo_names, model, model_input, algo_param_list)
 
     def edit_algorithm(self, file_content, name: str, argument_lst: list[dict], description: str,
                        additional_info: str,

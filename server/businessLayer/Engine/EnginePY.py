@@ -1,7 +1,7 @@
 import os
 import importlib
 from types import ModuleType
-
+import signal
 from server.Tools.FailedCFException import FailedCFException
 from server.Tools.SystemConfig import SystemConfig
 from server.businessLayer.Algorithms.CounterFactualAlgorithmDescription import CounterFactualAlgorithmDescription
@@ -22,12 +22,29 @@ class EnginePY(EngineAPI):
     #     self.working_directory_path = os.getcwd()
     #     self.algos_path = 'server.businessLayer.CF_Algorithms.'
 
-    def run_algorithm(self, model_input: list):
+    def run_algorithm(self, model_input: list,algo_time_limit):
         name, suffix = os.path.splitext(self.file_name)
         module_path = SystemConfig().ALGORITHMS_DIR_PATH_MODULES + name
         cf_algo = self.import_cf_algo(module_path)
-        results = cf_algo.explain(model_input)
+        if algo_time_limit > 0:
+            results = self.run_with_timeout(cf_algo.explain,algo_time_limit,model_input)
+        else:
+            results = cf_algo.explain(model_input)
         return results
+
+    def timeout_handler(self,signum, frame):
+        raise TimeoutError("Func timed out")
+
+    def run_with_timeout(self,func, timeout,params):
+        signal.signal(signal.SIGALRM, self.timeout_handler)
+        signal.alarm(timeout)
+        try:
+            result = func(params)
+        except TimeoutError:
+            print("Func timed out")
+            return []
+        signal.alarm(0)
+        return result
 
     def import_cf_algo(self, module_path):
         try:

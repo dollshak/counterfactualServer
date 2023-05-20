@@ -15,6 +15,6 @@ class EngineAPI:
         self.config = config
 
     @abstractmethod
-    def run_algorithm(self, model_input: list):
+    def run_algorithm(self, model_input: list,algo_time_limit):
         raise Exception("Not implemented.")
 
