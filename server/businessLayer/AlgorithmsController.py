@@ -35,17 +35,17 @@ class AlgorithmsController:
         if 'regressor' not in type and 'classifier' not in type:
             logger.error(f'Trying to add algorithm: {name} - the algo type field is not classifier or regressor')
             raise ValueError("Algo type needs to be regressor or classifier")
-        #  TODO raz please change arg_lst creation to have multiple lines for loop. somehow it crushes if its one lined
-        #   you can see example in comment down below, if nothing changed you could use it
-        # args_lst = []
-        # for arg in argument_lst:
-        #     def_val = arg['default_value'] if 'default_value' in arg.keys() else None
-        #     args_lst.append(ArgumentDescription(param_name=arg['param_name'], description=arg['description'],
-        #                                         accepted_types=arg['accepted_types'], default_value=def_val))
-        args_lst = [ArgumentDescription(param_name=arg['param_name'], description=arg['description'],
-                                        accepted_types=arg['accepted_types'], default_value=arg['default_value']
-                                        if 'default_value' in arg.keys() else None) for arg in argument_lst]
-
+        args_lst = []
+        for arg in argument_lst:
+            param_name = arg['param_name']
+            description = arg['description']
+            accepted_types = arg['accepted_types']
+            if 'default_value' in arg.keys():
+                default_value = arg['default_value']
+            else:
+                default_value = None
+            arg_dsc = ArgumentDescription(param_name, description, accepted_types, default_value)
+            args_lst.append(arg_dsc)
         params = []
         for arg in args_lst:
             p_name = arg.param_name

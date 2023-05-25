@@ -5,9 +5,7 @@ from server.Tools.ModelException import ModelException
 from server.businessLayer.Engine.EnginePY import EnginePY
 from server.businessLayer.ML_Models.MlModel import MlModel
 from server.Tools.Logger import Logger
-from datetime import timedelta
-from datetime import datetime, date
-import time
+
 
 logger = Logger()
 
@@ -35,7 +33,8 @@ class EngineController:
                 results[idx] = result
             except FailedCFException as e:
                 #  TODO raz exception need sent inside algo results
-                logger.error(f'{algo_name} failed to run, returned empty results')
+                # Results is list of list - how do we want the exception to be sent? should it be list of results or ex
+                logger.error(f'{algo_name} failed to run, returned empty results . error message is : {e.message}')
                 results[idx] = []
         logger.debug(f'Finished to run algorithms.')
         return results, algo_runtimes
@@ -44,13 +43,7 @@ class EngineController:
         suffix: str = self.get_type_by_name(algo_name)
         # TODO implement here -> bring engine by suffix instead of hard coded enginePY -> should create a function
         engine = EnginePY(model, algo_name, cf_inputs, self.config, feature_list)
-        # TODO raz time should move inside, after import.
-        start_time = datetime.now().time()
-        start_time = timedelta(hours=start_time.hour, minutes=start_time.minute, seconds=start_time.second)
-        result = engine.run_algorithm(model_input, algo_time_limit, feature_list)
-        end_time = datetime.now().time()
-        end_time = timedelta(hours=end_time.hour, minutes=end_time.minute, seconds=end_time.second)
-        duration = start_time - end_time
+        result,duration = engine.run_algorithm(model_input, algo_time_limit, feature_list)
         duration = min(duration, algo_time_limit)
         logger.debug(f'Algorithm {algo_name} ran successfully.')
         return result, duration

@@ -177,6 +177,6 @@ class FileManager:
             if not self.is_algo_exist_in_system(file_name):
                 missing_algos.append(name)
         if len(missing_algos) > 0:
-            # TODO add logger -> importing ...
+            logger.debug("Importing missing algorithms.")
             self.load_algorithms(missing_algos)
-#         TODO create logger all algorithms imported
+        logger.debug("All algorithms have been imported.")

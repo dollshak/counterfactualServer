@@ -20,8 +20,9 @@ class AlgorithmService:
             self.algorithms_controller.add_new_algorithm(file_content, name, argument_lst, description, additional_info,
                                                          output_example, algo_type)
             return "ok"
-        except:
-            logger.error(f'Adding a new algorithm has failed.')  # TODO raz please send a proper message. if you catch our system's exception, send its message, otherwise, write a better exception
+        except Exception as e:
+            logger.error(f'Adding a new algorithm named {name} has failed.'
+                         f'Got the following error: {e.args}')  # TODO Check if proper message
             return "exception"
 
     def run_algorithms(self, algorithms_names, model_content, arg_list, model_input):
@@ -60,6 +61,7 @@ class AlgorithmService:
                                                       output_example,
                                                       algo_type, origin_algo_name)
             return "ok"
-        except:
-            logger.error(f'Editing an algorithm has failed.')  # TODO fix the except and add the message to the log
+        except Exception as e:
+            logger.error(f'Editing the algorithm {origin_algo_name} has failed.'
+                         f'Got the following error: {e.args}')
             return "exception"

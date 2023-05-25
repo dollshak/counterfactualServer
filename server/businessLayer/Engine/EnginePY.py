@@ -1,6 +1,8 @@
 import os
 import importlib
-from types import ModuleType
+import datetime
+from datetime import timedelta,datetime
+import time
 import signal
 from server.Tools.FailedCFException import FailedCFException
 from server.Tools.SystemConfig import SystemConfig
@@ -24,13 +26,16 @@ class EnginePY(EngineAPI):
             cf_algo = self.import_cf_algo(module_path)
         except:
             raise FailedCFException(f'failed to import {name}')
-        # TODO raz start time should be here
+        start_time = datetime.now().time()
+        start_time = timedelta(hours=start_time.hour, minutes=start_time.minute, seconds=start_time.second)
         if algo_time_limit > 0:
             results = self.run_with_timeout(cf_algo.explain, algo_time_limit, model_input)
         else:
             results = cf_algo.explain(model_input)
-        # TODO raz end time should be here
-        return results
+        end_time = datetime.now().time()
+        end_time = timedelta(hours=end_time.hour, minutes=end_time.minute, seconds=end_time.second)
+        duration = start_time - end_time
+        return results,duration
 
     def timeout_handler(self, signum, frame):
         raise TimeoutError("Func timed out")
@@ -65,10 +70,11 @@ class EnginePY(EngineAPI):
         arg_list = json.loads(arg_list)
         names = [arg['param_name'] for arg in arg_list]
         params = list(self.cf_params.keys())
-        # TODO raz need to fix validation here, time is an additional argument that makes the validation fail. need to remove it before it or decrease 1 in calculate
-        if len(names) < len(params)-1:
+        params.remove("time_limit")
+        # TODO check this - making sure line above is what wanted.
+        if len(names) < len(params):
             raise FailedCFException(f'too many arguments given for {name}')
-        if len(names) > len(params)-1:
+        if len(names) > len(params):
             raise FailedCFException(f'not enough arguments given for {name}')
         for param_name in names:
             if param_name not in params:

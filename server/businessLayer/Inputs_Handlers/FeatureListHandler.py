@@ -17,12 +17,14 @@ class FeatureListHandler(InputHandlerAbstract):
         :param model_input:
         :return:
         """
-        # TODO raz need to create an exception if names and values aren't same size
         feature_names = model_input['names']
         feature_values = model_input['values']
+        if len(feature_names) != len(feature_values):
+            raise ValueError(f'Feature names has the length of {len(feature_names)} but feature vales has the length of'
+                             f'{len(feature_values)}.They need to have equal length.')
         return feature_names, feature_values
 
-    def prepare_output(self, feature_names, feature_values, cfs_results, algorithms_names, model_result,
+    def prepare_output(self, feature_names:list, feature_values:list, cfs_results, algorithms_names, model_result,
                        algo_times: dict,
                        error_messages={}):
         """
@@ -70,11 +72,14 @@ class FeatureListHandler(InputHandlerAbstract):
                 output[algo_name]['errorMessage'] = error_messages[algo_name]
             else:
                 output[algo_name]['errorMessage'] = ""
-        #  TODO raz model result should be part of result_input.values
-        #  TODO raz "modelResult" (the name) should be part of result_input.names
-        input = {'model_result': model_result}
-        for name, val in zip(feature_names, feature_values):
-            input[name] = val
-        input['model_result'] = model_result
+        # TODO check this-add modelResult to names and the actual result to values-do we get names and values as lists?
+        # input = {'model_result': model_result}
+        # for name, val in zip(feature_names, feature_values):
+        #     input[name] = val
+        input = {}
+        feature_names.append("modelResult")
+        feature_values.append(model_result)
+        input["values"] = feature_values
+        input["names"] = feature_names
         dict = {'input': input, 'output': output}
         return dict
