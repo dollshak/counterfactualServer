@@ -49,7 +49,7 @@ def add_new_algorithm():
     arguments_list = req.get('argument_lst')
     arguments_list = json.loads(arguments_list)
     desc = req['description']
-    output_exmaples = json.loads(req['output_example'])
+    output_exmaples = req['output_example']
     data = request.files["file_content"]
     additional_info = req['additional_info']
     algo_type = req.get('type')
@@ -80,14 +80,9 @@ def run_algorithms():
             },\n
             "model_file": <model_code_file>,\n
             "model_input" : <json file> as following :{
-                                                            "income" : 9562,\n
-                                                            "outcome": 5060,\n
-                                                            "total":  81991,\n
-                                                            "loan":  374286
+                                                        values: [9562, 5060, 81991, 374286],
+                                                        names: ["income", "outcome", "total", "loan"]
             }
-
-
-
         }
 
     :return:
@@ -123,7 +118,8 @@ def get_algorithm_code(name):
 
 @urls_blueprint.route('/getAllAlgorithms', methods=['GET'])
 def get_all_algorithms():
-    return algorithm_service.get_all_algorithms()
+    results = algorithm_service.get_all_algorithms()
+    return results
 
 
 @urls_blueprint.route('/algorithm', methods=['PUT'])
@@ -143,10 +139,3 @@ def edit_algorithm(algorithm):
     return algorithm_service.edit_algorithm(file_content, file_name, arguments_list, desc, additional_info,
                                             output_exmaples, algo_type)
 
-
-def dummy_predict(x):
-    income = x[0]
-    total = x[1]
-    loan = x[2]
-    ratio = (income * 6 + total) / loan
-    return min(ratio, 1)

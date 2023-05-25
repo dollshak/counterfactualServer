@@ -20,7 +20,7 @@ def initAlgo(model, arg_lst, data=None):
 
     Lambda = 1
 
-    ranges = arg_lst["fetures_ranges"]
+    ranges = arg_lst["features_ranges"]
 
     max_iter = 300
 

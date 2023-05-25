@@ -13,7 +13,9 @@ from server.businessLayer.FileManager import FileManager
 class TestEnginePY(unittest.TestCase):
     def test_valid_inputs(self):
         reg_model = self.model_class.get_regression_model()
+        # TODO change here as feature names list requested
         engine = EnginePY(reg_model, "DiCE_for_test.py", self.cf_args, TestConfig())
+        # TODO change here as feature names list requested
         res = engine.run_algorithm(self.x_test)
         self.assertTrue(len(res) > 0 and len(res[0]) > 0)
 
@@ -38,6 +40,7 @@ class TestEnginePY(unittest.TestCase):
         del invalid_args['features']
         invalid_CF_name = "DiCE_for_test_invalid.py"
         try:
+        # TODO change here as feature names list requested
             engine = EnginePY(reg_model, invalid_CF_name, invalid_args, TestConfig())
             assert False
         except FailedCFException as e:
@@ -51,7 +54,9 @@ class TestEnginePY(unittest.TestCase):
         invalid_args = self.cf_args.copy()
         del invalid_args['features']
         try:
+        # TODO change here as feature names list requested
             engine = EnginePY(reg_model, "DiCE_for_test.py", invalid_args, TestConfig())
+        # TODO change here as feature names list requested
             res = engine.run_algorithm(self.x_test)
             assert False
         except FailedCFException as e:
@@ -65,7 +70,9 @@ class TestEnginePY(unittest.TestCase):
         invalid_args['features_2'] = invalid_args['features']
         del invalid_args['features']
         try:
+        # TODO change here as feature names list requested
             engine = EnginePY(reg_model, "DiCE_for_test.py", invalid_args, TestConfig())
+        # TODO change here as feature names list requested
             res = engine.run_algorithm(self.x_test)
             assert False
         except FailedCFException as e:
@@ -79,6 +86,7 @@ class TestEnginePY(unittest.TestCase):
         invalid_args = self.cf_args.copy()
         invalid_args['f'] = 3
         try:
+        # TODO change here as feature names list requested
             engine = EnginePY(reg_model, "DiCE_for_test.py", invalid_args, TestConfig())
             assert False
         except FailedCFException as e:

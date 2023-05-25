@@ -21,18 +21,21 @@ class AlgorithmService:
                                                          output_example, algo_type)
             return "ok"
         except:
-            logger.error(f'Adding a new algorithm has failed.')  # TODO fix the except and add the message to the log
+            logger.error(f'Adding a new algorithm has failed.')  # TODO raz please send a proper message. if you catch our system's exception, send its message, otherwise, write a better exception
             return "exception"
 
     def run_algorithms(self, algorithms_names, model_content, arg_list, model_input):
         feature_names, feature_values = InputOutputController().handle_input(model_input)
         model = PickleModel.from_pickle_content(model_content)
-        model_result = model(model_input)
-        ress , algo_runtimes = self.algorithms_controller.run_selected_algorithms(algorithms_names, arg_list, model,
-                                                                  feature_values,
-                                                                  feature_names)
+        # TODO raz check results here
+        model_result = model.predict([feature_values])
+        ress, algo_runtimes = self.algorithms_controller.run_selected_algorithms(algorithms_names, arg_list, model,
+                                                                                 feature_values,
+                                                                                 feature_names)
         logger.debug("handling outputs")
-        dict = InputOutputController().handle_output(feature_names, feature_values, ress, algorithms_names,model_result,algo_runtimes=algo_runtimes)
+        dict = InputOutputController().handle_output(feature_names, feature_values, ress, algorithms_names,
+                                                     model_result, algo_runtimes=algo_runtimes)
+
         return dict
 
     def remove_algorithm(self, name):
@@ -50,12 +53,12 @@ class AlgorithmService:
     def edit_algorithm(self, file_content, file_name: str, arguments_list: list[dict], description: str,
                        additional_info: str,
                        output_example: list[str],
-                       algo_type,  origin_algo_name):
+                       algo_type, origin_algo_name):
         try:
             self.algorithms_controller.edit_algorithm(file_content, file_name, arguments_list, description,
                                                       additional_info,
                                                       output_example,
-                                                      algo_type,origin_algo_name)
+                                                      algo_type, origin_algo_name)
             return "ok"
         except:
             logger.error(f'Editing an algorithm has failed.')  # TODO fix the except and add the message to the log

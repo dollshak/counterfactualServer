@@ -22,6 +22,7 @@ class TestEngineController(unittest.TestCase):
             self.file_manager.add_algorithm(self.test_cf_content, self.cf_description)
 
         inputs = {self.algo_name: self.cf_input}
+        # TODO change here as feature names list requested
         result = self.controller.run_algorithms([self.algo_name], self.model, self.x_test, inputs, {self.algo_name: 5})
         self.assertGreater(len(result[0]), 0)
 
@@ -33,6 +34,7 @@ class TestEngineController(unittest.TestCase):
 
         inputs = {self.algo_name: self.cf_input,
                   self.algo_name_2: self.cf_input}
+        # TODO change here as feature names list requested
         result = self.controller.run_algorithms([self.algo_name, self.algo_name_2], self.model, self.x_test, inputs,
                                                 {self.algo_name: 5, self.algo_name_2: 5})
         self.assertGreater(len(result[0]), 0)
@@ -44,6 +46,7 @@ class TestEngineController(unittest.TestCase):
         invalid_cf_inputs = self.cf_input.copy()
         del invalid_cf_inputs['features']
         invalid_inputs = {self.algo_name: invalid_cf_inputs}
+        # TODO change here as feature names list requested
         result = self.controller.run_algorithms([self.algo_name], self.model, self.x_test, invalid_inputs,
                                                 {self.algo_name: 5})
         self.assertTrue(isinstance(result, tuple))
@@ -59,6 +62,7 @@ class TestEngineController(unittest.TestCase):
         del invalid_cf_inputs['features']
         inputs = {self.algo_name: invalid_cf_inputs,
                   self.algo_name_2: self.cf_input}
+        # TODO change here as feature names list requested
         result = self.controller.run_algorithms([self.algo_name, self.algo_name_2], self.model, self.x_test, inputs,
                                                 {self.algo_name: 5, self.algo_name_2: 5})
         self.assertTrue(isinstance(result, tuple))

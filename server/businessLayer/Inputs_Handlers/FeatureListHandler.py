@@ -9,35 +9,38 @@ class FeatureListHandler(InputHandlerAbstract):
         super().__init__("FeatureList")
 
     def prepare_input(self, model_input):
-        feature_names = list()
-        feature_values = list()
-        for name, value in model_input.items():
-            feature_names.append(name)
-            feature_values.append(value)
+        """
+        {
+             values: [9562, 5060, 81991, 374286],
+             names: ["income", "outcome", "total", "loan"]
+            }
+        :param model_input:
+        :return:
+        """
+        # TODO raz need to create an exception if names and values aren't same size
+        feature_names = model_input['names']
+        feature_values = model_input['values']
         return feature_names, feature_values
 
-    # TODO remove algo_times default
-    def prepare_output(self, feature_names, feature_values, cfs_results, algorithms_names, model_result, algo_times:dict,
+    def prepare_output(self, feature_names, feature_values, cfs_results, algorithms_names, model_result,
+                       algo_times: dict,
                        error_messages={}):
         """
         example output
         {
-            'input': {
-                'name': 'ido',
-                'age': 25,
-                'height': 183,
-                'living area': 'rural'
-                'modelResult': 0.56
+            'result_input': {
+                values: [1,2,3,4,0.56]
+                 names: ["param1", "param2", "param3", "param4", "modelResult"]
             },
             'output': {
                 'algo1': {
                     "time" : 0.55,
-                    "results" : [['ido', 27, 183, 'rural'], ['ido', 25, 189, 'rural']]
+                    "results" : [['ido', 27, 183, 'rural', 0,45], ['ido', 25, 189, 'rural', 0.80]]
                     "errorMessage": ""
                     },
                 'algo2': {
                     "time" : 0.20,
-                    "results" : [['ido', 27, 183, 'rural'], ['ido', 25, 189, 'rural']]
+                    "results" : [['ido', 27, 183, 'rural',0.9], ['ido', 25, 189, 'rural', 0.9]]
                     "errorMessage": ""
                     },
                 'failed_algo': {
@@ -59,23 +62,19 @@ class FeatureListHandler(InputHandlerAbstract):
         for algo_name, res in zip(algorithms_names, cfs_results):
             output[algo_name] = {}
             output[algo_name]['results'] = res
-            # TODO if condition
             if algo_name in algo_times.keys():
                 output[algo_name]['time'] = algo_times[algo_name]
             else:
                 output[algo_name]['time'] = -1
-            # TODO if condition
             if algo_name in error_messages.keys():
                 output[algo_name]['errorMessage'] = error_messages[algo_name]
             else:
                 output[algo_name]['errorMessage'] = ""
-        input = {'model_result':model_result}
+        #  TODO raz model result should be part of result_input.values
+        #  TODO raz "modelResult" (the name) should be part of result_input.names
+        input = {'model_result': model_result}
         for name, val in zip(feature_names, feature_values):
             input[name] = val
-        # TODO change hard coded here
-        ################################################################################
         input['model_result'] = model_result
-        ################################################################################
-        ################################################################################
         dict = {'input': input, 'output': output}
         return dict

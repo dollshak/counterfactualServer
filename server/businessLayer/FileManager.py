@@ -138,7 +138,7 @@ class FileManager:
             result.append(
                 {"_id": str(algo['_id']), "name": algo['name'], "description": algo['description'],
                  "argument_lst": json.loads(algo['argument_lst']),
-                 "additional_info": algo['additional_info'], "output_example": algo['output_example']})
+                 "additional_info": algo['additional_info'], "output_example": algo['output_example'] ,  "algo_type": algo['algo_type']})
         logger.debug(f'Fetched all algorithms from the DB for the users.')
         return result
 
