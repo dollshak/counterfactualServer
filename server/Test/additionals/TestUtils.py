@@ -41,3 +41,11 @@ class TestUtils:
             {"param_name": "desired_range", "description": "range of accuracy", "accepted_types": ["list"]},
             {"param_name": "is_classifier", "description": "kind of model", "accepted_types": ["boolean"]}
         ]
+
+    @staticmethod
+    def get_model_feature_names():
+        return ["income" , "outcome", "total","loan"]
+
+    @staticmethod
+    def get_one_cf_input():
+        return {}

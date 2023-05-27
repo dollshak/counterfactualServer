@@ -72,10 +72,6 @@ class FeatureListHandler(InputHandlerAbstract):
                 output[algo_name]['errorMessage'] = error_messages[algo_name]
             else:
                 output[algo_name]['errorMessage'] = ""
-        # TODO check this-add modelResult to names and the actual result to values-do we get names and values as lists?
-        # input = {'model_result': model_result}
-        # for name, val in zip(feature_names, feature_values):
-        #     input[name] = val
         input = {}
         feature_names.append("modelResult")
         feature_values.append(model_result)

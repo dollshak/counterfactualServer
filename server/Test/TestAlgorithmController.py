@@ -98,10 +98,6 @@ class TestAlgorithmController(unittest.TestCase):
             self.controller.add_new_algorithm(test_cf_content, file_name, invalid_arg_desc, self.desc, self.addI,
                                               self.res_example, self.algo_type)
 
-    def test_get_algorithm(self):
-        alg = self.file_manager.get_algorithm("Dice")
-        self.assertTrue(alg is not None)
-
     def setUp(self) -> None:
         rand_num = random.randint(1, 10000)
         file_name = TestUtils.get_dice_algo_name()

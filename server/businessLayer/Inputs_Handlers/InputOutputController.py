@@ -20,12 +20,12 @@ class InputOutputController:
                       input_type="FeatureList"):
         handler = self._get_handler(input_type)
         logger.debug("Starting to handle output before displaying results to the user.")
-        # TODO Check this. raz need to insert error message to prepare output here if exist
         errors = {}
         for idx, res in enumerate(cfs_results):
-            if isinstance(res, Exception):
+            if isinstance(res, str):
                 algo_name = algorithms_names[idx]
                 errors[algo_name] = res
+                cfs_results[idx] = []
         return handler.prepare_output(feature_names, feature_values, cfs_results, algorithms_names,
                                       model_result=model_result, algo_times=algo_runtimes, error_messages=errors)
 

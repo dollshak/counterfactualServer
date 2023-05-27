@@ -28,7 +28,7 @@ class TestFileManager(unittest.TestCase):
             assert False
 
     def test_get_all_algorithms(self):
-        #         TODO need to fix here -> input changed
+        #  TODO need to fix here -> input changed
 
 
         # create random inorder to promise does not find the previous file

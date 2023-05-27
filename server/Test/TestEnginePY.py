@@ -13,10 +13,9 @@ from server.businessLayer.FileManager import FileManager
 class TestEnginePY(unittest.TestCase):
     def test_valid_inputs(self):
         reg_model = self.model_class.get_regression_model()
-        # TODO change here as feature names list requested
-        engine = EnginePY(reg_model, "DiCE_for_test.py", self.cf_args, TestConfig())
-        # TODO change here as feature names list requested
-        res = engine.run_algorithm(self.x_test)
+        engine = EnginePY(reg_model, "DiCE_for_test.py", self.cf_args, TestConfig(),TestUtils.get_model_feature_names())
+        algo_time_limit = self.cf_args["time_limit"]
+        res = engine.run_algorithm(self.x_test, algo_time_limit=algo_time_limit)
         self.assertTrue(len(res) > 0 and len(res[0]) > 0)
 
     # def test_invalid_model(self):
@@ -40,8 +39,7 @@ class TestEnginePY(unittest.TestCase):
         del invalid_args['features']
         invalid_CF_name = "DiCE_for_test_invalid.py"
         try:
-        # TODO change here as feature names list requested
-            engine = EnginePY(reg_model, invalid_CF_name, invalid_args, TestConfig())
+            engine = EnginePY(reg_model, invalid_CF_name, invalid_args, TestConfig(),list(self.cf_args["features"]))
             assert False
         except FailedCFException as e:
             self.assertEqual(f'There is no CF algorithm named:{invalid_CF_name}', e.message)
@@ -54,10 +52,8 @@ class TestEnginePY(unittest.TestCase):
         invalid_args = self.cf_args.copy()
         del invalid_args['features']
         try:
-        # TODO change here as feature names list requested
-            engine = EnginePY(reg_model, "DiCE_for_test.py", invalid_args, TestConfig())
-        # TODO change here as feature names list requested
-            res = engine.run_algorithm(self.x_test)
+            engine = EnginePY(reg_model, "DiCE_for_test.py", invalid_args, TestConfig(),list(self.cf_args["features"]))
+            res = engine.run_algorithm(self.x_test, algo_time_limit=5)
             assert False
         except FailedCFException as e:
             self.assertEqual( f'not enough arguments given for {self.algo_name}', e.message)
@@ -70,10 +66,8 @@ class TestEnginePY(unittest.TestCase):
         invalid_args['features_2'] = invalid_args['features']
         del invalid_args['features']
         try:
-        # TODO change here as feature names list requested
-            engine = EnginePY(reg_model, "DiCE_for_test.py", invalid_args, TestConfig())
-        # TODO change here as feature names list requested
-            res = engine.run_algorithm(self.x_test)
+            engine = EnginePY(reg_model, "DiCE_for_test.py", invalid_args, TestConfig(),list(self.cf_args["features"]))
+            res = engine.run_algorithm(self.x_test, algo_time_limit=5)
             assert False
         except FailedCFException as e:
             self.assertEqual(f'features is missing for {self.algo_name}', e.message)
@@ -86,8 +80,7 @@ class TestEnginePY(unittest.TestCase):
         invalid_args = self.cf_args.copy()
         invalid_args['f'] = 3
         try:
-        # TODO change here as feature names list requested
-            engine = EnginePY(reg_model, "DiCE_for_test.py", invalid_args, TestConfig())
+            engine = EnginePY(reg_model, "DiCE_for_test.py", invalid_args, TestConfig(),list(self.cf_args["features"]))
             assert False
         except FailedCFException as e:
             self.assertEqual(f'too many arguments given for {self.algo_name}', e.message)
@@ -109,6 +102,7 @@ class TestEnginePY(unittest.TestCase):
         self.cf_args['desired_class'] = 2
         self.cf_args['desired_range'] = [0.8, 1.0]
         self.cf_args['is_classifier'] = False
+        self.cf_args["time_limit"] = 5
 
     def tearDown(self) -> None:
         pass

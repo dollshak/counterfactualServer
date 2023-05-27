@@ -16,5 +16,5 @@ class EngineAPI:
         self.feature_name_list = feature_name_list
 
     @abstractmethod
-    def run_algorithm(self, model_input: list,algo_time_limit, feature_list):
+    def run_algorithm(self, model_input: list,algo_time_limit):
         raise Exception("Not implemented.")

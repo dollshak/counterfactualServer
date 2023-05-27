@@ -19,11 +19,11 @@ class AlgorithmService:
         try:
             self.algorithms_controller.add_new_algorithm(file_content, name, argument_lst, description, additional_info,
                                                          output_example, algo_type)
-            return "ok"
+            return "A new algorithm was added successfully"
         except Exception as e:
             logger.error(f'Adding a new algorithm named {name} has failed.'
-                         f'Got the following error: {e.args}')  # TODO Check if proper message
-            return "exception"
+                         f'Got the following error: {str(e)}')
+            return str(e)
 
     def run_algorithms(self, algorithms_names, model_content, arg_list, model_input):
         feature_names, feature_values = InputOutputController().handle_input(model_input)

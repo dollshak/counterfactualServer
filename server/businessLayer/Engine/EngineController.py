@@ -29,11 +29,9 @@ class EngineController:
                 algo_time_limit = cf_inputs[algo_name]["time_limit"]
                 result, duration = self.get_cf_results(algo_name, inputs, model, model_input, algo_time_limit,
                                                        feature_names)
-                algo_runtimes[algo_name] = duration.total_seconds()
+                algo_runtimes[algo_name] = duration
                 results[idx] = result
             except FailedCFException as e:
-                #  TODO raz exception need sent inside algo results
-                # Results is list of list - how do we want the exception to be sent? should it be list of results or ex
                 logger.error(f'{algo_name} failed to run, returned empty results . error message is : {e.message}')
                 results[idx] = []
         logger.debug(f'Finished to run algorithms.')
@@ -43,7 +41,8 @@ class EngineController:
         suffix: str = self.get_type_by_name(algo_name)
         # TODO implement here -> bring engine by suffix instead of hard coded enginePY -> should create a function
         engine = EnginePY(model, algo_name, cf_inputs, self.config, feature_list)
-        result,duration = engine.run_algorithm(model_input, algo_time_limit, feature_list)
+        result,duration = engine.run_algorithm(model_input, algo_time_limit)
+        duration = duration.total_seconds()
         duration = min(duration, algo_time_limit)
         logger.debug(f'Algorithm {algo_name} ran successfully.')
         return result, duration

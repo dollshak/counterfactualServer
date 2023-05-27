@@ -29,25 +29,16 @@ class TestInputOutputController(unittest.TestCase):
         self.assertEqual([], output['output']['algo2']['results'])
 
     def setUp(self) -> None:
-        self.input = {
-            'name': 'ido',
-            'age': 25,
-            'height': 183,
-            'living area': 'rural'
-        }
+        names = ['name','age','height','living area']
+        values = ['ido',25,183,'rural']
+        self.input = {'names':names,'values':values}
         self.model_result = 0.3
         self.algo_runtimes = {'algo1': 3.2, 'algo2': 0.7}
         self.cf_results = [[['ido', 27, 183, 'rural'], ['ido', 25, 189, 'rural']],
                            [['ido', 30, 182, 'rural'], ['ido', 20, 199, 'rural']]]
         self.algo_names = ['algo1', 'algo2']
         self.expected_output = {
-            'input': {
-                'name': 'ido',
-                'age': 25,
-                'height': 183,
-                'living area': 'rural',
-                'model_result': 0.3
-            },
+            'input':self.input,
             'output': {
                 'algo1': {
                     'time': 3.2,

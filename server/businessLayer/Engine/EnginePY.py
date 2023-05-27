@@ -1,9 +1,11 @@
 import os
 import importlib
 import datetime
-from datetime import timedelta,datetime
+from datetime import timedelta, datetime
 import time
-import signal
+
+import multiprocess
+from pathos.multiprocessing import ProcessingPool as Pool
 from server.Tools.FailedCFException import FailedCFException
 from server.Tools.SystemConfig import SystemConfig
 from server.businessLayer.Algorithms.CounterFactualAlgorithmDescription import CounterFactualAlgorithmDescription
@@ -19,7 +21,7 @@ class EnginePY(EngineAPI):
         super().__init__(model, file_name, cf_params_list, config, feature_name_list)
         self.validate_arguments()
 
-    def run_algorithm(self, model_input: list, algo_time_limit, feature_list):
+    def run_algorithm(self, model_input: list, algo_time_limit=-1):
         name, suffix = os.path.splitext(self.file_name)
         module_path = SystemConfig().ALGORITHMS_DIR_PATH_MODULES + name
         try:
@@ -29,27 +31,20 @@ class EnginePY(EngineAPI):
         start_time = datetime.now().time()
         start_time = timedelta(hours=start_time.hour, minutes=start_time.minute, seconds=start_time.second)
         if algo_time_limit > 0:
-            results = self.run_with_timeout(cf_algo.explain, algo_time_limit, model_input)
+            pool = Pool(1)
+            try:
+                results = pool.apipe(cf_algo.explain,model_input).get(timeout=algo_time_limit)
+            except multiprocess.context.TimeoutError:
+                return f'{name} could not finish in time'
+            except Exception as e:
+                return str(e)
+
         else:
             results = cf_algo.explain(model_input)
         end_time = datetime.now().time()
         end_time = timedelta(hours=end_time.hour, minutes=end_time.minute, seconds=end_time.second)
-        duration = start_time - end_time
-        return results,duration
-
-    def timeout_handler(self, signum, frame):
-        raise TimeoutError("Func timed out")
-
-    def run_with_timeout(self, func, timeout, params):
-        signal.signal(signal.SIGALRM, self.timeout_handler)
-        signal.alarm(timeout)
-        try:
-            result = func(params)
-        except TimeoutError:
-            print("Func timed out")
-            return []
-        signal.alarm(0)
-        return result
+        duration = end_time - start_time
+        return results, duration
 
     def import_cf_algo(self, module_path):
         try:
@@ -71,7 +66,6 @@ class EnginePY(EngineAPI):
         names = [arg['param_name'] for arg in arg_list]
         params = list(self.cf_params.keys())
         params.remove("time_limit")
-        # TODO check this - making sure line above is what wanted.
         if len(names) < len(params):
             raise FailedCFException(f'too many arguments given for {name}')
         if len(names) > len(params):
