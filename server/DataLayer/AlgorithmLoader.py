@@ -79,3 +79,6 @@ class AlgorithmLoader:
         }
         query = {"name": origin_algo_name}
         self.collection.update_one(query, {"$set": obj_json})
+
+    def clear_db(self):
+        self.collection.delete_many({})

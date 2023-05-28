@@ -122,6 +122,12 @@ def get_all_algorithms():
     return results
 
 
+@urls_blueprint.route('/clearDB', methods=['POST'])
+def clear_db():
+    algorithm_service.clear_db()
+    return "db cleared", 400
+
+
 @urls_blueprint.route('/algorithm', methods=['PUT'])
 def edit_algorithm(algorithm):
     req = request.form
@@ -138,4 +144,3 @@ def edit_algorithm(algorithm):
     # TODO add param of original_algo_name
     return algorithm_service.edit_algorithm(file_content, file_name, arguments_list, desc, additional_info,
                                             output_exmaples, algo_type)
-

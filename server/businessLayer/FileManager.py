@@ -180,3 +180,6 @@ class FileManager:
             logger.debug("Importing missing algorithms.")
             self.load_algorithms(missing_algos)
         logger.debug("All algorithms have been imported.")
+
+    def clear_db(self):
+        AlgorithmLoader().clear_db()

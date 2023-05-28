@@ -65,3 +65,6 @@ class AlgorithmService:
             logger.error(f'Editing the algorithm {origin_algo_name} has failed.'
                          f'Got the following error: {e.args}')
             return "exception"
+
+    def clear_db(self):
+        self.algorithms_controller.clear_db()

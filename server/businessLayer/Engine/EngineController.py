@@ -26,10 +26,10 @@ class EngineController:
                 logger.debug(f'running {algo_name}')
                 name, suffix = os.path.splitext(algo_name)
                 inputs = cf_inputs[name]
-                algo_time_limit = cf_inputs[algo_name]["time_limit"]
+                algo_time_limit = inputs["time_limit"]
                 result, duration = self.get_cf_results(algo_name, inputs, model, model_input, algo_time_limit,
                                                        feature_names)
-                algo_runtimes[algo_name] = duration
+                algo_runtimes[name] = duration
                 results[idx] = result
             except FailedCFException as e:
                 logger.error(f'{algo_name} failed to run, returned empty results . error message is : {e.message}')
@@ -42,8 +42,10 @@ class EngineController:
         # TODO implement here -> bring engine by suffix instead of hard coded enginePY -> should create a function
         engine = EnginePY(model, algo_name, cf_inputs, self.config, feature_list)
         result,duration = engine.run_algorithm(model_input, algo_time_limit)
-        duration = duration.total_seconds()
-        duration = min(duration, algo_time_limit)
+        # duration = duration.seconds
+        if algo_time_limit >0:
+            duration = min(duration, algo_time_limit)
+
         logger.debug(f'Algorithm {algo_name} ran successfully.')
         return result, duration
 

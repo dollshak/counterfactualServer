@@ -74,7 +74,7 @@ class FeatureListHandler(InputHandlerAbstract):
                 output[algo_name]['errorMessage'] = ""
         input = {}
         feature_names.append("modelResult")
-        feature_values.append(model_result)
+        feature_values.append(model_result[0])
         input["values"] = feature_values
         input["names"] = feature_names
         dict = {'input': input, 'output': output}

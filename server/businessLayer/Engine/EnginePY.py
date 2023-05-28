@@ -28,21 +28,21 @@ class EnginePY(EngineAPI):
             cf_algo = self.import_cf_algo(module_path)
         except:
             raise FailedCFException(f'failed to import {name}')
-        start_time = datetime.now().time()
-        start_time = timedelta(hours=start_time.hour, minutes=start_time.minute, seconds=start_time.second)
+        start_time = time.time()
+        # start_time = timedelta(hours=start_time.hour, minutes=start_time.minute, seconds=start_time.second)
         if algo_time_limit > 0:
             pool = Pool(1)
             try:
                 results = pool.apipe(cf_algo.explain,model_input).get(timeout=algo_time_limit)
             except multiprocess.context.TimeoutError:
-                return f'{name} could not finish in time'
+                return f'{name} could not finish in time', algo_time_limit
             except Exception as e:
-                return str(e)
+                return str(e), -1
 
         else:
             results = cf_algo.explain(model_input)
-        end_time = datetime.now().time()
-        end_time = timedelta(hours=end_time.hour, minutes=end_time.minute, seconds=end_time.second)
+        end_time = time.time()
+        # end_time = timedelta(hours=end_time.hour, minutes=end_time.minute, seconds=end_time.second)
         duration = end_time - start_time
         return results, duration
 
