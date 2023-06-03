@@ -12,17 +12,6 @@ urls_blueprint = Blueprint('urls', __name__, )
 algorithm_service = AlgorithmService(SystemConfig())
 
 
-@urls_blueprint.route('/')
-def index():
-    # return algorithm_service.add_new_algorithm()
-    return ("in index")
-
-
-@urls_blueprint.route('/try')
-def func():
-    return "try"
-
-
 @urls_blueprint.route('/file', methods=['POST'])
 def files():
     file = request.files['modelFile']
@@ -55,8 +44,11 @@ def add_new_algorithm():
     algo_type = req.get('type')
     algo_type = json.loads(algo_type)
     file_content = data.read()
-    return algorithm_service.add_new_algorithm(file_content, file_name, arguments_list, desc, additional_info,
-                                               output_exmaples, algo_type)
+    try:
+        return algorithm_service.add_new_algorithm(file_content, file_name, arguments_list, desc, additional_info,
+                                                   output_exmaples, algo_type)
+    except Exception as e:
+        return str(e), 400
 
 
 @urls_blueprint.route('/runAlgorithm', methods=['POST'])
@@ -95,9 +87,9 @@ def run_algorithms():
         modelFile = request.files['model_file']
         model_input = json.load(request.files['model_input'])
         return algorithm_service.run_algorithms(algo_names, modelFile, arg_list, model_input)
-    except:
+    except Exception as e:
         # TODO exception should be informative
-        return "unknown model"
+        return str(e), 400
 
 
 @urls_blueprint.route('/algorithm', methods=['DELETE'])
@@ -118,8 +110,11 @@ def get_algorithm_code(name):
 
 @urls_blueprint.route('/getAllAlgorithms', methods=['GET'])
 def get_all_algorithms():
-    results = algorithm_service.get_all_algorithms()
-    return results
+    try:
+        results = algorithm_service.get_all_algorithms()
+        return results
+    except Exception as e:
+        return str(e), 400
 
 
 @urls_blueprint.route('/clearDB', methods=['POST'])
@@ -130,17 +125,20 @@ def clear_db():
 
 @urls_blueprint.route('/algorithm', methods=['PUT'])
 def edit_algorithm(algorithm):
-    req = request.form
-    file_name = req['name']
-    arguments_list = req.get('argument_lst')
-    arguments_list = json.loads(arguments_list)
-    desc = req['description']
-    output_exmaples = json.loads(req['output_example'])
-    data = request.files["file_content"]
-    additional_info = req['additional_info']
-    file_content = data.read()
-    algo_type = req.get('type')
-    algo_type = json.loads(algo_type)
-    # TODO add param of original_algo_name
-    return algorithm_service.edit_algorithm(file_content, file_name, arguments_list, desc, additional_info,
-                                            output_exmaples, algo_type)
+    try:
+        req = request.form
+        file_name = req['name']
+        arguments_list = req.get('argument_lst')
+        arguments_list = json.loads(arguments_list)
+        desc = req['description']
+        output_exmaples = json.loads(req['output_example'])
+        data = request.files["file_content"]
+        additional_info = req['additional_info']
+        file_content = data.read()
+        algo_type = req.get('type')
+        algo_type = json.loads(algo_type)
+        # TODO add param of original_algo_name
+        return algorithm_service.edit_algorithm(file_content, file_name, arguments_list, desc, additional_info,
+                                                output_exmaples, algo_type)
+    except Exception as e:
+        return str(e), 400
