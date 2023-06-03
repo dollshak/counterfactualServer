@@ -19,4 +19,5 @@ tensorflow~=2.11.0
 matplotlib~=3.6.2
 keras~=2.11.0
 dice_ml
-scipy
+scipy~=1.10.0
+multiprocess~=0.70.14

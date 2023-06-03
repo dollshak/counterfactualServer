@@ -27,13 +27,15 @@ class EngineController:
                 name, suffix = os.path.splitext(algo_name)
                 inputs = cf_inputs[name]
                 algo_time_limit = inputs["time_limit"]
+                if algo_time_limit is not None:
+                    algo_time_limit = int(algo_time_limit)
                 result, duration = self.get_cf_results(algo_name, inputs, model, model_input, algo_time_limit,
                                                        feature_names)
                 algo_runtimes[name] = duration
                 results[idx] = result
             except FailedCFException as e:
                 logger.error(f'{algo_name} failed to run, returned empty results . error message is : {e.message}')
-                results[idx] = []
+                results[idx] = e.message
         logger.debug(f'Finished to run algorithms.')
         return results, algo_runtimes
 
