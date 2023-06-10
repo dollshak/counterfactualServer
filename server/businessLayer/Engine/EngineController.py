@@ -6,7 +6,6 @@ from server.businessLayer.Engine.EnginePY import EnginePY
 from server.businessLayer.ML_Models.MlModel import MlModel
 from server.Tools.Logger import Logger
 
-
 logger = Logger()
 
 
@@ -43,9 +42,9 @@ class EngineController:
         suffix: str = self.get_type_by_name(algo_name)
         # TODO implement here -> bring engine by suffix instead of hard coded enginePY -> should create a function
         engine = EnginePY(model, algo_name, cf_inputs, self.config, feature_list)
-        result,duration = engine.run_algorithm(model_input, algo_time_limit)
+        result, duration = engine.run_algorithm(model_input, algo_time_limit)
         # duration = duration.seconds
-        if algo_time_limit >0:
+        if algo_time_limit > 0:
             duration = min(duration, algo_time_limit)
 
         logger.debug(f'Algorithm {algo_name} ran successfully.')
