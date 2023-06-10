@@ -124,21 +124,26 @@ def clear_db():
 
 
 @urls_blueprint.route('/algorithm', methods=['PUT'])
-def edit_algorithm(algorithm):
+def edit_algorithm():
     try:
         req = request.form
         file_name = req['name']
+        origin_name = req['origin_name']
         arguments_list = req.get('argument_lst')
         arguments_list = json.loads(arguments_list)
         desc = req['description']
-        output_exmaples = json.loads(req['output_example'])
-        data = request.files["file_content"]
+        output_exmaples = req['output_example']
+        if "file_content" in request.files and request.files["file_content"] is not None:
+            data = request.files["file_content"]
+            file_content = data.read()
+
+        else:
+            file_content = None
         additional_info = req['additional_info']
-        file_content = data.read()
         algo_type = req.get('type')
         algo_type = json.loads(algo_type)
-        # TODO add param of original_algo_name
+
         return algorithm_service.edit_algorithm(file_content, file_name, arguments_list, desc, additional_info,
-                                                output_exmaples, algo_type)
+                                                output_exmaples, algo_type, origin_name)
     except Exception as e:
         return str(e), 400

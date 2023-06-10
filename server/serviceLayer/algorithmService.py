@@ -23,7 +23,7 @@ class AlgorithmService:
         except Exception as e:
             logger.error(f'Adding a new algorithm named {name} has failed.'
                          f'Got the following error: {str(e)}')
-            return str(e) ,400
+            return str(e), 400
 
     def run_algorithms(self, algorithms_names, model_content, arg_list, model_input):
         feature_names, feature_values = InputOutputController().handle_input(model_input)
@@ -31,7 +31,8 @@ class AlgorithmService:
         try:
             model_result = model.predict([feature_values])
         except Exception as e:
-            return "something went wrong with the model, couldn't run it with the given values, received message: \n" + str(e) , 400
+            return "something went wrong with the model, couldn't run it with the given values, received message: \n" + str(
+                e), 400
         ress, algo_runtimes = self.algorithms_controller.run_selected_algorithms(algorithms_names, arg_list, model,
                                                                                  feature_values,
                                                                                  feature_names)
@@ -56,21 +57,20 @@ class AlgorithmService:
         except Exception as e:
             return str(e), 400
 
-
     def edit_algorithm(self, file_content, file_name: str, arguments_list: list[dict], description: str,
                        additional_info: str,
-                       output_example: list[str],
+                       output_example,
                        algo_type, origin_algo_name):
         try:
             self.algorithms_controller.edit_algorithm(file_content, file_name, arguments_list, description,
                                                       additional_info,
                                                       output_example,
                                                       algo_type, origin_algo_name)
-            return "ok"
+            return f"{origin_algo_name} has updated"
         except Exception as e:
-            logger.error(f'Editing the algorithm {origin_algo_name} has failed.'
+            logger.error(f'Editing the algorithm {origin_algo_name} has failed.\n'
                          f'Got the following error: {e.args}')
-            return str(e) ,400
+            return str(e), 400
 
     def clear_db(self):
         self.algorithms_controller.clear_db()

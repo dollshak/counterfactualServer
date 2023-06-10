@@ -35,17 +35,7 @@ class AlgorithmsController:
         if 'regressor' not in type and 'classifier' not in type:
             logger.error(f'Trying to add algorithm: {name} - the algo type field is not classifier or regressor')
             raise ValueError("Algo type needs to be regressor or classifier")
-        args_lst = []
-        for arg in argument_lst:
-            param_name = arg['param_name']
-            description = arg['description']
-            accepted_types = arg['accepted_types']
-            if 'default_value' in arg.keys():
-                default_value = arg['default_value']
-            else:
-                default_value = None
-            arg_dsc = ArgumentDescription(param_name, description, accepted_types, default_value)
-            args_lst.append(arg_dsc)
+        args_lst = self.create_arg_list_to_save(argument_lst)
         params = []
         for arg in args_lst:
             p_name = arg.param_name
@@ -60,6 +50,20 @@ class AlgorithmsController:
             raise ValueError("Cant add two or more arguments with the same name")
         cf_desc = CounterFactualAlgorithmDescription(name, args_lst, description, additional_info, output_example, type)
         self.file_manager.add_algorithm(file_content, cf_desc)
+
+    def create_arg_list_to_save(self, argument_lst):
+        args_lst = []
+        for arg in argument_lst:
+            param_name = arg['param_name']
+            arg_description = arg['description']
+            accepted_types = arg['accepted_types']
+            if 'default_value' in arg.keys():
+                default_value = arg['default_value']
+            else:
+                default_value = None
+            arg_dsc = ArgumentDescription(param_name, arg_description, accepted_types, default_value)
+            args_lst.append(arg_dsc)
+        return args_lst
 
     def remove_algorithm(self, algorithm_name):
         self.file_manager.remove_algorithm(algorithm_name)
@@ -84,9 +88,7 @@ class AlgorithmsController:
             logger.error(
                 f'In edit algorithm for {origin_algo_name} - the algo type field is not classifier or regressor')
             raise ValueError("Algo type needs to be regressor or classifier")
-        args_lst = [ArgumentDescription(param_name=arg['param_name'], description=arg['description'],
-                                        accepted_types=arg['accepted_types'], default_value=arg['default_value']) for
-                    arg in argument_lst]
+        args_lst = self.create_arg_list_to_save(argument_lst)
         cf_desc = CounterFactualAlgorithmDescription(name, args_lst, description, additional_info, output_example,
                                                      algo_type)
         self.file_manager.edit_algorithm(file_content, cf_desc, origin_algo_name)

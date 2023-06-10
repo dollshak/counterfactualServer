@@ -48,8 +48,9 @@ class AlgorithmLoader:
             algo_type_ = data_obj['algo_type']
             arg_list = []
             if argument_lst_ is not None:
-                arg_list = [ArgumentDescriptionDto(arg['param_name'], arg['description'],  arg['accepted_types']) for arg in argument_lst_]
-            algo = AlgorithmDto(content_,name_, arg_list, description_,additional_info_,output_example_,algo_type_ )
+                arg_list = [ArgumentDescriptionDto(arg['param_name'], arg['description'], arg['accepted_types']) for arg
+                            in argument_lst_]
+            algo = AlgorithmDto(content_, name_, arg_list, description_, additional_info_, output_example_, algo_type_)
             algos.append(algo)
         return algos
 
@@ -68,12 +69,14 @@ class AlgorithmLoader:
         result = self.collection.find({"name": {"$ne": None}})
         return result
 
-    def update(self, algo_dto,origin_algo_name):
+    def update(self, algo_dto, origin_algo_name):
+        serializedArgumentList = [arg.serialize() for arg in algo_dto.argument_lst]
+
         obj_json = {
             "name": algo_dto.name,
             "file_content": algo_dto.file_content,
             "description": algo_dto.description,
-            "argument_lst": [],
+            "argument_lst": json.dumps(serializedArgumentList),
             "additional_info": algo_dto.additional_info,
             "output_example": algo_dto.output_example
         }

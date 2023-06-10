@@ -54,7 +54,8 @@ class FileManager:
 
     def save_in_db(self, file_content, cf_desc: CounterFactualAlgorithmDescription):
         loader = AlgorithmLoader()
-        args_dtos = [ArgumentDescriptionDto(arg.param_name, arg.description, arg.accepted_types,arg.default_value) for arg in
+        args_dtos = [ArgumentDescriptionDto(arg.param_name, arg.description, arg.accepted_types, arg.default_value) for
+                     arg in
                      cf_desc.argument_lst]
         algo_dto = AlgorithmDto(file_content, cf_desc.name, args_dtos, cf_desc.description, cf_desc.additional_info,
                                 cf_desc.output_example, cf_desc.algo_type)
@@ -119,7 +120,7 @@ class FileManager:
         cf_descs = []
         for obj in dto_algos:
             self.content_to_file(obj.file_content, obj.name)
-            args_list = [ArgumentDescription(arg.name, arg.description, arg.accepted_types,arg.default_value) for arg
+            args_list = [ArgumentDescription(arg.name, arg.description, arg.accepted_types, arg.default_value) for arg
                          in obj.argument_lst]
             cf_descs.append(
                 CounterFactualAlgorithmDescription(obj.name, args_list, obj.description, obj.additional_info,
@@ -138,19 +139,28 @@ class FileManager:
             result.append(
                 {"_id": str(algo['_id']), "name": algo['name'], "description": algo['description'],
                  "argument_lst": json.loads(algo['argument_lst']),
-                 "additional_info": algo['additional_info'], "output_example": algo['output_example'] ,  "algo_type": algo['algo_type']})
+                 "additional_info": algo['additional_info'], "output_example": algo['output_example'],
+                 "algo_type": algo['algo_type']})
         logger.debug(f'Fetched all algorithms from the DB for the users.')
         return result
 
     def edit_algorithm(self, file_content, cf_desc, origin_algo_name):
         if self.is_algo_exist_in_db(origin_algo_name):
-            decoded = self.content_to_file(file_content, cf_desc.name)
+            if file_content is not None:
+                decoded = self.content_to_file(file_content, cf_desc.name)
+            else:
+                decoded = self.load_algorithm(origin_algo_name)
             self.updated_in_db(decoded, cf_desc, origin_algo_name)
             logger.debug(f'Algorithm {cf_desc.name} has been edited successfully in the DB')
+            self.remove_algo_system(origin_algo_name)
+        else:
+            logger.error(f"tried to edit {origin_algo_name} but couldn't find it on db")
+            raise Exception("something went wrong, couldn't find origin file in db")
 
     def updated_in_db(self, file_content, cf_desc, origin_algo_name):
         loader = AlgorithmLoader()
-        args_dtos = [ArgumentDescriptionDto(arg.param_name, arg.description, arg.accepted_types,arg.default_value) for arg in
+        args_dtos = [ArgumentDescriptionDto(arg.param_name, arg.description, arg.accepted_types, arg.default_value) for
+                     arg in
                      cf_desc.argument_lst]
         algo_dto = AlgorithmDto(file_content, cf_desc.name, args_dtos, cf_desc.description, cf_desc.additional_info,
                                 cf_desc.output_example, cf_desc.algo_type)
