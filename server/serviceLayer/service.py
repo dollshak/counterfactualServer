@@ -38,8 +38,8 @@ def add_new_algorithm():
     if file_name is None or file_name == "":
         return "File name has to be filled ", 400
     arguments_list = req.get('argument_lst')
-    if arguments_list is None:
-        return "Argument list cannot be none ", 400
+    if arguments_list is None or arguments_list == "":
+        return "Argument list cannot be empty string or none ", 400
     arguments_list = json.loads(arguments_list)
     desc = req['description']
     if desc is None:
@@ -48,14 +48,14 @@ def add_new_algorithm():
     if output_exmaples is None:
         return "Output examples cannot be none ", 400
     data = request.files["file_content"]
-    if data is None:
-        return "File content cannot be none ", 400
+    if data is None or data == "":
+        return "File content cannot be empty string or none ", 400
     additional_info = req['additional_info']
     if additional_info in None:
         return "The algorithm additional info cannot be none ", 400
     algo_type = req.get('type')
-    if additional_info in None:
-        return "The algorithm type cannot be none ", 400
+    if algo_type in None or algo_type == "":
+        return "The algorithm type cannot be empty string or none ", 400
     algo_type = json.loads(algo_type)
     file_content = data.read()
     try:
@@ -96,18 +96,18 @@ def run_algorithms():
     try:
         req = request.form
         algo_names = json.loads(req.get('algo_names'))
-        if algo_names is None:
-            return "Chosen algorithms list cannot be None ", 400
+        if algo_names is None or algo_names == "":
+            return "Chosen algorithms list cannot be empty string or None ", 400
         arg_list = req.get('arg_list')
-        if arg_list is None:
-            return "Arguments list cannot be None ", 400
+        if arg_list is None or arg_list == "":
+            return "Arguments list cannot be empty string or None ", 400
         arg_list = json.loads(arg_list)
         modelFile = request.files['model_file']
-        if modelFile is None:
-            return "Model file cannot be None ", 400
+        if modelFile is None or modelFile == "":
+            return "Model file cannot be empty string or None ", 400
         model_input = json.load(request.files['model_input'])
-        if model_input is None:
-            return "The input for the model cannot be None ", 400
+        if model_input is None or model_input == "":
+            return "The input for the model cannot be empty string or None ", 400
         return algorithm_service.run_algorithms(algo_names, modelFile, arg_list, model_input)
     except Exception as e:
         return str(e), 400
@@ -115,23 +115,23 @@ def run_algorithms():
 
 @urls_blueprint.route('/algorithm', methods=['DELETE'])
 def remove_algorithm(name):
-    if name is None:
-        return "Algorithm cannot be none ", 400
+    if name is None or name == "":
+        return "Algorithm cannot be empty string or none ", 400
     return algorithm_service.remove_algorithm(name)
 
 
 @urls_blueprint.route('/algorithmInfo', methods=['GET'])
 def get_algorithm_info():
     name = request.args.get('name')
-    if name is None:
-        return "Algorithm cannot be none ", 400
+    if name is None or name == "":
+        return "Algorithm cannot be empty string or none ", 400
     return algorithm_service.get_algorithm_info(name)
 
 
 @urls_blueprint.route('/algorithmCode', methods=['GET'])
 def get_algorithm_code(name):
-    if name is None:
-        return "Algorithm cannot be none ", 400
+    if name is None or name == "":
+        return "Algorithm cannot be empty string or none ", 400
     return algorithm_service.get_algorithm_code(name)
 
 
