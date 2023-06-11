@@ -33,9 +33,12 @@ class AlgorithmService:
         except Exception as e:
             return "something went wrong with the model, couldn't run it with the given values, received message: \n" + str(
                 e), 400
-        ress, algo_runtimes = self.algorithms_controller.run_selected_algorithms(algorithms_names, arg_list, model,
+        try:
+            ress, algo_runtimes = self.algorithms_controller.run_selected_algorithms(algorithms_names, arg_list, model,
                                                                                  feature_values,
                                                                                  feature_names)
+        except Exception as e:
+            return "Something went wrong with running the algorithms. Received message:\n"+str(e), 400
         logger.debug("handling outputs")
         dict = InputOutputController().handle_output(feature_names, feature_values, ress, algorithms_names,
                                                      model_result, algo_runtimes=algo_runtimes)

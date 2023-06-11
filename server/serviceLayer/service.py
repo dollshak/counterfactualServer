@@ -35,13 +35,27 @@ def add_new_algorithm():
     """
     req = request.form
     file_name = req['name']
+    if file_name is None or file_name == "":
+        return "File name has to be filled ", 400
     arguments_list = req.get('argument_lst')
+    if arguments_list is None:
+        return "Argument list cannot be none ", 400
     arguments_list = json.loads(arguments_list)
     desc = req['description']
+    if desc is None:
+        return "Description cannot be none ", 400
     output_exmaples = req['output_example']
+    if output_exmaples is None:
+        return "Output examples cannot be none ", 400
     data = request.files["file_content"]
+    if data is None:
+        return "File content cannot be none ", 400
     additional_info = req['additional_info']
+    if additional_info in None:
+        return "The algorithm additional info cannot be none ", 400
     algo_type = req.get('type')
+    if additional_info in None:
+        return "The algorithm type cannot be none ", 400
     algo_type = json.loads(algo_type)
     file_content = data.read()
     try:
@@ -82,29 +96,42 @@ def run_algorithms():
     try:
         req = request.form
         algo_names = json.loads(req.get('algo_names'))
+        if algo_names is None:
+            return "Chosen algorithms list cannot be None ", 400
         arg_list = req.get('arg_list')
+        if arg_list is None:
+            return "Arguments list cannot be None ", 400
         arg_list = json.loads(arg_list)
         modelFile = request.files['model_file']
+        if modelFile is None:
+            return "Model file cannot be None ", 400
         model_input = json.load(request.files['model_input'])
+        if model_input is None:
+            return "The input for the model cannot be None ", 400
         return algorithm_service.run_algorithms(algo_names, modelFile, arg_list, model_input)
     except Exception as e:
-        # TODO exception should be informative
         return str(e), 400
 
 
 @urls_blueprint.route('/algorithm', methods=['DELETE'])
 def remove_algorithm(name):
+    if name is None:
+        return "Algorithm cannot be none ", 400
     return algorithm_service.remove_algorithm(name)
 
 
 @urls_blueprint.route('/algorithmInfo', methods=['GET'])
 def get_algorithm_info():
     name = request.args.get('name')
+    if name is None:
+        return "Algorithm cannot be none ", 400
     return algorithm_service.get_algorithm_info(name)
 
 
 @urls_blueprint.route('/algorithmCode', methods=['GET'])
 def get_algorithm_code(name):
+    if name is None:
+        return "Algorithm cannot be none ", 400
     return algorithm_service.get_algorithm_code(name)
 
 
@@ -120,7 +147,7 @@ def get_all_algorithms():
 @urls_blueprint.route('/clearDB', methods=['POST'])
 def clear_db():
     algorithm_service.clear_db()
-    return "db cleared", 400
+    return "DB cleared", 400
 
 
 @urls_blueprint.route('/algorithm', methods=['PUT'])
@@ -128,21 +155,31 @@ def edit_algorithm():
     try:
         req = request.form
         file_name = req['name']
+        if file_name is None:
+            return "The file name has to be filled and cannot be None ", 400
         origin_name = req['origin_name']
+        if origin_name is None:
+            return "Origin name has to be filled and cannot be None ", 400
         arguments_list = req.get('argument_lst')
+        if arguments_list is None:
+            return "Argument list cannot be none ", 400
         arguments_list = json.loads(arguments_list)
         desc = req['description']
+        if desc is None:
+            return "Description cannot be none ", 400
         output_exmaples = req['output_example']
+        if output_exmaples is None:
+            return "Output examples cannot be none ", 400
         if "file_content" in request.files and request.files["file_content"] is not None:
             data = request.files["file_content"]
             file_content = data.read()
-
         else:
             file_content = None
         additional_info = req['additional_info']
         algo_type = req.get('type')
+        if additional_info in None:
+            return "The algorithm type cannot be none ", 400
         algo_type = json.loads(algo_type)
-
         return algorithm_service.edit_algorithm(file_content, file_name, arguments_list, desc, additional_info,
                                                 output_exmaples, algo_type, origin_name)
     except Exception as e:
