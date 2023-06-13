@@ -44,7 +44,6 @@ class FileManager:
         """
         receives a file string and convert it to a file
         """
-        # TODO create generic implementation for various content types
         full_path = self.config.ALGORITHMS_DIR_PATH + "/" + file_name + ".py"
         with open(full_path, 'w') as f:
             if not isinstance(content, str):
@@ -79,7 +78,6 @@ class FileManager:
         return True
 
     def remove_algo_system(self, algo_name):
-        # TODO need to change hard coded .py
         full_path = self.config.ALGORITHMS_DIR_PATH + "/" + algo_name + ".py"
         os.remove(full_path)
 
@@ -92,7 +90,6 @@ class FileManager:
         :param name: file name without the file type (such as '.py'
         :return: true if the file is in the algo directory
         """
-        # TODO need to change hard coded .py
         return name + '.py' in os.listdir(self.config.ALGORITHMS_DIR_PATH)
 
     def is_algo_exist_in_db(self, name: str):
@@ -113,7 +110,6 @@ class FileManager:
         :param algorithms_names:
         :return:
         """
-        # TODO need to validate that deserialization here works well
         dto_algos = AlgorithmLoader().find_many(algorithms_names)
         if dto_algos is None:
             pass
@@ -176,13 +172,11 @@ class FileManager:
 
     def get_files_names_and_import_from_db(self, algo_names):
         self.import_missing_algorithms(algo_names)
-        # TODO need to remove hard coded .py
         return [name + '.py' for name in algo_names]
 
     def import_missing_algorithms(self, algo_names):
         missing_algos = []
         for name in algo_names:
-            # TODO need to change from hard coded .py
             file_name = name
             if not self.is_algo_exist_in_system(file_name):
                 missing_algos.append(name)

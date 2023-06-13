@@ -122,5 +122,6 @@ class TestEnginePY(unittest.TestCase):
     @classmethod
     def tearDownClass(cls) -> None:
         file_manager = FileManager(TestConfig())
+        file_manager.clear_db()
         if file_manager.is_algo_exist_in_db("DiCE_for_test"):
             file_manager.remove_algorithm("DiCE_for_test")

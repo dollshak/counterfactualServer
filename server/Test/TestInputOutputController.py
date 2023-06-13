@@ -1,5 +1,6 @@
 import unittest
 
+from server.businessLayer.FileManager import FileManager
 from server.businessLayer.Inputs_Handlers.InputOutputController import InputOutputController
 
 
@@ -32,7 +33,7 @@ class TestInputOutputController(unittest.TestCase):
         names = ['name','age','height','living area']
         values = ['ido',25,183,'rural']
         self.input = {'names':names,'values':values}
-        self.model_result = 0.3
+        self.model_result = [0.3]
         self.algo_runtimes = {'algo1': 3.2, 'algo2': 0.7}
         self.cf_results = [[['ido', 27, 183, 'rural'], ['ido', 25, 189, 'rural']],
                            [['ido', 30, 182, 'rural'], ['ido', 20, 199, 'rural']]]
@@ -51,3 +52,4 @@ class TestInputOutputController(unittest.TestCase):
             }
         }
         self.IOController = InputOutputController()
+

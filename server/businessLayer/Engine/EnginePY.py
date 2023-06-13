@@ -8,6 +8,8 @@ import pip
 
 import multiprocess
 from pathos.multiprocessing import ProcessingPool as Pool
+
+from server.Test.additionals.TestConfig import TestConfig
 from server.Tools.FailedCFException import FailedCFException
 from server.Tools.Logger import Logger
 from server.Tools.SystemConfig import SystemConfig
@@ -26,8 +28,9 @@ class EnginePY(EngineAPI):
 
     def run_algorithm(self, model_input: list, algo_time_limit=-1):
         name, suffix = os.path.splitext(self.file_name)
-        module_path = SystemConfig().ALGORITHMS_DIR_PATH_MODULES + name
-        self.handleWithLibraries(module_path)
+        module_path = self.config.ALGORITHMS_DIR_PATH_MODULES + name
+        if not isinstance(self.config, TestConfig):
+            self.handleWithLibraries(module_path)
         try:
             cf_algo = self.import_cf_algo(module_path)
         except:

@@ -19,7 +19,6 @@ class AlgorithmLoader:
         self.collection = self.db[self.collection_name]
 
     def insert(self, object_to_save: AlgorithmDto):
-        # TODO validate does not exist in DB
         serializedArgumentList = [arg.serialize() for arg in object_to_save.argument_lst]
         obj_json = {
             "name": object_to_save.name,

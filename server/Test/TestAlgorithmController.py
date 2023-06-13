@@ -39,6 +39,8 @@ class TestAlgorithmController(unittest.TestCase):
 
     def test_server_restart(self):
         # pre set -> remove all algorithms from system
+        self.file_manager.add_algorithm(self.test_cf_content, self.cf_description)
+
 
         algos = self.controller.get_all_algorithms()
         for algo in algos:
@@ -117,4 +119,6 @@ class TestAlgorithmController(unittest.TestCase):
         self.algo_type = ["regressor"]
 
     def tearDown(self) -> None:
-        self.file_manager.remove_algorithm(self.algo_name)
+        self.file_manager.clear_db()
+
+        # self.file_manager.remove_algorithm(self.algo_name)

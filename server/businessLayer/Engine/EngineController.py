@@ -40,7 +40,6 @@ class EngineController:
 
     def get_cf_results(self, algo_name, cf_inputs, model, model_input, algo_time_limit, feature_list: list):
         suffix: str = self.get_type_by_name(algo_name)
-        # TODO implement here -> bring engine by suffix instead of hard coded enginePY -> should create a function
         engine = EnginePY(model, algo_name, cf_inputs, self.config, feature_list)
         result, duration = engine.run_algorithm(model_input, algo_time_limit)
         # duration = duration.seconds

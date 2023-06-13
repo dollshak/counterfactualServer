@@ -13,16 +13,23 @@ from server.businessLayer.FileManager import FileManager
 
 class TestEngineController(unittest.TestCase):
     def test_time_pass_out(self):
-        # TODO implement here when time is implemented
-        assert False
+        if not self.file_manager.is_algo_exist_in_db(self.algo_name):
+            self.file_manager.add_algorithm(self.test_cf_content, self.cf_description)
+        short_time_inputs = self.cf_input.copy()
+        short_time_inputs["time_limit"] = 1
+        inputs = {self.algo_name: short_time_inputs}
+        result, algo_times = self.controller.run_algorithms([self.algo_name], self.model, self.x_test,
+                                                            TestUtils.get_model_feature_names(), inputs)
+        self.assertEqual(type(result[0]), str)
 
     def test_run_one_cf(self):
         if not self.file_manager.is_algo_exist_in_db(self.algo_name):
             self.file_manager.add_algorithm(self.test_cf_content, self.cf_description)
         inputs = {self.algo_name: self.cf_input}
-        result = self.controller.run_algorithms([self.algo_name], self.model, self.x_test,
-                                                TestUtils.get_model_feature_names(), inputs)
+        result, algo_times = self.controller.run_algorithms([self.algo_name], self.model, self.x_test,
+                                                            TestUtils.get_model_feature_names(), inputs)
         self.assertGreater(len(result[0]), 0)
+        self.assertNotEqual(type(result[0]), str)
 
     def test_run_multiple_cf(self):
         if not self.file_manager.is_algo_exist_in_db(self.algo_name):
@@ -32,8 +39,8 @@ class TestEngineController(unittest.TestCase):
 
         inputs = {self.algo_name: self.cf_input,
                   self.algo_name_2: self.cf_input}
-        result = self.controller.run_algorithms([self.algo_name, self.algo_name_2], self.model, self.x_test,
-                                                TestUtils.get_model_feature_names(), inputs)
+        result, algo_times = self.controller.run_algorithms([self.algo_name, self.algo_name_2], self.model, self.x_test,
+                                                            TestUtils.get_model_feature_names(), inputs)
         self.assertGreater(len(result[0]), 0)
         self.assertGreater(len(result[1]), 0)
 
@@ -47,7 +54,7 @@ class TestEngineController(unittest.TestCase):
                                                 TestUtils.get_model_feature_names(), invalid_inputs)
         self.assertTrue(isinstance(result, tuple))
         self.assertTrue(isinstance(result[0], list))
-        self.assertTrue((len(result[0][0]) == 0))
+        self.assertEqual(type(result[0][0]), str)
 
     def test_run_invalid_cf_of_many(self):
         if not self.file_manager.is_algo_exist_in_db(self.algo_name):
@@ -58,12 +65,10 @@ class TestEngineController(unittest.TestCase):
         del invalid_cf_inputs['features']
         inputs = {self.algo_name: invalid_cf_inputs,
                   self.algo_name_2: self.cf_input}
-        result = self.controller.run_algorithms([self.algo_name, self.algo_name_2], self.model, self.x_test,
-                                                TestUtils.get_model_feature_names(), inputs)
-        self.assertTrue(isinstance(result, tuple))
-        self.assertTrue(isinstance(result[0], list))
-        self.assertTrue((len(result[0][0]) == 0))
-        self.assertTrue((len(result[0][1]) > 0))
+        result, algo_times = self.controller.run_algorithms([self.algo_name, self.algo_name_2], self.model, self.x_test,
+                                                            TestUtils.get_model_feature_names(), inputs)
+        self.assertEqual(type(result[0]), str)
+        self.assertIsNot(type(result[1]), str)
 
     def setUp(self) -> None:
         rand_num = random.randint(1, 10000)
@@ -83,8 +88,9 @@ class TestEngineController(unittest.TestCase):
         self.controller = EngineController(TestConfig())
 
     def tearDown(self) -> None:
-        self.file_manager.remove_algorithm(self.algo_name)
-        self.file_manager.remove_algorithm(self.algo_name_2)
+        self.file_manager.clear_db()
+        # self.file_manager.remove_algorithm(self.algo_name)
+        # self.file_manager.remove_algorithm(self.algo_name_2)
 
     @classmethod
     def setUpClass(cls) -> None:
@@ -105,5 +111,5 @@ class TestEngineController(unittest.TestCase):
             "desired_class": 2,
             "desired_range": [0.8, 1.0],
             "is_classifier": False,
-            "time_limit": 5
+            "time_limit": -1
         }

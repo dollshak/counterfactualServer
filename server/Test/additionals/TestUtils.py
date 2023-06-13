@@ -44,7 +44,8 @@ class TestUtils:
 
     @staticmethod
     def get_model_feature_names():
-        return ["income" , "outcome", "total","loan"]
+
+        return ['features', 'outcome_name', 'total_CFs', 'desired_range', 'is_classifier', 'desired_class']
 
     @staticmethod
     def get_one_cf_input():
