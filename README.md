@@ -28,7 +28,7 @@ this function receives 3 arguments:
 
  ### Add New Algorithm using the App
  To add new algorithm one must:
- 1. upload here algorithm code file (currently supports .py only)
+ 1. upload the algorithm code file (currently supports .py only)
  2. add algorithm params - *NOTICE - algorithm param names should be exaclty as expected in initAlgo*. it is recommnded to give an explanation of the inputs and thier meaning. default value is optional and isn't a requirement
  3. write a Description: write a short description of your algorithm to help others understand and learn from it.
  4. write output exmaple description: Describe what is the expected output of the algorithm.
